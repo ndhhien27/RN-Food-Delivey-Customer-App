@@ -18,7 +18,7 @@ function Address(props) {
     <View>
       <Text style={{
         fontSize: 18,
-        fontFamily: theme.text.fonts['sfpro-bold']
+        fontFamily: theme.text.fonts['sfui-bold']
       }}>Address</Text>
       {
         listAddress.map((item, index) => (
@@ -32,12 +32,12 @@ function Address(props) {
             }}
             titleStyle={{
               fontSize: 16,
-              fontFamily: theme.text.fonts.sfpro,
-              color: '#666'
+              fontFamily: theme.text.fonts.sfui,
+              color: theme.color.gray
             }}
             subtitleStyle={{
               fontSize: 18,
-              fontFamily: theme.text.fonts.sfpro,
+              fontFamily: theme.text.fonts.sfui,
               marginTop: 6
             }}
             chevron
@@ -52,16 +52,16 @@ function Address(props) {
         paddingTop: 8
       }}>
         <Text style={{
-          fontFamily: theme.text.fonts.sfpro,
+          fontFamily: theme.text.fonts.sfui,
           fontSize: 18,
-          color: theme.color.pantone
+          color: theme.color.primary
         }}>Add new address</Text>
         <Button
           icon={
             <Icon
               type='material-community'
               name='plus-circle'
-              color={theme.color.pantone}
+              color={theme.color.primary}
               size={26}
             />
           }

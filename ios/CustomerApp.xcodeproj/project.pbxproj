@@ -17,8 +17,9 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* CustomerAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CustomerAppTests.m */; };
-		2F5C4BDD2354E71200980BCE /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F5C4BDC2354E71200980BCE /* SFProText-Regular.otf */; };
-		2F68314B235F53B20096FE4A /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2F68314A235F53B20096FE4A /* SFProText-Bold.otf */; };
+		2FFD54AB2361F88900D381EE /* SFUIText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD54A82361F88900D381EE /* SFUIText-Medium.ttf */; };
+		2FFD54AC2361F88900D381EE /* SFUIText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD54A92361F88900D381EE /* SFUIText-Regular.ttf */; };
+		2FFD54AD2361F88900D381EE /* SFUIText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD54AA2361F88900D381EE /* SFUIText-Semibold.ttf */; };
 		830D6EEE0D03C02C8AEE9FB7 /* libPods-CustomerApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7258E79E0B42A5E9669D3B /* libPods-CustomerApp-tvOS.a */; };
 		C280BB744C01369B82395BA8 /* libPods-CustomerAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3B10D29B9A58B4BA2B2DB8 /* libPods-CustomerAppTests.a */; };
 		FA9791FC1A4B47F62CAD1950 /* libPods-CustomerApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71E80B930138BBC2C57633A5 /* libPods-CustomerApp-tvOSTests.a */; };
@@ -61,8 +62,9 @@
 		2B583A82F4D44194987F3808 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* CustomerApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CustomerApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* CustomerApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CustomerApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F5C4BDC2354E71200980BCE /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.otf"; path = "../app/assets/fonts/SFProText-Regular.otf"; sourceTree = "<group>"; };
-		2F68314A235F53B20096FE4A /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.otf"; path = "../app/assets/fonts/SFProText-Bold.otf"; sourceTree = "<group>"; };
+		2FFD54A82361F88900D381EE /* SFUIText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIText-Medium.ttf"; path = "../app/assets/fonts/SFUIText-Medium.ttf"; sourceTree = "<group>"; };
+		2FFD54A92361F88900D381EE /* SFUIText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIText-Regular.ttf"; path = "../app/assets/fonts/SFUIText-Regular.ttf"; sourceTree = "<group>"; };
+		2FFD54AA2361F88900D381EE /* SFUIText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFUIText-Semibold.ttf"; path = "../app/assets/fonts/SFUIText-Semibold.ttf"; sourceTree = "<group>"; };
 		31A4591BD0F146A19066E790 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		3442DCCC1F1058A6481C5B95 /* Pods-CustomerAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerAppTests.release.xcconfig"; path = "Target Support Files/Pods-CustomerAppTests/Pods-CustomerAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		3D67EB42E57375D489FB8388 /* Pods-CustomerApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomerApp.release.xcconfig"; path = "Target Support Files/Pods-CustomerApp/Pods-CustomerApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -174,8 +176,9 @@
 		294D812DD9014D07A3469372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2F68314A235F53B20096FE4A /* SFProText-Bold.otf */,
-				2F5C4BDC2354E71200980BCE /* SFProText-Regular.otf */,
+				2FFD54A82361F88900D381EE /* SFUIText-Medium.ttf */,
+				2FFD54A92361F88900D381EE /* SFUIText-Regular.ttf */,
+				2FFD54AA2361F88900D381EE /* SFUIText-Semibold.ttf */,
 				1A4A81CF13AA40F59C64E7B3 /* AntDesign.ttf */,
 				2AED1BAAE54D4B7EB6969518 /* Entypo.ttf */,
 				6E654EE2DB1844FDAB774FC6 /* EvilIcons.ttf */,
@@ -383,10 +386,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F68314B235F53B20096FE4A /* SFProText-Bold.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				2F5C4BDD2354E71200980BCE /* SFProText-Regular.otf in Resources */,
+				2FFD54AC2361F88900D381EE /* SFUIText-Regular.ttf in Resources */,
+				2FFD54AD2361F88900D381EE /* SFUIText-Semibold.ttf in Resources */,
+				2FFD54AB2361F88900D381EE /* SFUIText-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

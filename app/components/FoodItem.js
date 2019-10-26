@@ -12,35 +12,52 @@ import { CartContext } from '../context/CartContext'
 
 import { theme } from '../constants/theme';
 import { image } from '../constants/images';
+import { ListItem } from 'react-native-elements';
 
-function FoodItem(props) {
-  const { food, onPress } = props
-  return (
-    <View style={styles.container}>
-      <Image source={{ uri: 'http://via.placeholder.com/160x160' }}
-        style={styles.image}
-      />
-      <View style={styles.info}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{food.title}</Text>
-          <View>
-            <Text>{food.price}</Text>
-          </View>
-        </View>
-        <View style={styles.cartRow}>
-          <TouchableOpacity onPress={onPress}>
-            <Image source={image.addToCart} style={styles.addToCart} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  )
-}
+// function FoodItem(props) {
+
+//   const renderItem = ({item})=>(
+//     <ListItem
+//       title={item.title}
+//       subtitle={item.price}
+//       bottomDivider
+//     />
+//   )
+//   const { food, onPress } = props
+//   return (
+//     <View style={styles.container}>
+//       <Image source={{ uri: 'http://via.placeholder.com/160x160' }}
+//         style={styles.image}
+//       />
+//       <View style={styles.info}>
+//         <View style={{ flex: 1 }}>
+//           <Text style={styles.title}>{food.title}</Text>
+//           <View>
+//             <Text>{food.price}</Text>
+//           </View>
+//         </View>
+//         <View style={styles.cartRow}>
+//           <TouchableOpacity onPress={onPress}>
+//             <Image source={image.addToCart} style={styles.addToCart} />
+//           </TouchableOpacity>
+//         </View>
+//       </View>
+//     </View>
+//   )
+// }
 
 function MenuItem(props) {
 
   const { cart, addFoodToCart } = useContext(CartContext)
-  const { menu, onAddToCart } = props
+  const { menu, onAddToCart, storeName } = props
+
+  const renderItem = ({ item }) => (
+    <ListItem
+      title={item.title}
+      subtitle={item.price}
+      bottomDivider
+    />
+  )
 
   return (
     <View style={{ paddingHorizontal: 16 }}>
@@ -48,7 +65,7 @@ function MenuItem(props) {
       <FlatList
         data={menu.foods}
         keyExtractor={item => `food-${item.id}`}
-        renderItem={({ item }) => <FoodItem food={item} onPress={() => addFoodToCart(item)} />}
+        renderItem={({ item }) => <FoodItem food={item} onPress={() => addFoodToCart(item, storeName)} />}
       />
     </View>
   )

@@ -23,7 +23,7 @@ function StoreListItem(props) {
                 <Icon
                   type='material-community'
                   name={bookmark ? 'bookmark' : 'bookmark-outline'}
-                  color={theme.color.pantone}
+                  color={theme.color.primary}
                 />
               }
               buttonStyle={{
@@ -50,7 +50,7 @@ function StoreListItem(props) {
               disabledTitleStyle={{ color: '#fff', fontSize: 15 }}
               disabled
               disabledStyle={{
-                backgroundColor: theme.color.pantone,
+                backgroundColor: theme.color.primary,
                 borderRadius: 8,
                 paddingVertical: 2,
               }}
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     marginBottom: 8,
-    fontFamily: theme.text.fonts.sfpro
+    fontFamily: theme.text.fonts.sfui
   },
   priceRow: {
     flexDirection: 'row',

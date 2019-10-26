@@ -17,7 +17,12 @@ export default function App() {
           const currentScreen = getActiveRoute(currentState);
           const prevScreen = getActiveRoute(prevState);
           if (prevScreen.routeName !== currentScreen.routeName) {
-            const statusTheme = currentScreen.params.statusbar;
+            let statusTheme = ''
+            if (!currentScreen.params) {
+              statusTheme = 'dark-content'
+            } else {
+              statusTheme = currentScreen.params.statusbar
+            }
             StatusBar.setBarStyle(statusTheme)
           }
         }}

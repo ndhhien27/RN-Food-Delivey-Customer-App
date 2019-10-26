@@ -9,14 +9,15 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
 
 function Header(props) {
-  const { params } = props.state
+  const { style } = props
   return (
     <Animated.View style={{
-      backgroundColor: params.header,
+      backgroundColor: style.headerStyle,
+      // backgroundColor: 'red',
       height: 88,
       alignItems: 'flex-end',
       justifyContent: 'space-between',
-      borderBottomWidth: params.borderStyle,
+      borderBottomWidth: style.borderStyle,
       flexDirection: 'row',
       position: 'absolute',
       top: 0,
@@ -29,21 +30,22 @@ function Header(props) {
           <AnimatedIcon
             type='material-community'
             name='arrow-left'
-            color={params.backBtn}
+            color={style.backBtnStyle}
             size={28}
           />
         }
-        onPress={() => props.goBack()}
+        onPress={() => props.navigation.navigate('Home')}
         buttonStyle={{
           backgroundColor: null
         }}
       />
+      <Animated.Text style={{ color: theme.color.primary, opacity: style.borderStyle }}>abc</Animated.Text>
       <Button
         icon={
           <AnimatedIcon
             type='material-community'
             name='bookmark-outline'
-            color={params.backBtn}
+            color={style.backBtnStyle}
             size={28}
           />
         }

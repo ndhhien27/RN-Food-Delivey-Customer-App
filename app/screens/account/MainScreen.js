@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Button, StatusBar } from 'react-native'
+import { View, ScrollView, StatusBar } from 'react-native'
+import { Button } from 'react-native-elements'
 
 import Profile from '../../components/Profile'
 import Address from '../../components/Address'
@@ -31,6 +32,7 @@ export default function MainScreen(props) {
       >
         <Profile />
         <Address listAddress={listAddress} />
+        <Button onPress={() => props.navigation.navigate('Auth')} />
       </ScrollView>
     </View>
   )
@@ -38,6 +40,8 @@ export default function MainScreen(props) {
 
 MainScreen.navigationOptions = ({ navigation }) => {
   return {
-    headerRight: <Button title='Edit' color={theme.color.pantone} />
+    headerStyle: {
+      borderBottomWidth: 0,
+    }
   }
 }

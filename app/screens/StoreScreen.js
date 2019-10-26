@@ -55,46 +55,25 @@ function StoreScreen(props) {
   const checkStatusBarColor = () => {
     const check = scrollY._value < 180;
     if (isLight !== check) setIsLight(check);
-    console.log(check)
+    // console.log(check)
   }
 
-  useEffect(() => {
-    const headerStyle = scrollY.interpolate({
-      inputRange: [0, 150, 262],
-      outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,0.2)', 'rgba(255,255,255,1)'],
-      extrapolate: 'clamp'
-    })
-    const borderStyle = scrollY.interpolate({
-      inputRange: [0, 230, 262],
-      outputRange: [0, 0, 1],
-      extrapolate: 'clamp'
-    })
-    const backBtnStyle = scrollY.interpolate({
-      inputRange: [0, 150, 262],
-      outputRange: ['#fff', '#fff', theme.color.pantone],
-      extrapolate: 'clamp'
-    })
-    navigation.setParams({ header: headerStyle, borderStyle, backBtn: backBtnStyle, isLight })
-    // const _navListener = navigation.addListener('didFocus', () => {
-    //   StatusBar.setBarStyle("light-content");
-    // });
+  const headerStyle = scrollY.interpolate({
+    inputRange: [0, 150, 260, 262],
+    outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,0.2)', 'rgba(255,255,255,0.8)', 'rgba(255,255,255,1)'],
+    extrapolate: 'clamp'
+  })
+  const borderStyle = scrollY.interpolate({
+    inputRange: [0, 230, 262],
+    outputRange: [0, 0, 1],
+    extrapolate: 'clamp'
+  })
+  const backBtnStyle = scrollY.interpolate({
+    inputRange: [0, 150, 262],
+    outputRange: ['#fff', '#fff', theme.color.primary],
+    extrapolate: 'clamp'
+  })
 
-    // return () => { _navListener.remove(); console.log('removed') }
-  }, [])
-
-  // useEffect(() => {
-  //   // const _navListener = navigation.addListener('didFocus', payload => {
-  //   //   StatusBar.setBarStyle("light-content");
-  //   // });
-  //   StatusBar.setBarStyle(isLight ? 'light-content' : 'dark-content', true)
-
-  //   // return () => { _navListener.remove(); console.log('abc') }
-
-  // }, [scrollY._value])
-
-  // const headerStyle = scrollY.interpolate({
-  //   headerTransparent: false
-  // })
 
   // const { cart, addFoodToCart } = useContext(CartContext)
 
@@ -125,7 +104,7 @@ function StoreScreen(props) {
   //   }).catch((err) => console.log(err));
   // }
 
-  console.log(scrollY)
+  // console.log(scrollY)
   return (
     <View style={{ flex: 1 }}>
       <StatusBar animated barStyle={isLight ? 'light-content' : 'dark-content'} />
@@ -136,13 +115,14 @@ function StoreScreen(props) {
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { listener: debounce(checkStatusBarColor, 16) }
         )}
-        // contentContainerStyle={{ marginTop: 350 }}
+        contentContainerStyle={{ paddingBottom: 44 }}
         renderItem={({ item }) =>
-          <MenuItem menu={item} />}
+          <MenuItem menu={item} storeName={navigation.state.params.storeName} />}
         keyExtractor={item => `${item.id}`}
         // contentContainerStyle={styles.container}
-        ListHeaderComponent={<Banner />}
+        ListHeaderComponent={<Banner storeName={navigation.state.params.storeName} />}
       />
+      <Header style={{ headerStyle, borderStyle, backBtnStyle }} />
     </View>
   )
 }

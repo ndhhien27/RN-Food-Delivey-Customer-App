@@ -55,7 +55,7 @@ StoreByCategory.navigationOptions = ({ navigation }) => {
         <Icon
           type='material-community'
           name='filter-outline'
-          color={theme.color.pantone}
+          color={theme.color.primary}
           size={28}
         />
       }

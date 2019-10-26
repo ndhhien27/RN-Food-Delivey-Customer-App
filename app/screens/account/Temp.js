@@ -50,14 +50,14 @@ export default function Temp(props) {
     })
   }
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.header}>
         <Button
           icon={
             <Icon
               type='material-community'
               name='arrow-left'
-              color={theme.color.pantone}
+              color={theme.color.primary}
               size={28}
             />
           }
@@ -74,23 +74,22 @@ export default function Temp(props) {
           onChangeText={_handleSearch}
         />
       </View>
-      <View>
-        <FlatList
-          data={searchData}
-          keyExtractor={item => `${item.ID}`}
-          renderItem={({ item }) =>
-            <ListItem
-              title={item.Title}
-              bottomDivider
-              onPress={() => onSelect(item.Title)}
-              titleStyle={{
-                fontFamily: theme.text.fonts.sfpro,
-                fontSize: 26
-              }}
-            />
-          }
-        />
-      </View>
+      <FlatList
+        data={searchData}
+        keyExtractor={item => `${item.ID}`}
+        style={{ flex: 1 }}
+        renderItem={({ item }) =>
+          <ListItem
+            title={item.Title}
+            bottomDivider
+            onPress={() => onSelect(item.Title)}
+            titleStyle={{
+              fontFamily: theme.text.fonts.sfui,
+              fontSize: 26
+            }}
+          />
+        }
+      />
     </View>
   )
 }

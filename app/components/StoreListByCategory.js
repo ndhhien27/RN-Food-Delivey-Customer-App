@@ -29,7 +29,7 @@ function StoreListByCategory(props) {
               <Icon
                 type='material-community'
                 name='star'
-                color={theme.color.pantone}
+                color={theme.color.primary}
                 size={15}
               />
             </View>
@@ -38,7 +38,7 @@ function StoreListByCategory(props) {
                 <Icon
                   type='material-community'
                   name={bookmark ? 'bookmark' : 'bookmark-outline'}
-                  color={theme.color.pantone}
+                  color={theme.color.primary}
                 />
               }
               buttonStyle={{

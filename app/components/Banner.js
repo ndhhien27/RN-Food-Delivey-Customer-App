@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements'
 
 import StarInfo from '../commons/store/StarInfo'
 import { theme } from '../constants/theme'
-function Banner() {
+function Banner(props) {
   return (
     <View>
       <ImageBackground
@@ -21,7 +21,7 @@ function Banner() {
             alignItems: 'flex-start'
           }}>
             <View style={{
-              backgroundColor: theme.color.pantone,
+              backgroundColor: theme.color.primary,
               alignSelf: 'flex-start',
               paddingHorizontal: 12,
               paddingVertical: 2,
@@ -33,7 +33,7 @@ function Banner() {
               color: '#fff',
               fontSize: 30,
               paddingVertical: 4
-            }}>djaklsdjlasd</Text>
+            }}>{props.storeName}</Text>
             <View style={{ flexDirection: 'row' }}>
               <Icon
                 type='material-community'

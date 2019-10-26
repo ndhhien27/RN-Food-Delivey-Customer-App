@@ -24,11 +24,11 @@ function Profile(props) {
         }}>
           <Text style={{
             fontSize: 24,
-            fontFamily: theme.text.fonts['sfpro-bold']
+            fontFamily: theme.text.fonts['sfui-bold']
           }}>Nguyen Duc Hien</Text>
           <Text style={{
             fontSize: 18,
-            fontFamily: theme.text.fonts.sfpro
+            fontFamily: theme.text.fonts.sfui
           }}>ndhien@gmail.com</Text>
         </View>
       </View>
@@ -37,7 +37,7 @@ function Profile(props) {
           <Icon
             type='material-community'
             name='account-edit'
-            color={theme.color.pantone}
+            color={theme.color.primary}
             size={30}
           />
         }

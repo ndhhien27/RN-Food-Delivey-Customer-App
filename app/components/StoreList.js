@@ -9,12 +9,12 @@ class StoreList extends React.Component {
     super(props)
     this.state = {
       categories: [
-        { id: 1, title: 'Store Name' },
-        { id: 2, title: 'Store Name' },
-        { id: 3, title: 'Store Name' },
-        { id: 4, title: 'Store Name' },
-        { id: 5, title: 'Store Name' },
-        { id: 6, title: 'Store Name' },
+        { id: 1, title: 'Store Name 1' },
+        { id: 2, title: 'Store Name 2' },
+        { id: 3, title: 'Store Name 3' },
+        { id: 4, title: 'Store Name 4' },
+        { id: 5, title: 'Store Name 5' },
+        { id: 6, title: 'Store Name 6' },
       ]
     }
 
@@ -64,8 +64,8 @@ class StoreList extends React.Component {
               <CategoryListItem
                 item={item}
                 onPress={() => this.props.navigation.navigate('Store', {
-                  categoryName: item.title,
-                  categoryId: item.id
+                  storeName: item.title,
+                  storeId: item.id
                 })}
               />
             </View>

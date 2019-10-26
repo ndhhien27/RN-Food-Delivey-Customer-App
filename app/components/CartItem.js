@@ -1,30 +1,49 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { ListItem, Button, Icon } from 'react-native-elements'
 
 import { image } from '../constants/images'
 import { theme } from '../constants/theme'
 
-import { Button } from './base_components/Button'
 
 export default function CartItem(props) {
   const { item } = props
   return (
     <View style={styles.container}>
-      <Image source={{ uri: 'http://via.placeholder.com/640x360' }}
-        style={styles.image}
-      />
       <View style={styles.info}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{item.foodId}</Text>
+          <Text style={styles.title}>{item.foodName}</Text>
           <View>
-            <Text>Price</Text>
+            <Text style={styles.price}>{item.foodPrice}</Text>
           </View>
         </View>
-        <View style={styles.cartRow}>
-          <Button type="decrease" />
-          <Text>{item.qty}</Text>
-          <Button type="increase" />
-        </View>
+      </View>
+      <View style={styles.changeQtyStyle}>
+        <Button
+          icon={
+            <Icon
+              type='material-community'
+              name='minus-circle-outline'
+              color={theme.color.primary}
+            />
+          }
+          buttonStyle={{ padding: 0, backgroundColor: null }}
+          activeOpacity={0.5}
+        />
+        <Text style={{
+          paddingHorizontal: 8
+        }}>{item.foodQty}</Text>
+        <Button
+          icon={
+            <Icon
+              type='material-community'
+              name='plus-circle-outline'
+              color={theme.color.primary}
+            />
+          }
+          buttonStyle={{ padding: 0, backgroundColor: null }}
+          activeOpacity={0.5}
+        />
       </View>
     </View>
   )
@@ -37,23 +56,30 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    marginBottom: 8
+    marginBottom: 8,
+    borderBottomWidth: 1.5,
+    borderColor: theme.color.lightGray,
+    paddingVertical: 8
   },
   addToCart: {
     width: 25,
     height: 25
   },
   title: {
-    fontSize: theme.text.size.xl
+    fontSize: theme.text.size.xl,
+    fontFamily: theme.text.fonts.sfui
   },
   info: {
-    marginLeft: 16,
     flex: 1,
     flexDirection: 'column'
   },
-  cartRow: {
+  changeQtyStyle: {
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     flexDirection: 'row',
+  },
+  price: {
+    fontFamily: theme.text.fonts['sfui-medium'],
+    color: theme.color.gray
   }
 })

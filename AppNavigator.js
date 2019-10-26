@@ -2,8 +2,9 @@ import React from 'react'
 
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createSwitchNavigator } from 'react-navigation'
 
-import { getActiveRoute } from './app/services/NavigationService'
+import { getActiveRoute, getTabBarIcon } from './app/services/NavigationService'
 
 import Home from './app/screens/Home'
 import StoreScreen from './app/screens/StoreScreen'
@@ -14,22 +15,26 @@ import MainScreen from './app/screens/account/MainScreen'
 import EditProfile from './app/screens/account/EditProfile'
 import AddAddressScreen from './app/screens/account/AddAddressScreen'
 
+import LoginScreen from './app/screens/auth/LoginScreen'
+
 import Header from './app/components/Header'
 
 import { theme } from './app/constants/theme'
+import Notification from './app/screens/Notification'
+import CheckoutScreen from './app/screens/order/CheckoutScreen'
 
 const AccountStack = createStackNavigator({
   Main: {
     screen: MainScreen,
-    params: { statusbar: 'dark-content' }
+    // params: { statusbar: 'dark-content' }
   },
   EditProfile: {
     screen: EditProfile,
-    params: { statusbar: 'dark-content' },
+    // params: { statusbar: 'dark-content' },
   },
   AddAddress: {
     screen: AddAddressScreen,
-    params: { statusbar: 'dark-content' },
+    // params: { statusbar: 'dark-content' },
   }
 }, {
   navigationOptions: ({ navigation }) => {
@@ -44,36 +49,45 @@ const AccountStack = createStackNavigator({
 const CartStack = createStackNavigator({
   Cart: {
     screen: CartScreen,
-    params: { statusbar: 'dark-content' },
+    // params: { statusbar: 'dark-content' },
+  },
+  Checkout: {
+    screen: CheckoutScreen
   }
 }, {
   initialRouteName: 'Cart'
 })
 
-const HomeStack = createStackNavigator({
-  Home: {
-    screen: Home,
-    params: { statusbar: 'dark-content' },
-    navigationOptions: {
-      headerBackTitle: null
-    }
-  },
+const StoreStack = createStackNavigator({
   Store: {
     screen: StoreScreen,
     params: { statusbar: 'light-content' },
     navigationOptions: ({ navigation }) => {
       return {
-        header: <Header {...navigation} />,
-        headerLeft: null
+        // header: <Header {...navigation} />,
+        // headerLeft: null
+        // headerTransparent: true
+        header: null
       }
+    },
+    // headerMode: 'none'
+  },
+})
+
+const HomeStack = createStackNavigator({
+  Home: {
+    screen: Home,
+    // params: { statusbar: 'dark-content' },
+    navigationOptions: {
+      headerBackTitle: null
     }
   },
   StoreByCategory: {
     screen: StoreByCategory,
-    params: { statusbar: 'dark-content' },
+    // params: { statusbar: 'dark-content' },
     navigationOptions: ({ navigation }) => {
       return {
-        headerTintColor: theme.color.pantone
+        headerTintColor: theme.color.primary
       }
     }
   }
@@ -87,10 +101,57 @@ const HomeStack = createStackNavigator({
   }
 })
 
-const AppNavigator = createBottomTabNavigator({
+const NotificationStack = createStackNavigator({
+  Notification: {
+    screen: Notification
+  }
+})
+
+const AuthStack = createStackNavigator({
+  Login: {
+    screen: LoginScreen,
+    // params: { statusbar: 'dark-content' },
+  }
+}, {
+  initialRouteName: 'Login'
+})
+
+const TabNavigator = createBottomTabNavigator({
   Home: HomeStack,
   Cart: CartStack,
-  Account: AccountStack
+  Notification: NotificationStack,
+  Account: AccountStack,
+}, {
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused, tintColor }) =>
+      getTabBarIcon(navigation, focused, tintColor),
+  }),
+  tabBarOptions: {
+    activeTintColor: theme.color.primary,
+    inactiveTintColor: theme.color.gray,
+    labelStyle: {
+      fontFamily: theme.text.fonts.sfui,
+      fontSize: 14,
+      marginTop: -5
+    },
+    tabStyle: {
+      marginBottom: -5
+    }
+  },
+})
+
+const AppNavigator = createStackNavigator({
+  Tab: TabNavigator,
+  Store: StoreStack
+}, {
+  headerMode: "none"
+})
+
+const AppSwitch = createSwitchNavigator({
+  Auth: AuthStack,
+  Main: AppNavigator
+}, {
+  initialRouteName: 'Auth'
 })
 
 
@@ -98,4 +159,4 @@ const AppNavigator = createBottomTabNavigator({
 //   Main: TabNavigator
 // })
 
-export default AppNavigator
+export default AppSwitch

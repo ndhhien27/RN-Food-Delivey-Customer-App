@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
   },
   imgContainer: {
-    backgroundColor: theme.color.pantone,
+    backgroundColor: theme.color.primary,
     width: 80,
     height: 80,
     justifyContent: 'center',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     width: 45
   },
   text: {
-    fontFamily: theme.text.fonts.sfpro,
+    fontFamily: theme.text.fonts.sfui,
     fontSize: theme.text.size.md
   }
 })

@@ -5,11 +5,14 @@ export const CartContext = createContext();
 
 export default function CartProvider(props) {
 
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState({
+    storeName: '',
+    cartItem: []
+  })
 
   const storeCart = async (newCart) => {
     try {
-      await AsyncStorage.setItem('cart', JSON.stringify([...newCart]))
+      await AsyncStorage.setItem('cart', JSON.stringify(newCart))
     } catch (error) {
       console.log(error)
     }
@@ -20,7 +23,7 @@ export default function CartProvider(props) {
       const value = await AsyncStorage.getItem('cart')
       const parsedValue = JSON.parse(value)
       setCart(prevCart => {
-        return parsedValue || [];
+        return parsedValue || { storeName: '', cartItem: [] };
       })
     } catch (err) {
       console.log(err)
@@ -47,21 +50,33 @@ export default function CartProvider(props) {
   }, [cart])
 
 
-  const addFoodToCart = (food) => {
+  const addFoodToCart = (food, storeName) => {
     setCart(prevCart => {
-      let afterCart = [];
-      if (!prevCart.find(item => item.foodId === food.id)) {
-        afterCart = [
+      let afterCart = {};
+      if (!prevCart.cartItem.find(item => item.foodId === food.id) || prevCart.cartItem === []) {
+        afterCart = {
           ...prevCart,
-          {
-            foodId: food.id,
-            qty: 1
-          }
-        ]
+          storeName: storeName,
+          cartItem: [
+            ...prevCart.cartItem,
+            {
+              foodId: food.id,
+              foodName: food.title,
+              foodPrice: food.price,
+              foodQty: 1
+            }
+          ]
+        }
       }
       else {
-        afterCart = prevCart.map(item =>
-          item.foodId !== food.id ? { ...item } : { ...item, qty: item.qty + 1 })
+        let newCartItem = prevCart.cartItem.map(item =>
+          item.foodId !== food.id ? { ...item } : { ...item, foodQty: item.foodQty + 1 })
+        afterCart = {
+          ...prevCart,
+          cartItem: [
+            ...newCartItem
+          ]
+        }
       }
       // storeCart(afterCart);
       return afterCart

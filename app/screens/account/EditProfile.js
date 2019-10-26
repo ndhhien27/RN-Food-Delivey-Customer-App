@@ -49,6 +49,16 @@ export default function EditProfile(props) {
           rounded
           containerStyle={styles.avatar}
           showEditButton
+          editButton={{
+            containerStyle: {
+              backgroundColor: theme.color.primary,
+              width: 54,
+              height: 54,
+              borderRadius: 27,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }
+          }}
         />
       </View>
     </View>
@@ -65,12 +75,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    fontFamily: theme.text.fonts.sfpro,
+    fontFamily: theme.text.fonts.sfui,
     color: '#888'
   },
   info: {
     fontSize: 20,
-    fontFamily: theme.text.fonts.sfpro
+    fontFamily: theme.text.fonts.sfui
 
   },
   contentContainer: {
