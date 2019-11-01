@@ -39,7 +39,7 @@ export default function CartProvider(props) {
   }
 
   useEffect(() => {
-    // removeCart()
+    removeCart()
     loadCart()
     console.log('load')
   }, [])
@@ -53,7 +53,7 @@ export default function CartProvider(props) {
   const addFoodToCart = (food, storeName) => {
     setCart(prevCart => {
       let afterCart = {};
-      if (!prevCart.cartItem.find(item => item.foodId === food.id) || prevCart.cartItem === []) {
+      if (!prevCart.cartItem.find(item => item.foodId === food.id)) {
         afterCart = {
           ...prevCart,
           storeName: storeName,

@@ -3,7 +3,7 @@ import { Text, View, FlatList, StyleSheet, StatusBar, Animated, Dimensions } fro
 
 import axios from 'axios'
 
-import MenuItem from '../components/FoodItem'
+import MenuItem from '../components/MenuItem'
 import Banner from '../components/Banner'
 
 import Header from '../components/Header'
@@ -16,7 +16,7 @@ function StoreScreen(props) {
 
   const { navigation } = props
 
-  const name = navigation.getParam('categoryName')
+  const storeName = navigation.getParam('storeName')
 
   const [isLight, setIsLight] = useState(true)
 
@@ -25,25 +25,36 @@ function StoreScreen(props) {
   const [foods, setFoods] = useState([
     {
       id: 1, title: 'Bun', foods: [
-        { id: 1, title: 'Bun cha', price: '10000' },
-        { id: 2, title: 'Bun cha', price: '10000' },
-        { id: 3, title: 'Bun cha', price: '10000' },
+        { id: 1, title: 'Bun cha', price: '10000', is_active: false },
+        { id: 2, title: 'Bun cha', price: '11000', is_active: false },
+        { id: 3, title: 'Bun cha', price: '12000', is_active: false },
 
       ]
     },
     {
       id: 2, title: 'Pho', foods: [
-        { id: 4, title: 'Bun cha', price: '10000' },
-        { id: 5, title: 'Bun cha', price: '10000' },
-        { id: 6, title: 'Bun cha', price: '10000' },
+        { id: 4, title: 'Bun cha', price: '13000', is_active: false },
+        { id: 5, title: 'Bun cha', price: '14000', is_active: false },
+        { id: 6, title: 'Bun cha', price: '15000', is_active: false },
 
       ]
     },
     {
       id: 3, title: 'Ga', foods: [
-        { id: 7, title: 'Bun cha', price: '10000' },
-        { id: 8, title: 'Bun cha', price: '10000' },
-
+        { id: 7, title: 'Bun cha', price: '16000', is_active: false },
+        { id: 8, title: 'Bun cha', price: '17000', is_active: false },
+      ]
+    },
+    {
+      id: 4, title: 'Lau', foods: [
+        { id: 9, title: 'Bun cha', price: '16000', is_active: false },
+        { id: 10, title: 'Bun cha', price: '17000', is_active: false },
+      ]
+    },
+    {
+      id: 5, title: 'Trang mieng', foods: [
+        { id: 11, title: 'Bun cha', price: '16000', is_active: false },
+        { id: 12, title: 'Bun cha', price: '17000', is_active: false },
       ]
     }
   ])
@@ -53,14 +64,14 @@ function StoreScreen(props) {
 
 
   const checkStatusBarColor = () => {
-    const check = scrollY._value < 180;
+    const check = scrollY._value < 120;
     if (isLight !== check) setIsLight(check);
     // console.log(check)
   }
 
   const headerStyle = scrollY.interpolate({
     inputRange: [0, 150, 260, 262],
-    outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,0.2)', 'rgba(255,255,255,0.8)', 'rgba(255,255,255,1)'],
+    outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,1)'],
     extrapolate: 'clamp'
   })
   const borderStyle = scrollY.interpolate({
@@ -117,12 +128,12 @@ function StoreScreen(props) {
         )}
         contentContainerStyle={{ paddingBottom: 44 }}
         renderItem={({ item }) =>
-          <MenuItem menu={item} storeName={navigation.state.params.storeName} />}
+          <MenuItem menu={item} storeName={storeName} />}
         keyExtractor={item => `${item.id}`}
         // contentContainerStyle={styles.container}
         ListHeaderComponent={<Banner storeName={navigation.state.params.storeName} />}
       />
-      <Header style={{ headerStyle, borderStyle, backBtnStyle }} />
+      <Header style={{ headerStyle, borderStyle, backBtnStyle }} storeName={storeName} />
     </View>
   )
 }

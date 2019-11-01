@@ -27,9 +27,7 @@ function Address(props) {
             title={item.type}
             subtitle={item.info}
             bottomDivider={true}
-            contentContainerStyle={{
-              marginLeft: -16
-            }}
+            containerStyle={{ paddingHorizontal: 0 }}
             titleStyle={{
               fontSize: 16,
               fontFamily: theme.text.fonts.sfui,

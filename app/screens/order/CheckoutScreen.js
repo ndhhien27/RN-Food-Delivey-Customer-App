@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
-import { ListItem, Button, Overlay } from 'react-native-elements'
+import { ListItem, Button, Overlay, Icon } from 'react-native-elements'
 import { theme } from '../../constants/theme'
 import OrderModal from './OrderModal'
 
@@ -230,3 +230,23 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
 })
+
+CheckoutScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerBackImage: <Button
+      icon={
+        <Icon
+          type='material-community'
+          name='arrow-left'
+          color={theme.color.primary}
+          size={28}
+        />
+      }
+      onPress={() => props.navigation.navigate('Home')}
+      buttonStyle={{
+        backgroundColor: null
+      }}
+    />
+
+  }
+}

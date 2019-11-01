@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, Animated, StatusBar } from 'react-native'
+import { Text, View, Animated, StyleSheet } from 'react-native'
 
 import { withNavigation } from 'react-navigation'
 
@@ -9,53 +9,67 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
 
 function Header(props) {
-  const { style } = props
+  const { style, storeName } = props
   return (
     <Animated.View style={{
       backgroundColor: style.headerStyle,
       // backgroundColor: 'red',
       height: 88,
-      alignItems: 'flex-end',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       borderBottomWidth: style.borderStyle,
-      flexDirection: 'row',
       position: 'absolute',
       top: 0,
       left: 0,
       width: '100%',
       borderColor: '#ccc'
     }}>
-      <Button
-        icon={
-          <AnimatedIcon
-            type='material-community'
-            name='arrow-left'
-            color={style.backBtnStyle}
-            size={28}
-          />
-        }
-        onPress={() => props.navigation.navigate('Home')}
-        buttonStyle={{
-          backgroundColor: null
-        }}
-      />
-      <Animated.Text style={{ color: theme.color.primary, opacity: style.borderStyle }}>abc</Animated.Text>
-      <Button
-        icon={
-          <AnimatedIcon
-            type='material-community'
-            name='bookmark-outline'
-            color={style.backBtnStyle}
-            size={28}
-          />
-        }
-        onPress={() => props.goBack()}
-        buttonStyle={{
-          backgroundColor: null
-        }}
-      />
+      <View style={{
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <Button
+          icon={
+            <AnimatedIcon
+              type='material-community'
+              name='arrow-left'
+              color={style.backBtnStyle}
+              size={28}
+            />
+          }
+          onPress={() => props.navigation.navigate('Home')}
+          buttonStyle={{
+            backgroundColor: null
+          }}
+        />
+        <Animated.Text
+          style={[styles.storeName, { opacity: style.borderStyle }]}
+        >{storeName}</Animated.Text>
+        <Button
+          icon={
+            <AnimatedIcon
+              type='material-community'
+              name='bookmark-outline'
+              color={style.backBtnStyle}
+              size={28}
+            />
+          }
+          onPress={() => props.goBack()}
+          buttonStyle={{
+            backgroundColor: null
+          }}
+        />
+      </View>
     </Animated.View>
   )
 }
+
+const styles = StyleSheet.create({
+  storeName: {
+    fontFamily: theme.text.fonts["sfui-medium"],
+    fontSize: 17,
+    color: theme.color.primary,
+  }
+})
 
 export default withNavigation(Header)

@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { createStackNavigator } from 'react-navigation-stack'
+import { Button, Icon } from 'react-native-elements'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { createSwitchNavigator } from 'react-navigation'
-
 import { getActiveRoute, getTabBarIcon } from './app/services/NavigationService'
 
 import Home from './app/screens/Home'
@@ -37,13 +37,30 @@ const AccountStack = createStackNavigator({
     // params: { statusbar: 'dark-content' },
   }
 }, {
-  navigationOptions: ({ navigation }) => {
-    let tabBarVisible = false
-    if (getActiveRoute(navigation.state).routeName === 'Main') tabBarVisible = true
-    return {
-      tabBarVisible
-    }
-  }
+  // navigationOptions: ({ navigation }) => {
+  //   let tabBarVisible = false
+  //   if (getActiveRoute(navigation.state).routeName === 'Main') tabBarVisible = true
+  //   return {
+  //     tabBarVisible
+  //   }
+  // }
+  defaultNavigationOptions: {
+    headerBackImage: <Button
+      icon={
+        <Icon
+          type='material-community'
+          name='arrow-left'
+          color={theme.color.primary}
+          size={28}
+        />
+      }
+      onPress={() => props.navigation.navigate('Home')}
+      buttonStyle={{
+        backgroundColor: null
+      }}
+    />
+  },
+  headerBackTitleVisible: false
 })
 
 const CartStack = createStackNavigator({
@@ -55,24 +72,25 @@ const CartStack = createStackNavigator({
     screen: CheckoutScreen
   }
 }, {
-  initialRouteName: 'Cart'
+  initialRouteName: 'Cart',
+  headerBackTitleVisible: false
 })
 
-const StoreStack = createStackNavigator({
-  Store: {
-    screen: StoreScreen,
-    params: { statusbar: 'light-content' },
-    navigationOptions: ({ navigation }) => {
-      return {
-        // header: <Header {...navigation} />,
-        // headerLeft: null
-        // headerTransparent: true
-        header: null
-      }
-    },
-    // headerMode: 'none'
-  },
-})
+// const StoreStack = createStackNavigator({
+//   Store: {
+//     screen: StoreScreen,
+//     params: { statusbar: 'light-content' },
+//     navigationOptions: ({ navigation }) => {
+//       return {
+//         // header: <Header {...navigation} />,
+//         // headerLeft: null
+//         // headerTransparent: true
+//         header: null
+//       }
+//     },
+//     // headerMode: 'none'
+//   },
+// })
 
 const HomeStack = createStackNavigator({
   Home: {
@@ -90,15 +108,28 @@ const HomeStack = createStackNavigator({
         headerTintColor: theme.color.primary
       }
     }
-  }
+  },
+  Store: {
+    screen: StoreScreen,
+    params: { statusbar: 'light-content' },
+    navigationOptions: ({ navigation }) => {
+      return {
+        // header: <Header {...navigation} />,
+        // headerLeft: null
+        // headerTransparent: true
+        header: null
+      }
+    },
+    // headerMode: 'none'
+  },
 }, {
-  navigationOptions: ({ navigation }) => {
-    let tabBarVisible = false
-    if (getActiveRoute(navigation.state).routeName === 'Home') tabBarVisible = true
-    return {
-      tabBarVisible
-    }
-  }
+  // navigationOptions: ({ navigation }) => {
+  //   let tabBarVisible = false
+  //   if (getActiveRoute(navigation.state).routeName === 'Home') tabBarVisible = true
+  //   return {
+  //     tabBarVisible
+  //   }
+  // }
 })
 
 const NotificationStack = createStackNavigator({
@@ -124,7 +155,7 @@ const TabNavigator = createBottomTabNavigator({
 }, {
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, tintColor }) =>
-      getTabBarIcon(navigation, focused, tintColor),
+      getTabBarIcon(navigation, focused, tintColor)
   }),
   tabBarOptions: {
     activeTintColor: theme.color.primary,
@@ -141,8 +172,7 @@ const TabNavigator = createBottomTabNavigator({
 })
 
 const AppNavigator = createStackNavigator({
-  Tab: TabNavigator,
-  Store: StoreStack
+  Tab: TabNavigator
 }, {
   headerMode: "none"
 })
