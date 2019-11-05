@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable no-unused-vars */
 // import React, { Component } from 'react'
 // import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 // import { Dimensions, StyleSheet, View, Text } from 'react-native';
@@ -60,27 +62,33 @@
 //   },
 // })
 
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
-import { View, Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 
-const { width: screenWidth } = Dimensions.get('window')
+const { width: screenWidth } = Dimensions.get('window');
 
-const MyCarousel = (props) => {
-
+const MyCarousel = () => {
   const [state, setstate] = useState([
     { thumbnail: 'http://via.placeholder.com/360x200', title: 'thumbnail 1' },
     { thumbnail: 'http://via.placeholder.com/360x200', title: 'thumbnail 2' },
     { thumbnail: 'http://via.placeholder.com/360x200', title: 'thumbnail 3' },
-    { thumbnail: 'http://via.placeholder.com/360x200', title: 'thumbnail 4' }
-  ])
-  const carouselRef = useRef(null)
+    { thumbnail: 'http://via.placeholder.com/360x200', title: 'thumbnail 4' },
+  ]);
+  const carouselRef = useRef(null);
 
   const goForward = () => {
-    carouselRef.current.snapToNext()
-  }
+    carouselRef.current.snapToNext();
+  };
 
-  const _renderItem = ({ item, index }, parallaxProps) => {
+  const renderItem = ({ item, index }, parallaxProps) => {
     return (
       <View style={styles.item}>
         <ParallaxImage
@@ -95,7 +103,7 @@ const MyCarousel = (props) => {
         </Text>
       </View>
     );
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -108,15 +116,15 @@ const MyCarousel = (props) => {
         sliderHeight={screenWidth}
         itemWidth={screenWidth - 60}
         data={state}
-        renderItem={_renderItem}
-        hasParallaxImages={true}
-      // slideStyle={{ marginLeft: -10, marginRight: 10 }}
+        renderItem={renderItem}
+        hasParallaxImages
+        // slideStyle={{ marginLeft: -10, marginRight: 10 }}
       />
     </View>
   );
-}
+};
 
-export default MyCarousel
+export default MyCarousel;
 
 const styles = StyleSheet.create({
   container: {
@@ -139,6 +147,6 @@ const styles = StyleSheet.create({
   title: {
     position: 'absolute',
     bottom: 10,
-    left: 10
-  }
-})
+    left: 10,
+  },
+});

@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable import/prefer-default-export */
 export const image = {
   addToCart: require('../assets/shopping-cart.png'),
   increase: require('../assets/increase.png'),
@@ -11,5 +13,5 @@ export const image = {
     rice: require('../assets/riceW.png'),
     noodle: require('../assets/noodlesW.png'),
     riceW: require('../assets/riceW.png'),
-  }
-}
+  },
+};

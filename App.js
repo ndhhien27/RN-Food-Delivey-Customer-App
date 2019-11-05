@@ -1,11 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 
-import { createAppContainer } from 'react-navigation'
+import { createAppContainer } from 'react-navigation';
 
 import AppNavigator from './AppNavigator';
-import CartProvider from './app/context/CartContext'
-import { getActiveRoute } from './app/services/NavigationService'
+import CartProvider from './app/context/CartContext';
+import { getActiveRoute } from './app/services/NavigationService';
 
 const AppContainer = createAppContainer(AppNavigator);
 
@@ -17,13 +18,13 @@ export default function App() {
           const currentScreen = getActiveRoute(currentState);
           const prevScreen = getActiveRoute(prevState);
           if (prevScreen.routeName !== currentScreen.routeName) {
-            let statusTheme = ''
+            let statusTheme = '';
             if (!currentScreen.params) {
-              statusTheme = 'dark-content'
+              statusTheme = 'dark-content';
             } else {
-              statusTheme = currentScreen.params.statusbar
+              statusTheme = currentScreen.params.statusbar;
             }
-            StatusBar.setBarStyle(statusTheme)
+            StatusBar.setBarStyle(statusTheme);
           }
         }}
       />

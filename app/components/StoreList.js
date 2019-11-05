@@ -1,12 +1,13 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { withNavigation } from 'react-navigation'
+import { withNavigation } from 'react-navigation';
 
 import CategoryListItem from './StoreListItem';
 
 class StoreList extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       categories: [
         { id: 1, title: 'Store Name 1' },
@@ -15,9 +16,8 @@ class StoreList extends React.Component {
         { id: 4, title: 'Store Name 4' },
         { id: 5, title: 'Store Name 5' },
         { id: 6, title: 'Store Name 6' },
-      ]
-    }
-
+      ],
+    };
   }
 
   // componentDidMount() {
@@ -50,26 +50,27 @@ class StoreList extends React.Component {
   // }
 
   render() {
-
     return (
       <View>
         <Text>MENU</Text>
         <FlatList
           data={this.state.categories}
           contentContainerStyle={styles.container}
-          horizontal={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) =>
+          renderItem={({ item }) => (
             <View style={styles.wrapper}>
               <CategoryListItem
                 item={item}
-                onPress={() => this.props.navigation.navigate('Store', {
-                  storeName: item.title,
-                  storeId: item.id
-                })}
+                onPress={() =>
+                  this.props.navigation.navigate('Store', {
+                    storeName: item.title,
+                    storeId: item.id,
+                  })
+                }
               />
             </View>
-          }
+          )}
           keyExtractor={item => `${item.id}`}
         />
       </View>
@@ -80,11 +81,11 @@ class StoreList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 8,
-    paddingTop: 16
+    paddingTop: 16,
   },
   wrapper: {
-    paddingHorizontal: 8
-  }
+    paddingHorizontal: 8,
+  },
 });
 
-export default withNavigation(StoreList)
+export default withNavigation(StoreList);

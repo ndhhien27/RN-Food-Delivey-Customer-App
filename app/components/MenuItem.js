@@ -1,18 +1,8 @@
-import React, { useContext, useState } from 'react';
-import {
-  Text,
-  View,
-  Image,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity
-} from 'react-native';
-
-import { CartContext } from '../context/CartContext'
+import React, { useContext } from 'react';
+import { Text, View, FlatList, StyleSheet } from 'react-native';
+// import { CartContext } from '../context/CartContext';
 
 import { theme } from '../constants/theme';
-import { image } from '../constants/images';
-import { ListItem } from 'react-native-elements';
 import FoodItem from './FoodItem';
 
 // function FoodItem(props) {
@@ -48,21 +38,19 @@ import FoodItem from './FoodItem';
 // }
 
 function MenuItem(props) {
-
-  const { cart, addFoodToCart } = useContext(CartContext)
-  const { menu, onAddToCart, storeName } = props
-
+  // const { cart, addFoodToCart } = useContext(CartContext);
+  const { menu, storeName } = props;
 
   return (
     <View style={{ paddingLeft: 16 }}>
       <FlatList
         data={menu.foods}
         renderItem={({ item }) => <FoodItem item={item} storeName={storeName} />}
-        keyExtractor={item => `food-${item.id}`}
+        keyExtractor={(item) => `food-${item.id}`}
         ListHeaderComponent={<Text>{menu.title}</Text>}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -71,25 +59,21 @@ const styles = StyleSheet.create({
     width: 160,
     resizeMode: 'contain'
   },
-  container: {
-    flexDirection: 'row',
-  },
+  container: { flexDirection: 'row' },
   addToCart: {
     width: 25,
-    height: 25
+    height: 25,
   },
-  title: {
-    fontSize: theme.text.size.xl
-  },
+  title: { fontSize: theme.text.size.xl },
   info: {
     marginLeft: 16,
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   cartRow: {
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-  }
-})
+  },
+});
 
-export default MenuItem
+export default MenuItem;

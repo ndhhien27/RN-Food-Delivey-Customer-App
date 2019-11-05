@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, ScrollView, Button, StatusBar } from 'react-native';
-
-import axios from 'axios';
-
+import React from 'react';
+import { ScrollView } from 'react-native';
 import StoreList from '../components/StoreList';
 import MyCarousel from '../components/Carousel';
 import CategoryWithIcon from '../components/CategoryWithIcon';
 
-function Home(props) {
-
+function Home() {
   // useEffect(() => {
   //   const _navListener = props.navigation.addListener('didFocus', () => {
   //     StatusBar.setBarStyle("dark-content");
@@ -17,7 +13,6 @@ function Home(props) {
   //   return () => { _navListener.remove() }
   // }, [])
 
-
   return (
     <ScrollView>
       {/* <StatusBar barStyle='dark-content' /> */}
@@ -25,12 +20,12 @@ function Home(props) {
       <CategoryWithIcon />
       <StoreList />
     </ScrollView>
-  )
+  );
 }
 
 Home.navigationOptions = {
   title: 'Home',
   // headerTransparent: 'true'
-}
+};
 
-export default Home
+export default Home;

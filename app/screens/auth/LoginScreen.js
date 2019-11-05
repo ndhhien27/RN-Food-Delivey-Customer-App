@@ -1,70 +1,70 @@
-import React from 'react'
-import { Text, SafeAreaView, StyleSheet, View } from 'react-native'
-import { Input, Button } from 'react-native-elements'
+import React from 'react';
+import { Text, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Input, Button } from 'react-native-elements';
 
-import { theme } from '../../constants/theme'
+import { theme } from '../../constants/theme';
 
 export default function LoginScreen(props) {
-  const { navigation } = props
+  const { navigation } = props;
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.text}>Welcome to</Text>
       </View>
       <Input
-        placeholder='Email'
+        placeholder="Email"
         labelStyle={styles.text}
         containerStyle={{ paddingHorizontal: -16 }}
       />
       <Input
-        placeholder='Password'
+        placeholder="Password"
         labelStyle={styles.text}
         containerStyle={{ paddingHorizontal: -16, paddingVertical: 22 }}
       />
       <Button
-        title='Forgot Password'
+        title="Forgot Password"
         titleStyle={{
           color: theme.color.primary,
-          ...styles.text
+          ...styles.text,
         }}
         buttonStyle={{
-          backgroundColor: null
+          backgroundColor: null,
         }}
         activeOpacity={0.5}
       />
       <Button
-        title='Login'
+        title="Login"
         buttonStyle={{
           backgroundColor: theme.color.primary,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 10 },
           shadowRadius: 10,
           shadowOpacity: 0.1,
-          marginVertical: 22
+          marginVertical: 22,
         }}
         onPress={() => navigation.navigate('Main')}
         activeOpacity={0.5}
       />
       <Button
-        title='Signup'
+        title="Signup"
         titleStyle={{
-          color: theme.color.primary
+          color: theme.color.primary,
         }}
         buttonStyle={{
-          backgroundColor: null
+          backgroundColor: null,
         }}
         activeOpacity={0.5}
       />
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   text: {
     fontFamily: theme.text.fonts.sfui,
-    fontSize: 20
-  }
-})
+    fontSize: 20,
+  },
+});

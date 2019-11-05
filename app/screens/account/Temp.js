@@ -1,62 +1,55 @@
-import React, { useState, useEffect } from 'react'
-import { Text, View, FlatList, StyleSheet } from 'react-native'
-import { SearchBar, ListItem, Button, Icon } from 'react-native-elements'
-
-import { removeAccents } from '../../helpers/'
-import { theme } from '../../constants/theme'
-
-import axios from 'axios'
-
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
+import { Text, View, FlatList, StyleSheet } from 'react-native';
+import { SearchBar, ListItem, Button, Icon } from 'react-native-elements';
+import axios from 'axios';
+import { removeAccents } from '../../helpers';
+import { theme } from '../../constants/theme';
 
 export default function Temp(props) {
-  const { onSelect, data, url, onClose } = props
-  const [fullData, setFullData] = useState([])
-  const [searchData, setSearchData] = useState([])
-  const [searchText, setSearchText] = useState('')
+  const { onSelect, url, onClose } = props;
+  const [fullData, setFullData] = useState([]);
+  const [searchData, setSearchData] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   const fetchData = async () => {
     try {
-      const data = await axios.get(url)
+      const data = await axios.get(url);
       setFullData(prev => {
-        return [
-          ...data.data.LtsItem
-        ]
-      })
+        return [...data.data.LtsItem];
+      });
       setSearchData(prev => {
-        return [
-          ...data.data.LtsItem
-        ]
-      }
-
-      )
+        return [...data.data.LtsItem];
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, [fetchData]);
 
-  const _handleSearch = (text) => {
+  const handleSearch = text => {
     setSearchText(prev => {
-      return text
-    })
+      return text;
+    });
     setSearchData(prev => {
       return fullData.filter(city => {
-        let cityConvert = removeAccents(city.Title)
+        const cityConvert = removeAccents(city.Title);
         return cityConvert.toLowerCase().indexOf(text.toLowerCase()) !== -1;
-      })
-    })
-  }
+      });
+    });
+  };
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.header}>
         <Button
           icon={
             <Icon
-              type='material-community'
-              name='arrow-left'
+              type="material-community"
+              name="arrow-left"
               color={theme.color.primary}
               size={28}
             />
@@ -67,31 +60,31 @@ export default function Temp(props) {
           }}
         />
         <SearchBar
-          platform='ios'
+          platform="ios"
           showCancel
           containerStyle={{ backgroundColor: null, padding: 0 }}
           value={searchText}
-          onChangeText={_handleSearch}
+          onChangeText={handleSearch}
         />
       </View>
       <FlatList
         data={searchData}
         keyExtractor={item => `${item.ID}`}
         style={{ flex: 1 }}
-        renderItem={({ item }) =>
+        renderItem={({ item }) => (
           <ListItem
             title={item.Title}
             bottomDivider
             onPress={() => onSelect(item.Title)}
             titleStyle={{
               fontFamily: theme.text.fonts.sfui,
-              fontSize: 26
+              fontSize: 26,
             }}
           />
-        }
+        )}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -101,6 +94,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 16,
-    paddingTop: 24
-  }
-})
+    paddingTop: 24,
+  },
+});

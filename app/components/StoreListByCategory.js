@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native'
-import { Button, Icon } from 'react-native-elements'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
 
-import { withNavigation } from 'react-navigation'
+import { withNavigation } from 'react-navigation';
 
-import { theme } from '../constants/theme'
+import { theme } from '../constants/theme';
 
 function StoreListByCategory(props) {
-
-  const [bookmark, setBookmark] = useState(false)
-  const { data } = props
+  const [bookmark, setBookmark] = useState(false);
+  const { data } = props;
   return (
     <FlatList
       data={data}
       keyExtractor={item => `${item.id}`}
       contentContainerStyle={{ paddingHorizontal: 16 }}
       alwaysBounceVertical={false}
-      renderItem={({ item }) =>
+      renderItem={({ item }) => (
         <View style={styles.shadow}>
           <View style={styles.itemContainer}>
             <Image
@@ -27,8 +27,8 @@ function StoreListByCategory(props) {
               <Text>{item.name}</Text>
               <Text>{item.address}</Text>
               <Icon
-                type='material-community'
-                name='star'
+                type="material-community"
+                name="star"
                 color={theme.color.primary}
                 size={15}
               />
@@ -36,7 +36,7 @@ function StoreListByCategory(props) {
             <Button
               icon={
                 <Icon
-                  type='material-community'
+                  type="material-community"
                   name={bookmark ? 'bookmark' : 'bookmark-outline'}
                   color={theme.color.primary}
                 />
@@ -46,20 +46,20 @@ function StoreListByCategory(props) {
                 padding: 0,
                 position: 'absolute',
                 top: 0,
-                right: 0
+                right: 0,
               }}
-              onPress={() => setBookmark(prev => {
-                return !bookmark
-              })}
+              onPress={() =>
+                setBookmark(prev => {
+                  return !bookmark;
+                })
+              }
             />
           </View>
         </View>
-      }
-      ListHeaderComponent={
-        <Text>123</Text>
-      }
+      )}
+      ListHeaderComponent={<Text>123</Text>}
     />
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -68,14 +68,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowOffset: { height: 10, width: 0 },
-    marginBottom: 15
+    marginBottom: 15,
   },
   itemContainer: {
     padding: 18,
     borderRadius: 8,
     backgroundColor: '#fff',
     flexDirection: 'row',
-  }
-})
+  },
+});
 
-export default withNavigation(StoreListByCategory)
+export default withNavigation(StoreListByCategory);

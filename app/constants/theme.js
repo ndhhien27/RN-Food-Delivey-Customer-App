@@ -1,10 +1,11 @@
+/* eslint-disable import/prefer-default-export */
 const color = {
   orange: '#F35324',
   primary: '#F68A2B',
   gray: '#B8BBC6',
   lightGray: '#EFEFF4',
-  lightestGray: '#F3F3F3'
-}
+  lightestGray: '#F3F3F3',
+};
 
 export const theme = {
   color,
@@ -38,12 +39,12 @@ export const theme = {
       base: null,
       sfui: 'SFUIText-Regular',
       'sfui-bold': 'SFUIText-Semibold',
-      'sfui-medium': 'SFUIText-Medium'
+      'sfui-medium': 'SFUIText-Medium',
     },
   },
   radius: {
     '2xs': 3,
     xs: 8,
-    sm: 12
-  }
-}
+    sm: 12,
+  },
+};

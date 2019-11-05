@@ -1,6 +1,7 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+/* eslint-disable react/prefer-stateless-function */
+import React from 'react';
+import { View, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '../constants/theme';
 
 export default class IconWithBadge extends React.Component {
@@ -23,12 +24,15 @@ export default class IconWithBadge extends React.Component {
               height: 18,
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
-            <Text style={{
-              color: 'white',
-              fontSize: 12,
-              fontFamily: theme.text.fonts["sfui-bold"]
-            }}>
+            }}
+          >
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 12,
+                fontFamily: theme.text.fonts['sfui-bold'],
+              }}
+            >
               {badgeCount}
             </Text>
           </View>

@@ -1,90 +1,94 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, FlatList, StyleSheet, StatusBar, Animated, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, FlatList, StatusBar, Animated } from 'react-native';
 
-import axios from 'axios'
+import MenuItem from '../components/MenuItem';
+import Banner from '../components/Banner';
 
-import MenuItem from '../components/MenuItem'
-import Banner from '../components/Banner'
+import Header from '../components/Header';
+import { theme } from '../constants/theme';
 
-import Header from '../components/Header'
-import { theme } from '../constants/theme'
-
-const { debounce } = require('lodash')
-
+const { debounce } = require('lodash');
 
 function StoreScreen(props) {
-
-  const { navigation } = props
-
-  const storeName = navigation.getParam('storeName')
-
-  const [isLight, setIsLight] = useState(true)
-
-  const [isBookmark, setIsBookmark] = useState(false)
-
+  const { navigation } = props;
+  const storeName = navigation.getParam('storeName');
+  const [isLight, setIsLight] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [foods, setFoods] = useState([
     {
-      id: 1, title: 'Bun', foods: [
+      id: 1,
+      title: 'Bun',
+      foods: [
         { id: 1, title: 'Bun cha', price: '10000', is_active: false },
         { id: 2, title: 'Bun cha', price: '11000', is_active: false },
         { id: 3, title: 'Bun cha', price: '12000', is_active: false },
-
-      ]
+      ],
     },
     {
-      id: 2, title: 'Pho', foods: [
+      id: 2,
+      title: 'Pho',
+      foods: [
         { id: 4, title: 'Bun cha', price: '13000', is_active: false },
         { id: 5, title: 'Bun cha', price: '14000', is_active: false },
         { id: 6, title: 'Bun cha', price: '15000', is_active: false },
-
-      ]
+      ],
     },
     {
-      id: 3, title: 'Ga', foods: [
+      id: 3,
+      title: 'Ga',
+      foods: [
         { id: 7, title: 'Bun cha', price: '16000', is_active: false },
         { id: 8, title: 'Bun cha', price: '17000', is_active: false },
-      ]
+      ],
     },
     {
-      id: 4, title: 'Lau', foods: [
+      id: 4,
+      title: 'Lau',
+      foods: [
         { id: 9, title: 'Bun cha', price: '16000', is_active: false },
         { id: 10, title: 'Bun cha', price: '17000', is_active: false },
-      ]
+      ],
     },
     {
-      id: 5, title: 'Trang mieng', foods: [
+      id: 5,
+      title: 'Trang mieng',
+      foods: [
         { id: 11, title: 'Bun cha', price: '16000', is_active: false },
         { id: 12, title: 'Bun cha', price: '17000', is_active: false },
-      ]
-    }
-  ])
+      ],
+    },
+  ]);
 
-
-  const [scrollY, setScrollY] = useState(new Animated.Value(0))
-
+  // eslint-disable-next-line no-unused-vars
+  const [scrollY, setScrollY] = useState(new Animated.Value(0));
 
   const checkStatusBarColor = () => {
+    // eslint-disable-next-line no-underscore-dangle
     const check = scrollY._value < 120;
     if (isLight !== check) setIsLight(check);
     // console.log(check)
-  }
+  };
 
   const headerStyle = scrollY.interpolate({
     inputRange: [0, 150, 260, 262],
-    outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,1)'],
-    extrapolate: 'clamp'
-  })
+    outputRange: [
+      'rgba(255,255,255,0)',
+      'rgba(255,255,255,0.7)',
+      'rgba(255,255,255,0.7)',
+      'rgba(255,255,255,1)',
+    ],
+    extrapolate: 'clamp',
+  });
   const borderStyle = scrollY.interpolate({
     inputRange: [0, 230, 262],
     outputRange: [0, 0, 1],
-    extrapolate: 'clamp'
-  })
+    extrapolate: 'clamp',
+  });
   const backBtnStyle = scrollY.interpolate({
     inputRange: [0, 150, 262],
     outputRange: ['#fff', '#fff', theme.color.primary],
-    extrapolate: 'clamp'
-  })
-
+    extrapolate: 'clamp',
+  });
 
   // const { cart, addFoodToCart } = useContext(CartContext)
 
@@ -118,7 +122,10 @@ function StoreScreen(props) {
   // console.log(scrollY)
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar animated barStyle={isLight ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        animated
+        barStyle={isLight ? 'light-content' : 'dark-content'}
+      />
       <FlatList
         data={foods}
         scrollEventThrottle={16}
@@ -127,33 +134,27 @@ function StoreScreen(props) {
           { listener: debounce(checkStatusBarColor, 16) }
         )}
         contentContainerStyle={{ paddingBottom: 44 }}
-        renderItem={({ item }) =>
-          <MenuItem menu={item} storeName={storeName} />}
+        renderItem={({ item }) => (
+          <MenuItem menu={item} storeName={storeName} />
+        )}
         keyExtractor={item => `${item.id}`}
         // contentContainerStyle={styles.container}
-        ListHeaderComponent={<Banner storeName={navigation.state.params.storeName} />}
+        ListHeaderComponent={
+          // eslint-disable-next-line react/prop-types
+          <Banner storeName={navigation.state.params.storeName} />
+        }
       />
-      <Header style={{ headerStyle, borderStyle, backBtnStyle }} storeName={storeName} />
+      <Header
+        style={{
+          headerStyle,
+          borderStyle,
+          backBtnStyle,
+        }}
+        storeName={storeName}
+      />
     </View>
-  )
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 16,
-    marginTop: 8
-  },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    overflow: 'hidden',
-    backgroundColor: '#fff'
-  },
-})
-
-
 
 // StoreScreen.navigationOptions = ({ navigation }) => {
 //   console.log(navigation.state.params)
@@ -165,4 +166,4 @@ const styles = StyleSheet.create({
 // }
 // }
 
-export default StoreScreen
+export default StoreScreen;

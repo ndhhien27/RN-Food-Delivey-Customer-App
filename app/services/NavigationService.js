@@ -1,6 +1,6 @@
-import React from 'react'
-import IconWithBadge from '../components/IconWithBadge';
+import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconWithBadge from '../components/IconWithBadge';
 
 export function getActiveRoute(navigationState) {
   if (!navigationState) {
@@ -30,7 +30,7 @@ export const getTabBarIcon = (navigation, focused, tintColor) => {
       break;
     case 'Notification':
       iconName = 'bell-outline';
-      IconComponent = IconWithBadge
+      IconComponent = IconWithBadge;
       break;
     default:
       break;
@@ -48,5 +48,12 @@ export const getTabBarIcon = (navigation, focused, tintColor) => {
   // }
 
   // You can return any component that you like here!
-  return <IconComponent name={iconName} size={30} color={tintColor} badgeCount={10} />;
+  return (
+    <IconComponent
+      name={iconName}
+      size={30}
+      color={tintColor}
+      badgeCount={10}
+    />
+  );
 };

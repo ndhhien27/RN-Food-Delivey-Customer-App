@@ -1,54 +1,65 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import { Avatar, Button, Icon } from 'react-native-elements'
-import { withNavigation } from 'react-navigation'
+import React from 'react';
+import { Text, View } from 'react-native';
+import { Avatar, Button, Icon } from 'react-native-elements';
+import { withNavigation } from 'react-navigation';
 
-import { theme } from '../constants/theme'
+import { theme } from '../constants/theme';
 
 function Profile(props) {
-
-  const { navigation } = props
+  const { navigation } = props;
   return (
-    <View style={{
-      flexDirection: 'row',
-      alignItems: 'center'
-    }}>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+      }}
+    >
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
         <Avatar
           rounded
           source={{ uri: 'http://via.placeholder.com/86x86' }}
           size={86}
         />
-        <View style={{
-          paddingLeft: 16
-        }}>
-          <Text style={{
-            fontSize: 24,
-            fontFamily: theme.text.fonts['sfui-bold']
-          }}>Nguyen Duc Hien</Text>
-          <Text style={{
-            fontSize: 18,
-            fontFamily: theme.text.fonts.sfui
-          }}>ndhien@gmail.com</Text>
+        <View
+          style={{
+            paddingLeft: 16,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              fontFamily: theme.text.fonts['sfui-bold'],
+            }}
+          >
+            Nguyen Duc Hien
+          </Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: theme.text.fonts.sfui,
+            }}
+          >
+            ndhien@gmail.com
+          </Text>
         </View>
       </View>
       <Button
         icon={
           <Icon
-            type='material-community'
-            name='account-edit'
+            type="material-community"
+            name="account-edit"
             color={theme.color.primary}
             size={30}
           />
         }
         buttonStyle={{
           backgroundColor: null,
-          padding: 0
+          padding: 0,
         }}
         onPress={() => navigation.navigate('EditProfile')}
       />
     </View>
-  )
+  );
 }
 
-export default withNavigation(Profile)
+export default withNavigation(Profile);
