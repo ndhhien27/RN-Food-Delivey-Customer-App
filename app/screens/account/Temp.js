@@ -29,7 +29,7 @@ export default function Temp(props) {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   const handleSearch = text => {
     setSearchText(prev => {

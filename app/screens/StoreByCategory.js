@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { View, Text, ImageBackground } from 'react-native';
-import { Button, Icon, Overlay } from 'react-native-elements';
-
+import { View, Text, ImageBackground, Dimensions } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
+import Modal from 'react-native-modal';
 import StoreListByCategory from '../components/StoreListByCategory';
-
 import { theme } from '../constants/theme';
+import FilterModal from './FilterModal';
 
 export default function StoreByCategory(props) {
   const [storeList, setStoreList] = useState([
@@ -21,6 +21,8 @@ export default function StoreByCategory(props) {
   useEffect(() => {
     props.navigation.setParams({ toggleModal });
   }, []);
+  const devideHeight = Dimensions.get('window').height;
+
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
@@ -37,12 +39,21 @@ export default function StoreByCategory(props) {
       <View style={{ flex: 1, marginTop: 16 }}>
         <StoreListByCategory data={storeList} />
       </View>
-      <Overlay animationType="slide" isVisible={modalVisible} width="100%">
-        <View>
-          <Text>Modal</Text>
-          <Button title="Hide Modal" onPress={toggleModal} />
+      <Modal
+        isVisible={modalVisible}
+        style={{ justifyContent: 'flex-end', margin: 0 }}
+        backdropTransitionOutTiming={0}
+      >
+        <View
+          style={{
+            height: (devideHeight * 2) / 3,
+            backgroundColor: 'white',
+            borderRadius: 16,
+          }}
+        >
+          <FilterModal onPress={() => setModalVisible(false)} />
         </View>
-      </Overlay>
+      </Modal>
     </View>
   );
 }

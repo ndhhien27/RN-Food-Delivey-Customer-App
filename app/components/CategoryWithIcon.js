@@ -33,6 +33,7 @@ function CategoryWithIcon(props) {
         renderItem={({ item }) => (
           <View style={{ marginRight: 16 }}>
             <TouchableOpacity
+              activeOpacity={0.5}
               onPress={() => props.navigation.navigate('StoreByCategory')}
             >
               <View style={styles.imgContainer}>

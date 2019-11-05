@@ -24,7 +24,7 @@ export default function StarInfo(props) {
           color="#fff"
           size={16}
         />
-        <Text style={{ color: '#fff', fontSize: 16 }}>4.8</Text>
+        <Text style={{ color: '#fff', fontSize: 16, paddingLeft: 6 }}>4.8</Text>
       </View>
       <Text
         style={{

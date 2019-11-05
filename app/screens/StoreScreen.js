@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList, StatusBar, Animated } from 'react-native';
-
 import MenuItem from '../components/MenuItem';
 import Banner from '../components/Banner';
-
 import Header from '../components/Header';
 import { theme } from '../constants/theme';
 
@@ -129,19 +127,21 @@ function StoreScreen(props) {
       <FlatList
         data={foods}
         scrollEventThrottle={16}
+        contentContainerStyle={{ paddingBottom: 44 }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { listener: debounce(checkStatusBarColor, 16) }
         )}
-        contentContainerStyle={{ paddingBottom: 44 }}
         renderItem={({ item }) => (
           <MenuItem menu={item} storeName={storeName} />
         )}
         keyExtractor={item => `${item.id}`}
         // contentContainerStyle={styles.container}
         ListHeaderComponent={
-          // eslint-disable-next-line react/prop-types
-          <Banner storeName={navigation.state.params.storeName} />
+          <Banner
+            storeName={navigation.state.params.storeName}
+            foods={foods[1]}
+          />
         }
       />
       <Header
@@ -155,15 +155,5 @@ function StoreScreen(props) {
     </View>
   );
 }
-
-// StoreScreen.navigationOptions = ({ navigation }) => {
-//   console.log(navigation.state.params)
-// return {
-//   // title: navigation.getParam('categoryName'),
-//   // headerTransparent: navigation.state.params.header
-//   header: <Header {...navigation} />,
-//   headerLeft: null
-// }
-// }
 
 export default StoreScreen;

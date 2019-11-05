@@ -1,17 +1,24 @@
 import React from 'react';
-import { View, ImageBackground, Text, StyleSheet } from 'react-native';
-
+import {
+  View,
+  ImageBackground,
+  Text,
+  StyleSheet,
+  FlatList,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
-
 import StarInfo from '../commons/store/StarInfo';
+import FeaturedItem from './FeaturedItem';
 import { theme } from '../constants/theme';
+import { image } from '../constants/images';
 
 function Banner(props) {
-  const { storeName } = props;
+  const { storeName, foods } = props;
   return (
     <View>
       <ImageBackground
-        source={{ uri: 'http://via.placeholder.com/350x350' }}
+        // source={{ uri: 'http://via.placeholder.com/350x350' }}
+        source={image.banner}
         style={styles.imgStyle}
       >
         <View style={{ backgroundColor: 'rgba(0,0,0,0.17)', flex: 1 }}>
@@ -34,6 +41,16 @@ function Banner(props) {
           </View>
         </View>
       </ImageBackground>
+      <View style={{ paddingVertical: 20 }}>
+        <Text style={{ paddingLeft: 16 }}>Featured Items</Text>
+        <FlatList
+          data={foods.foods}
+          keyExtractor={item => `feature-${item.id}`}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <FeaturedItem item={item} />}
+        />
+      </View>
     </View>
   );
 }

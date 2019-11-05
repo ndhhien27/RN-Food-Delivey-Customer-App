@@ -24,6 +24,7 @@ export default function App() {
             } else {
               statusTheme = currentScreen.params.statusbar;
             }
+            // console.log(statusTheme, currentScreen.params);
             StatusBar.setBarStyle(statusTheme);
           }
         }}

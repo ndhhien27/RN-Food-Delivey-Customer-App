@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Animated, StyleSheet } from 'react-native';
-
 import { withNavigation } from 'react-navigation';
-
 import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
 

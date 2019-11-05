@@ -5,6 +5,8 @@ export const image = {
   increase: require('../assets/increase.png'),
   decrease: require('../assets/decrease.png'),
   delete: require('../assets/delete.png'),
+  ft: require('../assets/FT1.png'),
+  banner: require('../assets/Banner.png'),
   categoryImg: {
     chicken: require('../assets/chicken-legW.png'),
     cake: require('../assets/cupcakeW.png'),
