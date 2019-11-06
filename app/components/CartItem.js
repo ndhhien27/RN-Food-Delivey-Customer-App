@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: theme.text.size.xl,
-    fontFamily: theme.text.fonts.sfui,
+    fontFamily: theme.text.fonts.sfpt,
   },
   info: {
     flex: 1,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   price: {
-    fontFamily: theme.text.fonts['sfui-medium'],
+    fontFamily: theme.text.fonts['sfpt-medium'],
     color: theme.color.gray,
   },
 });

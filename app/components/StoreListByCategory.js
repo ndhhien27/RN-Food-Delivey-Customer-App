@@ -21,7 +21,12 @@ function StoreListByCategory(props) {
           <View style={styles.itemContainer}>
             <Image
               source={{ uri: 'http://via.placeholder.com/88x88' }}
-              style={{ width: 88, height: 88, resizeMode: 'cover' }}
+              style={{
+                width: 88,
+                height: 88,
+                resizeMode: 'cover',
+                borderRadius: 4,
+              }}
             />
             <View style={{ paddingLeft: 16, flex: 1 }}>
               <Text>{item.name}</Text>
@@ -64,10 +69,7 @@ function StoreListByCategory(props) {
 
 const styles = StyleSheet.create({
   shadow: {
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: { height: 10, width: 0 },
+    ...theme.shadow,
     marginBottom: 15,
   },
   itemContainer: {

@@ -28,7 +28,7 @@ function Profile(props) {
           <Text
             style={{
               fontSize: 24,
-              fontFamily: theme.text.fonts['sfui-bold'],
+              fontFamily: theme.text.fonts['sfpt-bold'],
             }}
           >
             Nguyen Duc Hien
@@ -36,7 +36,7 @@ function Profile(props) {
           <Text
             style={{
               fontSize: 18,
-              fontFamily: theme.text.fonts.sfui,
+              fontFamily: theme.text.fonts.sfpt,
             }}
           >
             ndhien@gmail.com

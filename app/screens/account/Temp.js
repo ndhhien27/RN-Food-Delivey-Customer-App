@@ -51,7 +51,7 @@ export default function Temp(props) {
               type="material-community"
               name="arrow-left"
               color={theme.color.primary}
-              size={28}
+              size={theme.icon.size.base}
             />
           }
           onPress={() => onClose()}
@@ -65,6 +65,8 @@ export default function Temp(props) {
           containerStyle={{ backgroundColor: null, padding: 0 }}
           value={searchText}
           onChangeText={handleSearch}
+          placeholder="Search"
+          inputContainerStyle={{ backgroundColor: theme.color.lightGray }}
         />
       </View>
       <FlatList
@@ -77,7 +79,7 @@ export default function Temp(props) {
             bottomDivider
             onPress={() => onSelect(item.Title)}
             titleStyle={{
-              fontFamily: theme.text.fonts.sfui,
+              fontFamily: theme.text.fonts.sfpt,
               fontSize: 26,
             }}
           />

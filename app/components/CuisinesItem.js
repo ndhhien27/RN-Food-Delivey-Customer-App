@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderColor: theme.color.gray,
-    marginRight: 8,
+    marginRight: 6,
     marginTop: 8,
   },
   title: {
-    fontFamily: theme.text.fonts.sfui,
+    fontFamily: theme.text.fonts.sfpt,
     fontSize: 18,
     paddingHorizontal: 10,
     color: theme.color.gray,

@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     backgroundColor: null,
   },
   titleBtn: {
-    fontFamily: theme.text.fonts['sfui-medium'],
+    fontFamily: theme.text.fonts['sfpt-medium'],
   },
   title: {
-    fontFamily: theme.text.fonts['sfui-bold'],
+    fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 18,
   },
 });

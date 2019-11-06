@@ -45,7 +45,7 @@ function OrderModal(props) {
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: theme.text.fonts['sfui-bold'],
+    fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 28,
   },
 });

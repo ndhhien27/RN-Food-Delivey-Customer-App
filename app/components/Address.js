@@ -18,7 +18,7 @@ function Address(props) {
       <Text
         style={{
           fontSize: 18,
-          fontFamily: theme.text.fonts['sfui-bold'],
+          fontFamily: theme.text.fonts['sfpt-bold'],
         }}
       >
         Address
@@ -32,12 +32,12 @@ function Address(props) {
           containerStyle={{ paddingHorizontal: 0 }}
           titleStyle={{
             fontSize: 16,
-            fontFamily: theme.text.fonts.sfui,
+            fontFamily: theme.text.fonts.sfpt,
             color: theme.color.gray,
           }}
           subtitleStyle={{
             fontSize: 18,
-            fontFamily: theme.text.fonts.sfui,
+            fontFamily: theme.text.fonts.sfpt,
             marginTop: 6,
           }}
           chevron
@@ -54,7 +54,7 @@ function Address(props) {
       >
         <Text
           style={{
-            fontFamily: theme.text.fonts.sfui,
+            fontFamily: theme.text.fonts.sfpt,
             fontSize: 18,
             color: theme.color.primary,
           }}

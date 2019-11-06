@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     width: 45,
   },
   text: {
-    fontFamily: theme.text.fonts.sfui,
-    fontSize: theme.text.size.md,
+    fontFamily: theme.text.fonts.sfpt,
+    fontSize: theme.text.size.base,
   },
 });
 

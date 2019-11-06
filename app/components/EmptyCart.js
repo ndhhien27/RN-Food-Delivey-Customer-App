@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: theme.color.gray,
-    fontFamily: theme.text.fonts['sfui-bold'],
+    fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 24,
     marginTop: 50,
   },

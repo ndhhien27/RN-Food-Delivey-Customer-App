@@ -94,19 +94,14 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: 180,
   },
-  shadow: {
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: { height: 0, width: 0 },
-  },
+  shadow: theme.shadow,
   info: {
     padding: 8,
   },
   name: {
-    fontSize: 16,
+    fontSize: 17,
     marginBottom: 8,
-    fontFamily: theme.text.fonts.sfui,
+    fontFamily: theme.text.fonts.sfpt,
   },
   priceRow: {
     flexDirection: 'row',
@@ -114,7 +109,7 @@ const styles = StyleSheet.create({
   },
   price: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 17,
     color: '#888',
   },
   priceText: {

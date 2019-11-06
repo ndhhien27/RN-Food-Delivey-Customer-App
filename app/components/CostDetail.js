@@ -20,7 +20,7 @@ export default function CostDetail(props) {
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: theme.text.fonts.sfui,
+    fontFamily: theme.text.fonts.sfpt,
     fontSize: 16,
   },
 });

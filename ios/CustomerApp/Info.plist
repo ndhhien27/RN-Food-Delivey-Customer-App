@@ -4,9 +4,12 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>SFUIText-Semibold.ttf</string>
-		<string>SFUIText-Regular.ttf</string>
-		<string>SFUIText-Medium.ttf</string>
+		<string>SFProText-Medium.otf</string>
+		<string>SFProText-Semibold.otf</string>
+		<string>SFProText-Regular.otf</string>
+		<string>SFProDisplay-Regular.otf</string>
+		<string>SFProDisplay-Medium.otf</string>
+		<string>SFProDisplay-Semibold.otf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>

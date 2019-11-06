@@ -103,7 +103,7 @@ export default function CheckoutScreen() {
       subtitle={item.address}
       subtitleProps={{ numberOfLines: 1 }}
       subtitleStyle={{
-        fontFamily: theme.text.fonts.sfui,
+        fontFamily: theme.text.fonts.sfpt,
       }}
       onPress={() => selectAddress(item)}
       containerStyle={[
@@ -134,7 +134,7 @@ export default function CheckoutScreen() {
       subtitle={item.card_info}
       subtitleProps={{ numberOfLines: 1 }}
       subtitleStyle={{
-        fontFamily: theme.text.fonts.sfui,
+        fontFamily: theme.text.fonts.sfpt,
       }}
       onPress={() => selectPayment(item)}
       containerStyle={[
@@ -209,12 +209,7 @@ export default function CheckoutScreen() {
 }
 
 const styles = StyleSheet.create({
-  shadow: {
-    shadowOffset: { height: 5, width: 0 },
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
+  shadow: theme.shadow,
   contentContainer: {
     marginHorizontal: 16,
     paddingHorizontal: 16,
@@ -226,7 +221,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textTransform: 'uppercase',
-    fontFamily: theme.text.fonts['sfui-medium'],
+    fontFamily: theme.text.fonts['sfpt-medium'],
     fontSize: 16,
     marginBottom: 16,
   },
@@ -234,7 +229,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: theme.color.primary,
     marginBottom: 4,
-    fontFamily: theme.text.fonts['sfui-medium'],
+    fontFamily: theme.text.fonts['sfpt-medium'],
     fontSize: 14,
   },
   listContainer: {

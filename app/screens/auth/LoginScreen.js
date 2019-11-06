@@ -36,10 +36,7 @@ export default function LoginScreen(props) {
         title="Login"
         buttonStyle={{
           backgroundColor: theme.color.primary,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 10 },
-          shadowRadius: 10,
-          shadowOpacity: 0.1,
+          ...theme.shadow,
           marginVertical: 22,
         }}
         onPress={() => navigation.navigate('Main')}
@@ -64,7 +61,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   text: {
-    fontFamily: theme.text.fonts.sfui,
+    fontFamily: theme.text.fonts.sfpt,
     fontSize: 20,
   },
 });

@@ -5,6 +5,7 @@ const color = {
   gray: '#B8BBC6',
   lightGray: '#EFEFF4',
   lightestGray: '#F3F3F3',
+  yellow: '#FFCC00',
 };
 
 export const theme = {
@@ -12,9 +13,9 @@ export const theme = {
   text: {
     size: {
       xs: 10,
-      sm: 14,
-      base: 16,
-      md: 18,
+      sm: 13,
+      base: 17,
+      md: 20,
       lg: 20,
       xl: 24,
       '2xl': 32,
@@ -37,14 +38,36 @@ export const theme = {
     },
     fonts: {
       base: null,
-      sfui: 'SFUIText-Regular',
-      'sfui-bold': 'SFUIText-Semibold',
-      'sfui-medium': 'SFUIText-Medium',
+      sfpt: 'SFProText-Regular',
+      'sfpt-bold': 'SFProText-Semibold',
+      'sfpt-medium': 'SFProText-Medium',
+      sfpd: 'SFProDisplay-Regular',
+      'sfpd-bold': 'SFProDisplay-Semibold',
+      'sfpd-medium': 'SFProDisplay-Medium',
     },
   },
   radius: {
-    '2xs': 3,
+    '2xs': 4,
     xs: 8,
     sm: 12,
+  },
+  icon: {
+    size: {
+      base: 28,
+    },
+  },
+  space: {
+    '2xs': 6,
+    xs: 8,
+    sm: 16,
+    md: 24,
+    lg: 36,
+    xl: 40,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    shadowOffset: { height: 5, width: 0 },
   },
 };

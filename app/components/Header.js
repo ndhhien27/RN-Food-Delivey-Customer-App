@@ -70,7 +70,7 @@ function Header(props) {
 
 const styles = StyleSheet.create({
   storeName: {
-    fontFamily: theme.text.fonts['sfui-medium'],
+    fontFamily: theme.text.fonts['sfpt-medium'],
     fontSize: 17,
     color: theme.color.primary,
   },

@@ -26,6 +26,7 @@ import Header from './app/components/Header';
 import { theme } from './app/constants/theme';
 import Notification from './app/screens/Notification';
 import CheckoutScreen from './app/screens/order/CheckoutScreen';
+import SearchScreen from './app/screens/SearchScreen';
 
 const AccountStack = createStackNavigator(
   {
@@ -148,6 +149,15 @@ const AuthStack = createStackNavigator(
   }
 );
 
+const SearchStack = createStackNavigator(
+  {
+    Search: SearchScreen,
+  },
+  {
+    headerMode: 'none',
+  }
+);
+
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeStack,
@@ -164,7 +174,7 @@ const TabNavigator = createBottomTabNavigator(
       activeTintColor: theme.color.primary,
       inactiveTintColor: theme.color.gray,
       labelStyle: {
-        fontFamily: theme.text.fonts.sfui,
+        fontFamily: theme.text.fonts.sfpt,
         fontSize: 14,
         marginTop: -5,
       },
@@ -178,8 +188,10 @@ const TabNavigator = createBottomTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
+    Search: SearchStack,
   },
   {
+    mode: 'modal',
     headerMode: 'none',
   }
 );

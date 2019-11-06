@@ -30,7 +30,7 @@ export default class IconWithBadge extends React.Component {
               style={{
                 color: 'white',
                 fontSize: 12,
-                fontFamily: theme.text.fonts['sfui-bold'],
+                fontFamily: theme.text.fonts['sfpt-bold'],
               }}
             >
               {badgeCount}

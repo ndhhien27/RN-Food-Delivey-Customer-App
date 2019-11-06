@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-
+import { StyleSheet, Text, View, StatusBar, YellowBox } from 'react-native';
 import { createAppContainer } from 'react-navigation';
-
 import AppNavigator from './AppNavigator';
 import CartProvider from './app/context/CartContext';
 import { getActiveRoute } from './app/services/NavigationService';
+
+YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
 const AppContainer = createAppContainer(AppNavigator);
 

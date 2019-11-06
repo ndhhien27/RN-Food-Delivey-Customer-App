@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    fontFamily: theme.text.fonts.sfui,
+    fontFamily: theme.text.fonts.sfpt,
     color: '#888',
   },
   info: {
     fontSize: 20,
-    fontFamily: theme.text.fonts.sfui,
+    fontFamily: theme.text.fonts.sfpt,
   },
   contentContainer: {
     backgroundColor: '#fff',
@@ -90,12 +90,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 100,
   },
-  shadow: {
-    shadowColor: '#000',
-    shadowOpacity: 0.12,
-    shadowRadius: 10,
-    shadowOffset: { height: 5, width: 0 },
-  },
+  shadow: theme.shadow,
   avatar: {
     position: 'absolute',
     alignSelf: 'center',

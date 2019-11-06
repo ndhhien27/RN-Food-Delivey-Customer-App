@@ -53,13 +53,13 @@ function NormalCart(props) {
           title="Total"
           price={25000}
           style={{
-            fontFamily: theme.text.fonts['sfui-bold'],
+            fontFamily: theme.text.fonts['sfpt-bold'],
             fontSize: 20,
           }}
         />
         <Button
           title="Continue"
-          titleStyle={{ fontFamily: theme.text.fonts.sfui, fontSize: 22 }}
+          titleStyle={{ fontFamily: theme.text.fonts.sfpt, fontSize: 22 }}
           buttonStyle={{
             backgroundColor: theme.color.primary,
             borderRadius: 8,
@@ -75,7 +75,7 @@ function NormalCart(props) {
 
 const styles = StyleSheet.create({
   storeName: {
-    fontFamily: theme.text.fonts['sfui-bold'],
+    fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 24,
   },
   storeInfo: {
@@ -85,12 +85,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#f3f3f3',
   },
-  shadow: {
-    shadowOffset: { height: 5, width: 0 },
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
+  shadow: theme.shadow,
   contentContainer: {
     backgroundColor: '#fff',
     height: 400,
@@ -104,7 +99,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   addressInfo: {
-    fontFamily: theme.text.fonts['sfui-medium'],
+    fontFamily: theme.text.fonts['sfpt-medium'],
     fontSize: 18,
     color: theme.color.gray,
   },
