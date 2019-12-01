@@ -71,8 +71,10 @@ function StoreListItem(props) {
             />
           </ImageBackground>
           <View style={styles.info}>
-            <Text style={styles.name}>{item.title}</Text>
-            <Text>Address</Text>
+            <Text numberOfLines={1} style={styles.name}>
+              {item.name}
+            </Text>
+            <Text numberOfLines={1}>{item.address}</Text>
           </View>
         </View>
       </View>

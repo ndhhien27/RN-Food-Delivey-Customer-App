@@ -2,10 +2,11 @@
 const color = {
   orange: '#F35324',
   primary: '#F68A2B',
-  gray: '#B8BBC6',
-  lightGray: '#EFEFF4',
-  lightestGray: '#F3F3F3',
+  darkGray: '#99999E',
+  gray: '#EDEDEE',
+  lightGray: '#F2F2F7',
   yellow: '#FFCC00',
+  red: '#ff0000',
 };
 
 export const theme = {
@@ -13,9 +14,8 @@ export const theme = {
   text: {
     size: {
       xs: 10,
-      sm: 13,
-      base: 17,
-      md: 20,
+      sm: 15,
+      md: 17,
       lg: 20,
       xl: 24,
       '2xl': 32,

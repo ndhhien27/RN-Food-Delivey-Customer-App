@@ -40,7 +40,7 @@ function PopularList() {
         )}
         keyExtractor={item => `${item.id}`}
         ItemSeparatorComponent={() => (
-          <Divider style={{ backgroundColor: theme.color.gray }} />
+          <Divider style={{ backgroundColor: theme.color.darkGray }} />
         )}
       />
     </View>

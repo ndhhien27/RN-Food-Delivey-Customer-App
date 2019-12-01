@@ -13,7 +13,7 @@ function Header(props) {
       style={{
         backgroundColor: style.headerStyle,
         // backgroundColor: 'red',
-        height: 88,
+        height: 56,
         justifyContent: 'flex-end',
         borderBottomWidth: style.borderStyle,
         position: 'absolute',
@@ -39,7 +39,7 @@ function Header(props) {
               size={28}
             />
           }
-          onPress={() => props.navigation.navigate('Home')}
+          onPress={() => props.navigation.goBack()}
           buttonStyle={{
             backgroundColor: null,
           }}

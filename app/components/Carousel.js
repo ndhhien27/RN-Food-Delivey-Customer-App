@@ -1,67 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-unused-vars */
-// import React, { Component } from 'react'
-// import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
-// import { Dimensions, StyleSheet, View, Text } from 'react-native';
-
-// const { width: screenWidth } = Dimensions.get('window')
-
-// export default class MyCarousel extends Component {
-
-//   state = {
-//     entries: [
-//       { thumbnail: 'http://via.placeholder.com/160x160', title: 'thumbnail 1' },
-//       { thumbnail: 'http://via.placeholder.com/160x160', title: 'thumbnail 2' }
-//     ]
-//   }
-//   _renderItem({ item, index }, parallaxProps) {
-//     return (
-//       <View style={styles.item}>
-//         <ParallaxImage
-//           source={{ uri: item.thumbnail }}
-//           containerStyle={styles.imageContainer}
-//           style={styles.image}
-//           parallaxFactor={0.4}
-//           {...parallaxProps}
-//         />
-//         <Text style={styles.title} numberOfLines={2}>
-//           {item.title}
-//         </Text>
-//       </View>
-//     );
-//   }
-
-//   render() {
-//     return (
-//       <Carousel
-//         sliderWidth={screenWidth}
-//         sliderHeight={screenWidth}
-//         itemWidth={screenWidth - 60}
-//         data={this.state.entries}
-//         renderItem={this._renderItem}
-//         hasParallaxImages={true}
-//       />
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   item: {
-//     width: screenWidth - 60,
-//     height: screenWidth - 200,
-//   },
-//   imageContainer: {
-//     flex: 1,
-//     marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
-//     backgroundColor: 'white',
-//     borderRadius: 8,
-//   },
-//   image: {
-//     ...StyleSheet.absoluteFillObject,
-//     resizeMode: 'cover',
-//   },
-// })
-
 import React, { useRef, useState } from 'react';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import {
@@ -118,7 +56,7 @@ const MyCarousel = () => {
         data={state}
         renderItem={renderItem}
         hasParallaxImages
-        // slideStyle={{ marginLeft: -10, marginRight: 10 }}
+      // slideStyle={{ marginLeft: -10, marginRight: 10 }}
       />
     </View>
   );

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { Avatar, Button, Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
+import { AuthContext } from '../context/AuthContext';
 
 import { theme } from '../constants/theme';
 
 function Profile(props) {
+  const { userInfo } = useContext(AuthContext);
   const { navigation } = props;
   return (
     <View
@@ -31,7 +33,7 @@ function Profile(props) {
               fontFamily: theme.text.fonts['sfpt-bold'],
             }}
           >
-            Nguyen Duc Hien
+            {`${userInfo.fName} ${userInfo.lName}`}
           </Text>
           <Text
             style={{
@@ -39,7 +41,7 @@ function Profile(props) {
               fontFamily: theme.text.fonts.sfpt,
             }}
           >
-            ndhien@gmail.com
+            {userInfo.email}
           </Text>
         </View>
       </View>
@@ -56,7 +58,7 @@ function Profile(props) {
           backgroundColor: null,
           padding: 0,
         }}
-        onPress={() => navigation.navigate('EditProfile')}
+        onPress={() => navigation.navigate('EditProfile', { userInfo })}
       />
     </View>
   );

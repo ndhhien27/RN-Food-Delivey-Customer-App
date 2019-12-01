@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-
 import { createStackNavigator } from 'react-navigation-stack';
 import { Button, Icon } from 'react-native-elements';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -9,25 +8,32 @@ import {
   getActiveRoute,
   getTabBarIcon,
 } from './app/services/NavigationService';
-
 import Home from './app/screens/Home';
 import StoreScreen from './app/screens/StoreScreen';
 import CartScreen from './app/screens/CartScreen';
 import StoreByCategory from './app/screens/StoreByCategory';
-
 import MainScreen from './app/screens/account/MainScreen';
 import EditProfile from './app/screens/account/EditProfile';
 import AddAddressScreen from './app/screens/account/AddAddressScreen';
-
 import LoginScreen from './app/screens/auth/LoginScreen';
-
-import Header from './app/components/Header';
-
 import { theme } from './app/constants/theme';
 import Notification from './app/screens/Notification';
 import CheckoutScreen from './app/screens/order/CheckoutScreen';
 import SearchScreen from './app/screens/SearchScreen';
+import SignupScreen from './app/screens/auth/SignupScreen';
+import WelCome from './app/screens/auth/WelCome';
+import LocationPickerScreen from './app/screens/MapScreen';
+import OrderTrack from './app/screens/my_order/OrderTrack';
+import OrderDetail from './app/screens/my_order/OrderDetail';
 
+const MapStack = createStackNavigator(
+  {
+    MapScreen: LocationPickerScreen,
+  },
+  {
+    headerMode: 'none',
+  }
+);
 const AccountStack = createStackNavigator(
   {
     Main: {
@@ -44,14 +50,14 @@ const AccountStack = createStackNavigator(
     },
   },
   {
-    navigationOptions: ({ navigation }) => {
-      let tabBarVisible = false;
-      if (getActiveRoute(navigation.state).routeName === 'Main')
-        tabBarVisible = true;
-      return {
-        tabBarVisible,
-      };
-    },
+    // navigationOptions: ({ navigation }) => {
+    //   let tabBarVisible = false;
+    //   if (getActiveRoute(navigation.state).routeName === 'Main')
+    //     tabBarVisible = true;
+    //   return {
+    //     tabBarVisible,
+    //   };
+    // },
     defaultNavigationOptions: ({ navigation }) => ({
       headerBackImage: (
         <Button
@@ -63,7 +69,7 @@ const AccountStack = createStackNavigator(
               size={28}
             />
           }
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.goBack()}
           buttonStyle={{
             backgroundColor: null,
           }}
@@ -74,10 +80,35 @@ const AccountStack = createStackNavigator(
   }
 );
 
+const OrderStack = createStackNavigator(
+  {
+    MyOrderScreen: {
+      screen: OrderTrack,
+    },
+    OrderDetailScreen: {
+      screen: OrderDetail,
+    },
+  },
+  {
+    navigationOptions: () => {
+      return {
+        tabBarLabel: 'Order',
+      };
+    },
+  }
+);
+
 const CartStack = createStackNavigator(
   {
-    Cart: {
+    CartScreen: {
       screen: CartScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerLeft: (
+            <Button title="back" onPress={() => navigation.navigate('Tab')} />
+          ),
+        };
+      },
       // params: { statusbar: 'dark-content' },
     },
     Checkout: {
@@ -85,8 +116,7 @@ const CartStack = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Cart',
-    headerBackTitleVisible: false,
+    initialRouteName: 'CartScreen',
   }
 );
 
@@ -139,13 +169,34 @@ const NotificationStack = createStackNavigator({
 
 const AuthStack = createStackNavigator(
   {
+    WelCome,
     Login: {
       screen: LoginScreen,
       // params: { statusbar: 'dark-content' },
     },
+    Signup: {
+      screen: SignupScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerLeft: (
+            <Button
+              title="Back"
+              type="clear"
+              onPress={() => navigation.goBack()}
+            />
+          ),
+        };
+      },
+    },
+    MapScreen: {
+      screen: MapStack,
+    },
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'WelCome',
+    defaultNavigationOptions: () => ({
+      headerTransparent: true,
+    }),
   }
 );
 
@@ -161,7 +212,7 @@ const SearchStack = createStackNavigator(
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeStack,
-    Cart: CartStack,
+    OrderTab: OrderStack,
     Notification: NotificationStack,
     Account: AccountStack,
   },
@@ -172,14 +223,10 @@ const TabNavigator = createBottomTabNavigator(
     }),
     tabBarOptions: {
       activeTintColor: theme.color.primary,
-      inactiveTintColor: theme.color.gray,
+      inactiveTintColor: theme.color.darkGray,
       labelStyle: {
         fontFamily: theme.text.fonts.sfpt,
-        fontSize: 14,
-        marginTop: -5,
-      },
-      tabStyle: {
-        marginBottom: -5,
+        // fontSize: 15,
       },
     },
   }
@@ -188,6 +235,7 @@ const TabNavigator = createBottomTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
+    Cart: CartStack,
     Search: SearchStack,
   },
   {

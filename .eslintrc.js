@@ -20,7 +20,7 @@ module.exports = {
       {
         "trailingComma": "es5",
         "singleQuote": true,
-        "printWidth": 80
+        // "printWidth": 80
       }
     ],
     "react/prop-types": [0],

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Text,
   View,
@@ -9,9 +9,20 @@ import {
 import { ListItem, Button, Overlay, Icon } from 'react-native-elements';
 import { theme } from '../../constants/theme';
 import OrderModal from './OrderModal';
+import { CartContext } from '../../context/CartContext';
+import { AuthContext } from '../../context/AuthContext';
+import API from '../../services/OrderService';
 
-export default function CheckoutScreen() {
+export default function CheckoutScreen({ navigation }) {
+  const { cartIndex } = navigation.state.params;
   const [isVisible, setIsVisible] = useState(false);
+  const { cart } = useContext(CartContext);
+  const { authInfo } = useContext(AuthContext);
+  const [paymentInfo, setpaymentInfo] = useState({
+    deliveryAddress: '',
+    paymentType: '',
+    paymentInfo: '',
+  });
   const [state, setstate] = useState({
     location: [
       {
@@ -67,6 +78,7 @@ export default function CheckoutScreen() {
     ],
   });
 
+  console.log(cart[cartIndex]);
   const selectAddress = item => {
     // eslint-disable-next-line no-param-reassign
     item.isSelect = !item.isSelect;
@@ -78,7 +90,15 @@ export default function CheckoutScreen() {
         ),
       };
     });
+    setpaymentInfo(prev => {
+      return {
+        ...prev,
+        deliveryAddress: item.address,
+      };
+    });
   };
+
+  console.log(paymentInfo);
 
   const selectPayment = item => {
     // eslint-disable-next-line no-param-reassign
@@ -89,6 +109,13 @@ export default function CheckoutScreen() {
         payment_method: prev.payment_method.map(el =>
           el.id !== item.id ? { ...el, isSelect: false } : { ...item }
         ),
+      };
+    });
+    setpaymentInfo(prev => {
+      return {
+        ...prev,
+        paymentType: item.type,
+        paymentInfo: item.card_info,
       };
     });
   };
@@ -160,7 +187,13 @@ export default function CheckoutScreen() {
   };
 
   return (
-    <View style={{ backgroundColor: theme.color.lightestGray, flex: 1 }}>
+    <View
+      style={{
+        backgroundColor: theme.color.lightGray,
+        flex: 1,
+        paddingVertical: 16,
+      }}
+    >
       <View style={styles.shadow}>
         <Overlay
           isVisible={isVisible}
@@ -173,7 +206,7 @@ export default function CheckoutScreen() {
         </Overlay>
         <View style={styles.contentContainer}>
           <View style={{ flex: 1 }}>
-            <View style={{ maxHeight: 220 }}>
+            <View style={{ maxHeight: 180 }}>
               <Text style={styles.title}>delivery address</Text>
               <FlatList
                 data={state.location}
@@ -183,7 +216,7 @@ export default function CheckoutScreen() {
                 alwaysBounceVertical={false}
               />
             </View>
-            <View style={{ maxHeight: 220, marginTop: 50 }}>
+            <View style={{ maxHeight: 180, marginTop: 50 }}>
               <Text style={styles.title}>payment method</Text>
               <FlatList
                 data={state.payment_method}
@@ -198,9 +231,20 @@ export default function CheckoutScreen() {
             buttonStyle={{
               backgroundColor: theme.color.primary,
               borderRadius: 8,
-              marginTop: 50,
+              // marginTop: 50,
             }}
-            onPress={() => toggleModal()}
+            onPress={() => {
+              toggleModal();
+              API.createOrder(
+                {
+                  ...authInfo,
+                  ...paymentInfo,
+                  ...cart[cartIndex],
+                },
+                res => console.log(res.data),
+                err => console.log(err)
+              );
+            }}
           />
         </View>
       </View>
@@ -216,8 +260,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     backgroundColor: '#fff',
     borderRadius: 8,
-    height: 650,
-    marginTop: 20,
+    height: '100%',
   },
   title: {
     textTransform: 'uppercase',
@@ -235,7 +278,7 @@ const styles = StyleSheet.create({
   listContainer: {
     borderColor: theme.color.primary,
     borderRadius: 4,
-    backgroundColor: theme.color.lightestGray,
+    backgroundColor: theme.color.lightGray,
     marginBottom: 10,
   },
 });
@@ -252,7 +295,7 @@ CheckoutScreen.navigationOptions = ({ navigation }) => {
             size={28}
           />
         }
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.goBack()}
         buttonStyle={{
           backgroundColor: null,
         }}

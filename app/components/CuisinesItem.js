@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   btn: {
     height: 40,
     borderRadius: 20,
-    borderColor: theme.color.gray,
+    borderColor: theme.color.darkGray,
     marginRight: 6,
     marginTop: 8,
   },
@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.text.fonts.sfpt,
     fontSize: 18,
     paddingHorizontal: 10,
-    color: theme.color.gray,
+    color: theme.color.darkGray,
   },
 });

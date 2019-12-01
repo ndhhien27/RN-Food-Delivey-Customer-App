@@ -7,19 +7,20 @@ import Modal from 'react-native-modal';
 import StoreListByCategory from '../components/StoreListByCategory';
 import { theme } from '../constants/theme';
 import FilterModal from './FilterModal';
+import RestaurantService from '../services/RestaurantService';
 
 export default function StoreByCategory(props) {
-  const [storeList, setStoreList] = useState([
-    { id: 1, name: 'Random', address: '54 Nguyen Luong Bang' },
-    { id: 2, name: 'Random', address: '54 Nguyen Luong Bang' },
-    { id: 3, name: 'Random', address: '54 Nguyen Luong Bang' },
-    { id: 4, name: 'Random', address: '54 Nguyen Luong Bang' },
-    { id: 5, name: 'Random', address: '54 Nguyen Luong Bang' },
-  ]);
+  const { navigation } = props;
+  const [storeList, setStoreList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModal = () => setModalVisible(!modalVisible);
   useEffect(() => {
-    props.navigation.setParams({ toggleModal });
+    RestaurantService.searchRestaurant(
+      navigation.state.params.query,
+      res => setStoreList(res.data.data.searchRestaurant),
+      err => console.log(err)
+    );
+    navigation.setParams({ toggleModal });
   }, []);
   const devideHeight = Dimensions.get('window').height;
 

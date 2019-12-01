@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: theme.text.fonts['sfpt-medium'],
     fontSize: 18,
-    color: theme.color.gray,
+    color: theme.color.darkGray,
     textTransform: 'uppercase',
   },
 });

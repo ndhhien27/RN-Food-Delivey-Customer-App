@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
@@ -7,6 +8,7 @@ import { theme } from '../../constants/theme';
 
 function ProfileItem(props) {
   const { label, info, divider = true } = props;
+  const { userInfo } = props.navigation.state.params;
   return (
     <View style={[styles.container, { borderBottomWidth: divider ? 1 : 0 }]}>
       <Text style={styles.label}>{label}</Text>
@@ -36,8 +38,11 @@ export default function EditProfile() {
       {/* <StatusBar barStyle='dark-content' /> */}
       <View style={styles.shadow}>
         <View style={styles.contentContainer}>
-          <ProfileItem label="Full Name" info={profile.fullName} />
-          <ProfileItem label="Email" info={profile.email} />
+          <ProfileItem
+            label="Full Name"
+            info={`${userInfo.fName} ${userInfo.lName}`}
+          />
+          <ProfileItem label="Email" info={userInfo.email} />
           <ProfileItem label="Phone" info={profile.phone} />
           <ProfileItem
             label="Gender"

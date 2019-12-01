@@ -1,28 +1,39 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native';
 import { Icon, Button, Divider } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { theme } from '../constants/theme';
 import CostDetail from './CostDetail';
 import CartItem from './CartItem';
+import { CartContext } from '../context/CartContext';
 
 function NormalCart(props) {
-  const { navigation, cart } = props;
+  const { storeName, navigation } = props;
+  const { address } = navigation.state.params;
+  const [cartIndex, setCartIndex] = useState(0);
+  useEffect(() => {
+    setCartIndex(
+      cart.findIndex(el => el.storeId === navigation.state.params.cart.storeId)
+    );
+  }, []);
+  const { cart } = useContext(CartContext);
+  console.log('PR', cart[cartIndex].items);
   return (
     <View>
       <View style={styles.shadow}>
         <View style={styles.contentContainer}>
           <View style={styles.storeInfo}>
-            <Text style={styles.storeName}>{cart.storeName}</Text>
+            <Text style={styles.storeName}>{storeName}</Text>
             <View style={styles.addressRow}>
               <Icon
                 type="material-community"
                 name="map-marker"
-                color={theme.color.gray}
+                color={theme.color.darkGray}
                 size={18}
               />
               <Text style={styles.addressInfo} numberOfLines={1}>
-                382 Ton Duc Thang, Lien Chieu, Da Nang, Viet Nam
+                {address}
               </Text>
             </View>
             <View
@@ -34,21 +45,30 @@ function NormalCart(props) {
                 borderRadius: 12,
               }}
             >
-              <Text style={{ color: '#fff', fontSize: 16 }}>Promotion</Text>
+              <Text style={{ color: '#fff', fontSize: 16 }}>{cartIndex}</Text>
             </View>
           </View>
-          <FlatList
-            data={cart.cartItem}
-            renderItem={({ item }) => <CartItem item={item} />}
-            keyExtractor={item => `item${item.foodId}`}
-            contentContainerStyle={styles.list}
-          />
+          {cartIndex !== -1 && (
+            <FlatList
+              data={cart[cartIndex].items}
+              renderItem={({ item }) => (
+                <CartItem
+                  item={item}
+                  increase={() => navigation.state.params.increase(item)}
+                  decrease={() => navigation.state.params.decrease(item)}
+                  qty={item.foodQty}
+                />
+              )}
+              keyExtractor={item => `item${item.foodId}`}
+              contentContainerStyle={styles.list}
+            />
+          )}
         </View>
       </View>
       <SafeAreaView style={styles.total}>
-        <CostDetail title="SubTotal" price={15000} />
-        <CostDetail title="Delivery" price={10000} />
-        <Divider style={{ backgroundColor: theme.color.gray }} />
+        <CostDetail title="SubTotal" price={cart[cartIndex].subtotal} />
+        <CostDetail title="Delivery" price={cart[cartIndex].total} />
+        <Divider style={{ backgroundColor: theme.color.darkGray }} />
         <CostDetail
           title="Total"
           price={25000}
@@ -66,7 +86,7 @@ function NormalCart(props) {
             marginTop: 16,
           }}
           activeOpacity={0.5}
-          onPress={() => navigation.navigate('Checkout')}
+          onPress={() => navigation.navigate('Checkout', { cartIndex })}
         />
       </SafeAreaView>
     </View>
@@ -81,7 +101,7 @@ const styles = StyleSheet.create({
   storeInfo: {
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderColor: theme.color.lightestGray,
+    borderColor: theme.color.lightGray,
     paddingHorizontal: 16,
     backgroundColor: '#f3f3f3',
   },
@@ -101,14 +121,13 @@ const styles = StyleSheet.create({
   addressInfo: {
     fontFamily: theme.text.fonts['sfpt-medium'],
     fontSize: 18,
-    color: theme.color.gray,
+    color: theme.color.darkGray,
   },
   list: { paddingHorizontal: 16 },
   total: {
-    marginTop: 100,
     paddingHorizontal: 16,
     borderTopWidth: 0.5,
-    borderColor: theme.color.lightestGray,
+    borderColor: theme.color.lightGray,
     backgroundColor: '#fff',
     height: '100%',
   },

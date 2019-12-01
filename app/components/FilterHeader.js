@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderColor: theme.color.gray,
+    borderColor: theme.color.darkGray,
     borderBottomWidth: 0.3,
     alignItems: 'center',
   },

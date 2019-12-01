@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
@@ -54,7 +55,7 @@ class StoreList extends React.Component {
       <View>
         <Text>MENU</Text>
         <FlatList
-          data={this.state.categories}
+          data={this.props.storeList}
           contentContainerStyle={styles.container}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -64,14 +65,14 @@ class StoreList extends React.Component {
                 item={item}
                 onPress={() =>
                   this.props.navigation.navigate('Store', {
-                    storeName: item.title,
-                    storeId: item.id,
+                    storeName: item.name,
+                    storeId: item._id,
                   })
                 }
               />
             </View>
           )}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={item => `${item._id}`}
         />
       </View>
     );

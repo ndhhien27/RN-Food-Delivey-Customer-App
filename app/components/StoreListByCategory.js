@@ -1,6 +1,14 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 
 import { withNavigation } from 'react-navigation';
@@ -13,11 +21,16 @@ function StoreListByCategory(props) {
   return (
     <FlatList
       data={data}
-      keyExtractor={item => `${item.id}`}
+      keyExtractor={item => `${item._id}`}
       contentContainerStyle={{ paddingHorizontal: 16 }}
       alwaysBounceVertical={false}
       renderItem={({ item }) => (
-        <View style={styles.shadow}>
+        <TouchableOpacity
+          style={styles.shadow}
+          onPress={() =>
+            props.navigation.navigate('Store', { storeId: item._id })
+          }
+        >
           <View style={styles.itemContainer}>
             <Image
               source={{ uri: 'http://via.placeholder.com/88x88' }}
@@ -60,7 +73,7 @@ function StoreListByCategory(props) {
               }
             />
           </View>
-        </View>
+        </TouchableOpacity>
       )}
       ListHeaderComponent={<Text>123</Text>}
     />

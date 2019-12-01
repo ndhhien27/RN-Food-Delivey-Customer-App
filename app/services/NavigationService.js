@@ -22,8 +22,8 @@ export const getTabBarIcon = (navigation, focused, tintColor) => {
     case 'Home':
       iconName = 'home-outline';
       break;
-    case 'Cart':
-      iconName = 'cart-outline';
+    case 'OrderTab':
+      iconName = 'script-text-outline';
       break;
     case 'Account':
       iconName = 'account-outline';

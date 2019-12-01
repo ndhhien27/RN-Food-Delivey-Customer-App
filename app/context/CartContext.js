@@ -1,14 +1,15 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/destructuring-assignment */
 import React, { createContext, useState, useEffect } from 'react';
+import produce from 'immer';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const CartContext = createContext();
 
 export default function CartProvider(props) {
-  const [cart, setCart] = useState({
-    storeName: '',
-    cartItem: [],
-  });
+  const [cart, setCart] = useState([]);
 
   const storeCart = async newCart => {
     try {
@@ -39,37 +40,37 @@ export default function CartProvider(props) {
     }
   };
 
-  useEffect(() => {
-    removeCart();
-    loadCart();
-    console.log('load');
-  }, []);
+  // useEffect(() => {
+  //   removeCart();
+  //   loadCart();
+  //   console.log('load');
+  // }, []);
 
-  useEffect(() => {
-    storeCart(cart);
-    console.log('store');
-  }, [cart]);
+  // useEffect(() => {
+  //   storeCart(cart);
+  //   console.log('store');
+  // }, [cart]);
 
-  const addFoodToCart = (food, storeName) => {
+  const addFoodToCart = (food, storeId) => {
     setCart(prevCart => {
       let afterCart = {};
-      if (!prevCart.cartItem.find(item => item.foodId === food.id)) {
+      if (!prevCart.cartItem.find(item => item.foodId === food._id)) {
         afterCart = {
           ...prevCart,
-          storeName,
+          storeId,
           cartItem: [
             ...prevCart.cartItem,
             {
-              foodId: food.id,
-              foodName: food.title,
-              foodPrice: food.price,
+              foodId: food._id,
+              foodName: food.name,
+              foodPrice: food.price.value,
               foodQty: 1,
             },
           ],
         };
       } else {
         const newCartItem = prevCart.cartItem.map(item =>
-          item.foodId !== food.id
+          item.foodId !== food._id
             ? { ...item }
             : { ...item, foodQty: item.foodQty + 1 }
         );
@@ -81,6 +82,23 @@ export default function CartProvider(props) {
       // storeCart(afterCart);
       return afterCart;
     });
+  };
+
+  const deleteChildCart = newCart => {
+    const index = cart.findIndex(el => el.storeId === newCart.storeId);
+    const newCartContext = [...cart];
+    newCartContext.splice(index, 1);
+    setCart(newCartContext);
+  };
+
+  const updateCartContext = newCart => {
+    // const index = cart.find(el => el.storeId === newCart.storeId);
+    const newCartContext = produce(cart, draft => {
+      const index = cart.findIndex(el => el.storeId === newCart.storeId);
+      if (index !== -1) draft[index] = newCart;
+      else draft.push({ ...newCart });
+    });
+    setCart(newCartContext);
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -95,6 +113,8 @@ export default function CartProvider(props) {
       value={{
         cart,
         addFoodToCart,
+        updateCartContext,
+        deleteChildCart,
       }}
     >
       {props.children}

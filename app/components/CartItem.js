@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
+import { CartContext } from '../context/CartContext';
 
 export default function CartItem(props) {
-  const { item } = props;
+  const { item, increase, qty, decrease } = props;
+  const { cart } = useContext(CartContext);
   return (
     <View style={styles.container}>
       <View style={styles.info}>
@@ -24,6 +26,7 @@ export default function CartItem(props) {
               color={theme.color.primary}
             />
           }
+          onPress={decrease}
           buttonStyle={{ padding: 0, backgroundColor: null }}
           activeOpacity={0.5}
         />
@@ -32,7 +35,7 @@ export default function CartItem(props) {
             paddingHorizontal: 8,
           }}
         >
-          {item.foodQty}
+          {qty}
         </Text>
         <Button
           icon={
@@ -42,6 +45,7 @@ export default function CartItem(props) {
               color={theme.color.primary}
             />
           }
+          onPress={increase}
           buttonStyle={{ padding: 0, backgroundColor: null }}
           activeOpacity={0.5}
         />
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 8,
     borderBottomWidth: 1.5,
-    borderColor: theme.color.lightGray,
+    borderColor: theme.color.gray,
     paddingVertical: 8,
   },
   addToCart: {
@@ -81,6 +85,6 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: theme.text.fonts['sfpt-medium'],
-    color: theme.color.gray,
+    color: theme.color.darkGray,
   },
 });

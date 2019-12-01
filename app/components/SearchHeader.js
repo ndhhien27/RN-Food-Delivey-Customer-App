@@ -13,7 +13,7 @@ function SearchHeader(props) {
           <Icon
             type="material-community"
             name="close"
-            size={theme.icon.size.base}
+            size={theme.icon.size.md}
           />
         }
         type="clear"

@@ -23,6 +23,7 @@ export default function Temp(props) {
         return [...data.data.LtsItem];
       });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -51,7 +52,7 @@ export default function Temp(props) {
               type="material-community"
               name="arrow-left"
               color={theme.color.primary}
-              size={theme.icon.size.base}
+              size={theme.icon.size.md}
             />
           }
           onPress={() => onClose()}
@@ -66,7 +67,7 @@ export default function Temp(props) {
           value={searchText}
           onChangeText={handleSearch}
           placeholder="Search"
-          inputContainerStyle={{ backgroundColor: theme.color.lightGray }}
+          inputContainerStyle={{ backgroundColor: theme.color.gray }}
         />
       </View>
       <FlatList

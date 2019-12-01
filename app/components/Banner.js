@@ -10,28 +10,25 @@ import { Icon } from 'react-native-elements';
 import StarInfo from '../commons/store/StarInfo';
 import FeaturedItem from './FeaturedItem';
 import { theme } from '../constants/theme';
-import { image } from '../constants/images';
 
 function Banner(props) {
-  const { storeName, foods } = props;
+  const { storeName, address, foods } = props;
+  console.log(storeName);
   return (
     <View>
       <ImageBackground
-        // source={{ uri: 'http://via.placeholder.com/350x350' }}
-        source={image.banner}
+        source={{ uri: 'http://via.placeholder.com/350x350' }}
         style={styles.imgStyle}
       >
         <View style={{ backgroundColor: 'rgba(0,0,0,0.17)', flex: 1 }}>
           <View style={styles.contentContainer}>
             <View style={styles.promotionStyle}>
-              <Text style={{ color: '#fff', fontSize: 16 }}>Promotion</Text>
+              <Text style={{ color: '#fff', fontSize: 15 }}>Promotion</Text>
             </View>
             <Text style={styles.storeName}>{storeName}</Text>
             <View style={{ flexDirection: 'row' }}>
               <Icon type="material-community" name="map-marker" color="#fff" />
-              <Text style={styles.addressLine}>
-                382 Ton Duc Thang, Lien Chieu, Da Nang
-              </Text>
+              <Text style={styles.addressLine}>{address}</Text>
             </View>
           </View>
           <View style={styles.moreInfo}>
@@ -41,8 +38,8 @@ function Banner(props) {
           </View>
         </View>
       </ImageBackground>
-      <View style={{ paddingVertical: 20 }}>
-        <Text style={{ paddingLeft: 16 }}>Featured Items</Text>
+      {/* <View style={{ paddingVertical: 20 }}>
+        <Text style={styles.title}>Featured Items</Text>
         <FlatList
           data={foods.foods}
           keyExtractor={item => `feature-${item.id}`}
@@ -50,7 +47,7 @@ function Banner(props) {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => <FeaturedItem item={item} />}
         />
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -68,7 +65,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 12,
     paddingVertical: 2,
-    borderRadius: 9,
+    borderRadius: 11,
+    height: 22,
   },
   storeName: {
     color: '#fff',
@@ -88,6 +86,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 350,
     resizeMode: 'cover',
+  },
+  title: {
+    fontFamily: theme.text.fonts['sfpd-medium'],
+    fontSize: theme.text.size.lg,
+    paddingLeft: 16,
   },
 });
 

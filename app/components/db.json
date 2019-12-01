@@ -1,0 +1,492 @@
+/* 1 */
+{
+    "_id" : ObjectId("5dce3591e3557d165a5c7a97"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Châu Mỹ", 
+        "Mỹ"
+    ],
+    "categories" : [ 
+        "Café/Dessert"
+    ],
+    "bookmarks" : 0,
+    "name" : "Kem Baskin Robbins - Bạch Đằng",
+    "address" : "74 Nguyễn Lương Bằng, Quận Liên Chiểu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dced958a5af421f2d714dd9"), 
+        ObjectId("5dcede1bcbc92c2320564d39"), 
+        ObjectId("5dcee020cbc92c2320564d3d"), 
+        ObjectId("5dcf5dc2fb29290a06fabec1"), 
+        ObjectId("5dcf5e85fb29290a06fabec5")
+    ],
+    "createdAt" : ISODate("2019-11-15T05:20:17.888Z"),
+    "updatedAt" : ISODate("2019-11-16T02:29:25.765Z"),
+    "__v" : 5
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5dce36b8e3557d165a5c7a98"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "categories" : [ 
+        "Café/Dessert"
+    ],
+    "bookmarks" : 0,
+    "name" : "EZI Coffee",
+    "address" : "30 Âu Cơ, Quận Liên Chiểu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcf5f86fb29290a06fabec9"), 
+        ObjectId("5dcf60a7fb29290a06fabece"), 
+        ObjectId("5dcf61affb29290a06fabed3"), 
+        ObjectId("5dcf6262fb29290a06fabed7"), 
+        ObjectId("5dcf637cfb29290a06fabedd")
+    ],
+    "createdAt" : ISODate("2019-11-15T05:25:12.782Z"),
+    "updatedAt" : ISODate("2019-11-16T03:03:27.460Z"),
+    "__v" : 5
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("5dce36d2e3557d165a5c7a99"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "categories" : [ 
+        "Café/Dessert"
+    ],
+    "bookmarks" : 0,
+    "name" : "Trà Sữa Money - Nguyễn Du",
+    "address" : "17 Hà Văn Tính, Quận Liên Chiểu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcf66c7fb29290a06fabee0"), 
+        ObjectId("5dcf67bffb29290a06fabee6"), 
+        ObjectId("5dcf686ffb29290a06fabeea"), 
+        ObjectId("5dcf68bdfb29290a06fabeee"), 
+        ObjectId("5dcf68fafb29290a06fabef1"), 
+        ObjectId("5dcf69cafb29290a06fabef7")
+    ],
+    "createdAt" : ISODate("2019-11-15T05:25:38.994Z"),
+    "updatedAt" : ISODate("2019-11-16T03:15:31.357Z"),
+    "__v" : 6
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("5dce43e4e3557d165a5c7a9a"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt", 
+        "Món Trung Hoa"
+    ],
+    "categories" : [ 
+        "Café/Dessert"
+    ],
+    "bookmarks" : 0,
+    "name" : "Trà Sữa Gong Cha - 貢茶 - Nguyễn Văn Linh",
+    "address" : "25 - 29 Nguyễn Văn Linh, Quận Hải Châu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcf7082fb29290a06fabef9"), 
+        ObjectId("5dcf741d69bd640bfe9c291b"), 
+        ObjectId("5dcf74b769bd640bfe9c2920"), 
+        ObjectId("5dcf753d69bd640bfe9c2924"), 
+        ObjectId("5dcf75b869bd640bfe9c292a")
+    ],
+    "createdAt" : ISODate("2019-11-15T06:21:24.490Z"),
+    "updatedAt" : ISODate("2019-11-16T04:07:30.462Z"),
+    "__v" : 5
+}
+
+/* 5 */
+{
+    "_id" : ObjectId("5dce4711e3557d165a5c7a9b"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Âu"
+    ],
+    "categories" : [ 
+        "Pizza"
+    ],
+    "bookmarks" : 0,
+    "name" : "Pizza Hut - Lê Duẩn",
+    "address" : "319 Lê Duẩn, Quận Hải Châu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcf8c0c69bd640bfe9c292f"), 
+        ObjectId("5dcf8cb669bd640bfe9c2934"), 
+        ObjectId("5dcf8fa769bd640bfe9c293e"), 
+        ObjectId("5dcf900769bd640bfe9c2944")
+    ],
+    "createdAt" : ISODate("2019-11-15T06:34:57.008Z"),
+    "updatedAt" : ISODate("2019-11-16T05:59:36.574Z"),
+    "__v" : 4
+}
+
+/* 6 */
+{
+    "_id" : ObjectId("5dce4771e3557d165a5c7a9c"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "categories" : [ 
+        "Café/Dessert"
+    ],
+    "bookmarks" : 0,
+    "name" : "Highlands Coffee - Indochina",
+    "address" : "Tầng Trệt, Indochina Riverside Towers, 74 Bạch Đằng, P. Hải Châu 1, Quận Hải Châu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcf92c069bd640bfe9c2949"), 
+        ObjectId("5dcf93a669bd640bfe9c2951"), 
+        ObjectId("5dcf940869bd640bfe9c2956"), 
+        ObjectId("5dcf944f69bd640bfe9c2959"), 
+        ObjectId("5dcf948e69bd640bfe9c295c")
+    ],
+    "createdAt" : ISODate("2019-11-15T06:36:33.915Z"),
+    "updatedAt" : ISODate("2019-11-16T06:18:48.326Z"),
+    "__v" : 5
+}
+
+/* 7 */
+{
+    "_id" : ObjectId("5dce492de3557d165a5c7a9d"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Hàn", 
+        "Món Á"
+    ],
+    "categories" : [ 
+        "Ăn vặt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Zé Food - Món Hàn Quốc",
+    "address" : "122 Yên Bái, Quận Hải Châu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcf973569bd640bfe9c2960"), 
+        ObjectId("5dcf985469bd640bfe9c2965"), 
+        ObjectId("5dcf98a569bd640bfe9c2969"), 
+        ObjectId("5dcf98f369bd640bfe9c296d"), 
+        ObjectId("5dcf9a6269bd640bfe9c2971"), 
+        ObjectId("5dcf9ab669bd640bfe9c2975"), 
+        ObjectId("5dcf9b1669bd640bfe9c2979")
+    ],
+    "createdAt" : ISODate("2019-11-15T06:43:57.241Z"),
+    "updatedAt" : ISODate("2019-11-16T06:47:06.980Z"),
+    "__v" : 7
+}
+
+/* 8 */
+{
+    "_id" : ObjectId("5dce6a17271a3a1917d6428e"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Hàn", 
+        "Món Nhật"
+    ],
+    "bookmarks" : 0,
+    "name" : "Xiên Que - Nguyễn Thị Minh Khai",
+    "address" : "138 Nguyễn Thị Minh Khai, Quận Hải Châu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcfa04969bd640bfe9c297d"), 
+        ObjectId("5dcfa16269bd640bfe9c2981"), 
+        ObjectId("5dcfa1a569bd640bfe9c2985"), 
+        ObjectId("5dcfa1e269bd640bfe9c2989"), 
+        ObjectId("5dcfa21f69bd640bfe9c298d"), 
+        ObjectId("5dcfa27c69bd640bfe9c2991"), 
+        ObjectId("5dcfa2d169bd640bfe9c2995"), 
+        ObjectId("5dcfb6d3c9140212359dc127"), 
+        ObjectId("5dcfb741c9140212359dc12b")
+    ],
+    "createdAt" : ISODate("2019-11-15T09:04:23.494Z"),
+    "updatedAt" : ISODate("2019-11-16T08:46:59.049Z"),
+    "__v" : 9
+}
+
+/* 9 */
+{
+    "_id" : ObjectId("5dce6a3f271a3a1917d6428f"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt", 
+        "Món Âu"
+    ],
+    "bookmarks" : 0,
+    "name" : "ABC Bakery - Lê Duẩn",
+    "address" : "132 Lê Duẩn, Quận Hải Châu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcfb801c9140212359dc12f"), 
+        ObjectId("5dcfb8a5c9140212359dc133"), 
+        ObjectId("5dcfb962c9140212359dc138"), 
+        ObjectId("5dcfba06c9140212359dc13f"), 
+        ObjectId("5dcfba96c9140212359dc146"), 
+        ObjectId("5dcfbb02c9140212359dc14a"), 
+        ObjectId("5dcfbba2c9140212359dc151")
+    ],
+    "createdAt" : ISODate("2019-11-15T09:05:03.692Z"),
+    "updatedAt" : ISODate("2019-11-16T09:05:19.350Z"),
+    "__v" : 8
+}
+
+/* 10 */
+{
+    "_id" : ObjectId("5dce6a5e271a3a1917d64290"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Vevy Milktea",
+    "address" : "71 - 73 Phan Châu Trinh, Quận Hải Châu, Đà Nẵng",
+    "menu_info" : [ 
+        ObjectId("5dcfbcfcc9140212359dc155"), 
+        ObjectId("5dcfc243c9140212359dc159"), 
+        ObjectId("5dcfc2b4c9140212359dc15d")
+    ],
+    "createdAt" : ISODate("2019-11-15T09:05:34.477Z"),
+    "updatedAt" : ISODate("2019-11-16T09:35:39.435Z"),
+    "__v" : 3
+}
+
+/* 11 */
+{
+    "_id" : ObjectId("5dce6a79271a3a1917d64291"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Cloudy - Nitrogen Ice Cream & Drinks",
+    "address" : {
+        "address_1" : "91 Phan Châu Trinh",
+        "district" : "Quận Hải Châu",
+        "city" : "Đà Nẵng"
+    },
+    "menu_info" : [],
+    "createdAt" : ISODate("2019-11-15T09:06:01.771Z"),
+    "updatedAt" : ISODate("2019-11-15T09:06:01.771Z"),
+    "__v" : 0
+}
+
+/* 12 */
+{
+    "_id" : ObjectId("5dce6a90271a3a1917d64292"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Tàu Hủ Xe Lam - Trần Phú",
+    "address" : {
+        "address_1" : "176 Trần Phú",
+        "district" : "Quận Hải Châu",
+        "city" : "Đà Nẵng"
+    },
+    "menu_info" : [],
+    "createdAt" : ISODate("2019-11-15T09:06:24.847Z"),
+    "updatedAt" : ISODate("2019-11-15T09:06:24.847Z"),
+    "__v" : 0
+}
+
+/* 13 */
+{
+    "_id" : ObjectId("5dce6ab2271a3a1917d64293"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Popping Tea - Hoàng Hoa Thám - Đà Nẵng",
+    "address" : {
+        "address_1" : "30 - 32 Hoàng Hoa Thám, P. Tân Chính",
+        "district" : "Quận Thanh Khê",
+        "city" : "Đà Nẵng"
+    },
+    "menu_info" : [],
+    "createdAt" : ISODate("2019-11-15T09:06:58.662Z"),
+    "updatedAt" : ISODate("2019-11-15T09:06:58.662Z"),
+    "__v" : 0
+}
+
+/* 14 */
+{
+    "_id" : ObjectId("5dce6acb271a3a1917d64294"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Hàn, Món Á"
+    ],
+    "bookmarks" : 0,
+    "name" : "Maru Food & Drinks - Món Ăn Hàn Quốc",
+    "address" : {
+        "address_1" : "K18/10/06 Trần Bình Trọng",
+        "district" : "Quận Thanh Khê",
+        "city" : "Đà Nẵng"
+    },
+    "menu_info" : [],
+    "createdAt" : ISODate("2019-11-15T09:07:23.669Z"),
+    "updatedAt" : ISODate("2019-11-15T09:07:23.669Z"),
+    "__v" : 0
+}
+
+/* 15 */
+{
+    "_id" : ObjectId("5dce6b3b271a3a1917d64295"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Bubble Tea & Fast Food - Trần Bình Trọng",
+    "address" : {
+        "address_1" : "88 Trần Bình Trọng",
+        "district" : "Quận Hải Châu",
+        "city" : "Đà Nẵng"
+    },
+    "menu_info" : [],
+    "createdAt" : ISODate("2019-11-15T09:09:15.314Z"),
+    "updatedAt" : ISODate("2019-11-15T09:09:15.314Z"),
+    "__v" : 0
+}
+
+/* 16 */
+{
+    "_id" : ObjectId("5dce75ba66beb81a9d29d76f"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Âu"
+    ],
+    "bookmarks" : 0,
+    "name" : "Al Fresco's - Trần Phú",
+    "address" : {
+        "address_1" : "210 Trần Phú",
+        "district" : "Quận Hải Châu",
+        "city" : "Đà Nẵng"
+    },
+    "merchant" : ObjectId("5dcc3bbd862cf31df5617cb0"),
+    "menu_info" : [],
+    "createdAt" : ISODate("2019-11-15T09:54:02.981Z"),
+    "updatedAt" : ISODate("2019-11-15T09:54:02.981Z"),
+    "__v" : 0
+}
+
+/* 17 */
+{
+    "_id" : ObjectId("5dce7f5cd0205b1abbaa5f52"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Zé Food - Thiên Đường Ăn Vặt Online",
+    "address" : {
+        "address_1" : "112/71 Trần Cao Vân",
+        "district" : "Quận Thanh Khê",
+        "city" : "Đà Nẵng"
+    },
+    "merchant" : ObjectId("5dcc3bbd862cf31df5617cb0"),
+    "menu_info" : [ 
+        ObjectId("5dce80d3d0205b1abbaa5f53"), 
+        ObjectId("5dceb8aba5af421f2d714dcd"), 
+        ObjectId("5dceb98ba5af421f2d714dd0"), 
+        ObjectId("5dceba60a5af421f2d714dd3"), 
+        ObjectId("5dcebab3a5af421f2d714dd6")
+    ],
+    "createdAt" : ISODate("2019-11-15T10:35:08.843Z"),
+    "updatedAt" : ISODate("2019-11-15T16:28:16.575Z"),
+    "__v" : 5
+}
+
+/* 18 */
+{
+    "_id" : ObjectId("5dcfcd68c9140212359dc162"),
+    "rating" : {
+        "avg" : 0,
+        "total_review" : 0
+    },
+    "is_open" : true,
+    "cuisines" : [ 
+        "Món Việt"
+    ],
+    "bookmarks" : 0,
+    "name" : "Cơm Tấm Ngon - Ngô Văn Sở",
+    "address" : {
+        "address_1" : "17 Ngô Văn Sở",
+        "district" : "Quận Liên Chiểu",
+        "city" : "Đà Nẵng"
+    },
+    "merchant" : ObjectId("5dcfcc74c9140212359dc161"),
+    "menu_info" : [],
+    "createdAt" : ISODate("2019-11-16T10:20:24.321Z"),
+    "updatedAt" : ISODate("2019-11-16T10:20:24.321Z"),
+    "__v" : 0
+}

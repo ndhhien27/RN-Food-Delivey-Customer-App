@@ -13,7 +13,7 @@ export default function SearchScreen() {
         <SearchBar
           placeholder="Search"
           platform="ios"
-          inputContainerStyle={{ backgroundColor: theme.color.lightGray }}
+          inputContainerStyle={{ backgroundColor: theme.color.gray }}
           containerStyle={{ backgroundColor: null }}
         />
         <Text>Search</Text>

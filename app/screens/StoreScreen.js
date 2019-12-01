@@ -1,71 +1,157 @@
-import React, { useState } from 'react';
-import { View, FlatList, StatusBar, Animated } from 'react-native';
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useContext, useEffect } from 'react';
+import { View, FlatList, Animated, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 import MenuItem from '../components/MenuItem';
 import Banner from '../components/Banner';
 import Header from '../components/Header';
 import { theme } from '../constants/theme';
-
-const { debounce } = require('lodash');
+import { CartContext } from '../context/CartContext';
+import API from '../services/RestaurantService';
 
 function StoreScreen(props) {
+  const { cart, updateCartContext, deleteChildCart } = useContext(CartContext);
   const { navigation } = props;
-  const storeName = navigation.getParam('storeName');
-  const [isLight, setIsLight] = useState(true);
-  // eslint-disable-next-line no-unused-vars
-  const [foods, setFoods] = useState([
-    {
-      id: 1,
-      title: 'Bun',
-      foods: [
-        { id: 1, title: 'Bun cha', price: '10000', is_active: false },
-        { id: 2, title: 'Bun cha', price: '11000', is_active: false },
-        { id: 3, title: 'Bun cha', price: '12000', is_active: false },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Pho',
-      foods: [
-        { id: 4, title: 'Bun cha', price: '13000', is_active: false },
-        { id: 5, title: 'Bun cha', price: '14000', is_active: false },
-        { id: 6, title: 'Bun cha', price: '15000', is_active: false },
-      ],
-    },
-    {
-      id: 3,
-      title: 'Ga',
-      foods: [
-        { id: 7, title: 'Bun cha', price: '16000', is_active: false },
-        { id: 8, title: 'Bun cha', price: '17000', is_active: false },
-      ],
-    },
-    {
-      id: 4,
-      title: 'Lau',
-      foods: [
-        { id: 9, title: 'Bun cha', price: '16000', is_active: false },
-        { id: 10, title: 'Bun cha', price: '17000', is_active: false },
-      ],
-    },
-    {
-      id: 5,
-      title: 'Trang mieng',
-      foods: [
-        { id: 11, title: 'Bun cha', price: '16000', is_active: false },
-        { id: 12, title: 'Bun cha', price: '17000', is_active: false },
-      ],
-    },
-  ]);
-
-  // eslint-disable-next-line no-unused-vars
+  const { storeId, storeName } = navigation.state.params;
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  const [childCart, setChildCart] = useState({
+    storeId,
+    items: [],
+    subtotal: 0,
+    total: 0,
+  });
+  // eslint-disable-next-line no-unused-vars
+  const [restaurantDetail, setRestaurantDetail] = useState([]);
+  useEffect(() => {
+    console.log('callAPI');
+    API.getRestaurantDetail(
+      storeId,
+      res => setRestaurantDetail(res.data.data.restaurantById),
+      err => console.log(err)
+    );
+    if (cart.length === 0)
+      setChildCart({
+        storeId,
+        items: [],
+        subtotal: 0,
+        total: 0,
+      });
+    else {
+      const index = cart.findIndex(el => el.storeId === storeId);
+      if (index !== -1) setChildCart(cart[index]);
+    }
+  }, []);
+  useEffect(() => {
+    updateCartContext(childCart);
+  }, [childCart]);
 
-  const checkStatusBarColor = () => {
-    // eslint-disable-next-line no-underscore-dangle
-    const check = scrollY._value < 120;
-    if (isLight !== check) setIsLight(check);
-    // console.log(check)
+  const increase = item => {
+    setChildCart(prev => {
+      const newItems = prev.items.map(el =>
+        el.foodId !== item.foodId
+          ? { ...el }
+          : { ...el, foodQty: item.foodQty + 1 }
+      );
+      return {
+        ...prev,
+        items: newItems,
+        subtotal: prev.subtotal + item.foodPrice,
+        total: prev.total + item.foodPrice,
+      };
+    });
   };
+
+  const decrease = item => {
+    setChildCart(prev => {
+      const newItems = prev.items.map(el =>
+        el.foodId !== item.foodId
+          ? { ...el }
+          : { ...el, foodQty: item.foodQty - 1 }
+      );
+      const index = newItems.findIndex(el => el.foodQty === 0);
+      if (index !== -1) {
+        newItems.splice(index, 1);
+        const ids = [item.foodId];
+        const test = restaurantDetail.menu_info;
+        test.forEach(function iter(a) {
+          if (ids.includes(a._id)) {
+            a.checked = true;
+          }
+          Array.isArray(a.children) && a.children.forEach(iter);
+        });
+        console.log(test[0]);
+      }
+      return {
+        ...prev,
+        items: newItems,
+        subtotal: prev.subtotal - item.foodPrice,
+        total: prev.total - item.foodPrice,
+      };
+    });
+  };
+
+  const handleItem = item => {
+    item.is_active = !item.is_active;
+    setRestaurantDetail(prev => {
+      return {
+        ...prev,
+        menu_info: prev.menu_info.map(el =>
+          el._id !== item._id ? { ...el, is_active: false } : { ...item }
+        ),
+      };
+    });
+    setChildCart(prevCart => {
+      let afterCart = {};
+      if (!prevCart.items.find(el => el.foodId === item._id)) {
+        afterCart = {
+          ...prevCart,
+          storeId,
+          items: [
+            ...prevCart.items,
+            {
+              foodId: item._id,
+              foodName: item.name,
+              foodPrice: item.price.value,
+              foodQty: 1,
+            },
+          ],
+          subtotal: prevCart.subtotal + item.price.value,
+          total: prevCart.total + item.price.value,
+        };
+      } else {
+        // const index = prevCart.items.findIndex(el => el.foodId === item._id);
+        // const newCartItem = prevCart.items.map(el => {
+        //   return {
+        //     ...el,
+        //   };
+        // });
+        // if (index !== -1) newCartItem.splice(index, 1);
+        const newCartItem = prevCart.items.map(el =>
+          el.foodId !== item._id
+            ? { ...el }
+            : { ...el, foodQty: el.foodQty + 1 }
+        );
+        afterCart = {
+          ...prevCart,
+          items: [...newCartItem],
+          subtotal: prevCart.subtotal + item.price.value,
+          total: prevCart.total + item.price.value,
+        };
+      }
+      // storeCart(afterCart);
+      return afterCart;
+    });
+  };
+
+  // const checkStatusBarColor = () => {
+  //   // eslint-disable-next-line no-underscore-dangle
+  //   const check = scrollY._value < 120;
+  //   if (isLight !== check) setIsLight(check);
+  //   // console.log(check)
+  // };
 
   const headerStyle = scrollY.interpolate({
     inputRange: [0, 150, 260, 262],
@@ -90,58 +176,58 @@ function StoreScreen(props) {
 
   // const { cart, addFoodToCart } = useContext(CartContext)
 
-  // useEffect(() => {
-  //   fetchFood()
-  // }, [])
-
-  // const fetchFood = () => {
-  //   axios({
-  //     url: 'http://localhost:8080/graphql',
-  //     method: 'post',
-  //     data: {
-  //       query: `
-  //         query FoodByCategory($categoryId: ID!) {
-  //           foodByCategory(categoryId: $categoryId){
-  //             _id
-  //             title
-  //             price
-  //           }
-  //         }
-  //       `,
-  //       variables: {
-  //         categoryId: categoryId
-  //       }
-  //     }
-  //   }).then((result) => {
-  //     setFoods(result.data.data.foodByCategory)
-  //   }).catch((err) => console.log(err));
-  // }
-
-  // console.log(scrollY)
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar
+      {/* <StatusBar
         animated
         barStyle={isLight ? 'light-content' : 'dark-content'}
-      />
+      /> */}
       <FlatList
-        data={foods}
+        data={restaurantDetail.menu_info}
         scrollEventThrottle={16}
         contentContainerStyle={{ paddingBottom: 44 }}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { listener: debounce(checkStatusBarColor, 16) }
-        )}
+        // onScroll={Animated.event(
+        //   [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        //   { listener: debounce(checkStatusBarColor, 16) }
+        // )}
+        onScroll={Animated.event([
+          { nativeEvent: { contentOffset: { y: scrollY } } },
+        ])}
         renderItem={({ item }) => (
-          <MenuItem menu={item} storeName={storeName} />
+          <MenuItem
+            menu={item}
+            storeId={storeId}
+            handleItem={handleItem}
+            childCart={childCart}
+            increase={increase}
+            decrease={decrease}
+          />
         )}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={item => `${item._id}`}
         // contentContainerStyle={styles.container}
         ListHeaderComponent={
           <Banner
-            storeName={navigation.state.params.storeName}
-            foods={foods[1]}
+            storeName={restaurantDetail.name}
+            address={restaurantDetail.address}
+            // foods={foods[1]}
           />
+        }
+      />
+      <Button
+        title={`Add to Order (${childCart.total})`}
+        titleStyle={styles.titleBtn}
+        buttonStyle={styles.orderBtn}
+        activeOpacity={0.5}
+        containerStyle={{ paddingHorizontal: 16 }}
+        onPress={() =>
+          navigation.navigate('Cart', {
+            cart: childCart,
+            storeName,
+            increase,
+            decrease,
+            address: restaurantDetail.address,
+            storeId,
+          })
         }
       />
       <Header
@@ -150,10 +236,25 @@ function StoreScreen(props) {
           borderStyle,
           backBtnStyle,
         }}
-        storeName={storeName}
+        storeName={restaurantDetail.name}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  orderBtn: {
+    backgroundColor: theme.color.primary,
+    position: 'absolute',
+    bottom: 30,
+    width: '100%',
+    borderRadius: theme.radius.xs,
+    height: 44,
+  },
+  titleBtn: {
+    fontFamily: theme.text.fonts.sfpt,
+    fontSize: theme.text.size.md,
+  },
+});
 
 export default StoreScreen;

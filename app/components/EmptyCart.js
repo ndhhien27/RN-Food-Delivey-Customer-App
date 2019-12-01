@@ -30,13 +30,13 @@ export default function EmptyCart() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.color.lightestGray,
+    backgroundColor: theme.color.lightGray,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
-    color: theme.color.gray,
+    color: theme.color.darkGray,
     fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 24,
     marginTop: 50,

@@ -34,7 +34,11 @@ function CategoryWithIcon(props) {
           <View style={{ marginRight: 16 }}>
             <TouchableOpacity
               activeOpacity={0.5}
-              onPress={() => props.navigation.navigate('StoreByCategory')}
+              onPress={() =>
+                props.navigation.navigate('StoreByCategory', {
+                  query: item.name,
+                })
+              }
             >
               <View style={styles.imgContainer}>
                 <Image source={item.uri} style={styles.img} />
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: theme.text.fonts.sfpt,
-    fontSize: theme.text.size.base,
+    fontSize: theme.text.size.md,
   },
 });
 

@@ -7,6 +7,8 @@ export const image = {
   delete: require('../assets/delete.png'),
   ft: require('../assets/FT1.png'),
   banner: require('../assets/Banner.png'),
+  bg: require('../assets/img/bg.png'),
+  loginBg: require('../assets/img/loginBg.png'),
   categoryImg: {
     chicken: require('../assets/chicken-legW.png'),
     cake: require('../assets/cupcakeW.png'),

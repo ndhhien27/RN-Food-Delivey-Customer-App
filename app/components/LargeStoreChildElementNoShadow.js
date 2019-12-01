@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   img: {
     width: 88,
     height: 88,
-    borderRadius: 8,
+    borderRadius: theme.radius.xs,
   },
   detailContainer: {
     flexDirection: 'column',
@@ -72,14 +72,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 17,
+    fontSize: theme.text.size.md,
     fontFamily: theme.text.fonts['sfpt-medium'],
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: theme.text.size.sm,
     fontFamily: theme.text.fonts.sfpt,
-    color: theme.color.gray,
-    paddingVertical: 5,
+    color: theme.color.darkGray,
+    paddingVertical: theme.space['2xs'],
   },
 });
 

@@ -26,14 +26,13 @@ function Address(props) {
       {listAddress.map(item => (
         <ListItem
           key={`${item.id}`}
-          title={item.type}
-          subtitle={item.info}
+          subtitle={item.address}
           bottomDivider
           containerStyle={{ paddingHorizontal: 0 }}
           titleStyle={{
             fontSize: 16,
             fontFamily: theme.text.fonts.sfpt,
-            color: theme.color.gray,
+            color: theme.color.darkGray,
           }}
           subtitleStyle={{
             fontSize: 18,
