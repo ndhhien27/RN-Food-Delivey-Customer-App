@@ -2,12 +2,9 @@ import Axios from 'axios';
 import request from './request';
 import { API_URL } from './api_contants';
 
-const createOrder = (orderDetail, resCallback, errCallback) => {
-  Axios({
-    url: API_URL,
-    method: 'POST',
-    data: {
-      query: `
+const createOrder = orderDetail => {
+  const data = {
+    query: `
       mutation Order($orderInput: OrderInput!){
         createOrder(orderInput: $orderInput){
           _id
@@ -21,37 +18,32 @@ const createOrder = (orderDetail, resCallback, errCallback) => {
         }
       }
       `,
-      variables: {
-        orderInput: {
-          restaurant: orderDetail.storeId,
-          delivery_address: orderDetail.deliveryAddress,
-          user: orderDetail.userId,
-          subtotal: orderDetail.subtotal,
-          total: orderDetail.total,
-          items: orderDetail.items.map(el => {
-            return {
-              food: el.foodId,
-              qty: el.foodQty,
-            };
-          }),
-          payment: {
-            paymentType: orderDetail.paymentType,
-            detail: orderDetail.paymentInfo,
-          },
+    variables: {
+      orderInput: {
+        restaurant: orderDetail.restaurantId,
+        delivery_address: orderDetail.deliveryAddress,
+        user: orderDetail.userId,
+        subtotal: orderDetail.subtotal,
+        total: orderDetail.total,
+        items: orderDetail.items.map(el => {
+          return {
+            food: el.foodId,
+            qty: el.foodQty,
+          };
+        }),
+        payment: {
+          paymentType: orderDetail.paymentType,
+          detail: orderDetail.paymentInfo,
         },
       },
     },
-  })
-    .then(resCallback)
-    .catch(errCallback);
+  };
+  return request({ url: '/graphql', method: 'post', data });
 };
 
-const getOrderByUser = (userId, resCb, errCb) => {
-  Axios({
-    url: API_URL,
-    method: 'post',
-    data: {
-      query: `
+const getOrderByUser = userId => {
+  const data = {
+    query: `
         query GetOrder($userId: ID!){
           orderByUser(userId: $userId){
             _id
@@ -79,13 +71,11 @@ const getOrderByUser = (userId, resCb, errCb) => {
           }
         }
       `,
-      variables: {
-        userId,
-      },
+    variables: {
+      userId,
     },
-  })
-    .then(resCb)
-    .catch(errCb);
+  };
+  return request({ url: '/graphql', method: 'post', data });
 };
 export default {
   createOrder,

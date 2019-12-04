@@ -53,7 +53,7 @@ const signup = (userInput, resCallback, errCallback) => {
     .catch(errCallback);
 };
 
-const login2 = ({ email, password }) => {
+const login2 = (email, password) => {
   console.log(email, password);
   const data = {
     query: `

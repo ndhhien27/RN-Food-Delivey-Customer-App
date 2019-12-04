@@ -3,22 +3,16 @@ import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native';
 import { Icon, Button, Divider } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
+import { useSelector } from 'react-redux';
 import { theme } from '../constants/theme';
-import CostDetail from './CostDetail';
-import CartItem from './CartItem';
-import { CartContext } from '../context/CartContext';
+import CostDetail from '../components/CostDetail';
+import CartItem from '../components/CartItem';
 
 function NormalCart(props) {
-  const { storeName, navigation } = props;
+  const { storeName, navigation, localCartIndex } = props;
   const { address } = navigation.state.params;
-  const [cartIndex, setCartIndex] = useState(0);
-  useEffect(() => {
-    setCartIndex(
-      cart.findIndex(el => el.storeId === navigation.state.params.cart.storeId)
-    );
-  }, []);
-  const { cart } = useContext(CartContext);
-  console.log('PR', cart[cartIndex].items);
+  // const [cartIndex, setCartIndex] = useState(0);
+  const globalCart = useSelector(state => state.cartReducer.cart);
   return (
     <View>
       <View style={styles.shadow}>
@@ -45,29 +39,32 @@ function NormalCart(props) {
                 borderRadius: 12,
               }}
             >
-              <Text style={{ color: '#fff', fontSize: 16 }}>{cartIndex}</Text>
+              <Text style={{ color: '#fff', fontSize: 16 }}>
+                {localCartIndex}
+              </Text>
             </View>
           </View>
-          {cartIndex !== -1 && (
-            <FlatList
-              data={cart[cartIndex].items}
-              renderItem={({ item }) => (
-                <CartItem
-                  item={item}
-                  increase={() => navigation.state.params.increase(item)}
-                  decrease={() => navigation.state.params.decrease(item)}
-                  qty={item.foodQty}
-                />
-              )}
-              keyExtractor={item => `item${item.foodId}`}
-              contentContainerStyle={styles.list}
-            />
-          )}
+          <FlatList
+            data={globalCart[localCartIndex].items}
+            renderItem={({ item }) => (
+              <CartItem
+                item={item}
+                increase={() => navigation.state.params.increase(item)}
+                decrease={() => navigation.state.params.decrease(item)}
+                qty={item.foodQty}
+              />
+            )}
+            keyExtractor={item => `item${item.foodId}`}
+            contentContainerStyle={styles.list}
+          />
         </View>
       </View>
       <SafeAreaView style={styles.total}>
-        <CostDetail title="SubTotal" price={cart[cartIndex].subtotal} />
-        <CostDetail title="Delivery" price={cart[cartIndex].total} />
+        <CostDetail
+          title="SubTotal"
+          price={globalCart[localCartIndex].subtotal}
+        />
+        <CostDetail title="Delivery" price={globalCart[localCartIndex].total} />
         <Divider style={{ backgroundColor: theme.color.darkGray }} />
         <CostDetail
           title="Total"
@@ -86,7 +83,7 @@ function NormalCart(props) {
             marginTop: 16,
           }}
           activeOpacity={0.5}
-          onPress={() => navigation.navigate('Checkout', { cartIndex })}
+          onPress={() => navigation.navigate('Checkout', { localCartIndex })}
         />
       </SafeAreaView>
     </View>

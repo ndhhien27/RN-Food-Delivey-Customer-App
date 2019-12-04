@@ -1,16 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { Text, StyleSheet, View, ImageBackground } from 'react-native';
+import { connect } from 'react-redux';
 import { Input, Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-community/async-storage';
+import { bindActionCreators } from 'redux';
 import { theme } from '../../constants/theme';
 import { image } from '../../constants/images';
+import { fetchAllRestaurant } from '../../actions/index';
 
-export default function WelCome(props) {
+function WelCome(props) {
   const { navigation } = props;
   const checkAuthtoken = async () => {
     await AsyncStorage.getItem('@auth_token');
   };
+  // useEffect(() => {
+  //   props.fetchAllRestaurant();
+  // }, []);
+  // console.log(props.restaurantList);
   return (
     <ImageBackground style={styles.container} source={image.bg}>
       <LinearGradient
@@ -58,3 +66,23 @@ WelCome.navigationOptions = () => {
     header: null,
   };
 };
+
+function mapStateToProps(state) {
+  return {
+    restaurantList: state.restaurantReducer.fullList,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      fetchAllRestaurant,
+    },
+    dispatch
+  );
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WelCome);

@@ -90,11 +90,30 @@ const OrderStack = createStackNavigator(
     },
   },
   {
-    navigationOptions: () => {
+    defaultNavigationOptions: ({ navigation }) => {
       return {
-        tabBarLabel: 'Order',
+        headerBackImage: (
+          <Button
+            icon={
+              <Icon
+                type="material-community"
+                name="arrow-left"
+                color={theme.color.primary}
+                size={28}
+              />
+            }
+            onPress={() => navigation.goBack()}
+            buttonStyle={{
+              backgroundColor: null,
+            }}
+          />
+        ),
       };
     },
+    headerBackTitleVisible: false,
+    navigationOptions: () => ({
+      tabBarLabel: 'Order',
+    }),
   }
 );
 
@@ -188,7 +207,7 @@ const AuthStack = createStackNavigator(
         };
       },
     },
-    MapScreen: {
+    Map: {
       screen: MapStack,
     },
   },

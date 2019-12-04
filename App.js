@@ -2,10 +2,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, YellowBox } from 'react-native';
 import { createAppContainer } from 'react-navigation';
+import { Provider } from 'react-redux';
 import AppSwitch from './AppNavigator';
 import CartProvider from './app/context/CartContext';
-import { getActiveRoute } from './app/services/NavigationService';
+// import { getActiveRoute } from './app/services/NavigationService';
 import AuthProvider from './app/context/AuthContext';
+import store from './app/store';
+import { setTopLevelNavigator } from './app/services/NavigationService';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
@@ -33,11 +36,17 @@ export default function App() {
   //   </CartProvider>
   // );
   return (
-    <AuthProvider>
-      <CartProvider>
-        <AppContainer />
-      </CartProvider>
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <CartProvider>
+          <AppContainer
+            ref={navigatorRef => {
+              setTopLevelNavigator(navigatorRef);
+            }}
+          />
+        </CartProvider>
+      </AuthProvider>
+    </Provider>
   );
 }
 

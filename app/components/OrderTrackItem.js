@@ -11,7 +11,11 @@ function OrderTrackItem(props) {
     <TouchableOpacity
       style={styles.shadow}
       activeOpacity={0.5}
-      onPress={() => navigation.navigate('OrderDetailScreen')}
+      onPress={() =>
+        navigation.navigate('OrderDetailScreen', {
+          deliveryAddress: orderItem.delivery_address,
+        })
+      }
     >
       <View style={styles.contentContainer}>
         <View style={{ width: '90%' }}>

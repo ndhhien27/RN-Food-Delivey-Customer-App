@@ -1,6 +1,25 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { NavigationActions } from 'react-navigation';
 import IconWithBadge from '../components/IconWithBadge';
+
+let _navigator;
+
+export function setTopLevelNavigator(navigatorRef) {
+  _navigator = navigatorRef;
+}
+
+export function navigate(routeName, params) {
+  _navigator.dispatch(
+    NavigationActions.navigate({
+      routeName,
+      params,
+    })
+  );
+}
+
+// add other navigation functions that you need and export them
 
 export function getActiveRoute(navigationState) {
   if (!navigationState) {

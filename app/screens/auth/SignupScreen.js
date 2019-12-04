@@ -2,16 +2,14 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ActivityIndicator,
-  ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  TextInput,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Formik } from 'formik';
@@ -66,7 +64,7 @@ const validationSchema = yup.object().shape({
   }),
 });
 
-export default function SignupScreen({ onPress, data, navigation }) {
+export default function SignupScreen({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{ marginTop: 56, paddingHorizontal: 16, flex: 1 }}>
@@ -142,7 +140,7 @@ export default function SignupScreen({ onPress, data, navigation }) {
                   formikKey="position.address"
                   editable={false}
                   onTouchStart={() =>
-                    navigation.navigate('MapScreen', {
+                    navigation.navigate('Login', {
                       formikProps,
                       formikKey: 'position.address',
                       latKey: 'position.lat',
@@ -151,6 +149,22 @@ export default function SignupScreen({ onPress, data, navigation }) {
                   }
                   placeholder="Address"
                   defaultValue={formikProps.values.position.address}
+                />
+                {formikProps.errors.position ? (
+                  <Text>
+                    {formikProps.touched.position.address &&
+                      formikProps.errors.position.address}
+                  </Text>
+                ) : null}
+                <Button
+                  onPress={() =>
+                    navigation.navigate('Map', {
+                      formikProps,
+                      formikKey: 'position.address',
+                      latKey: 'position.lat',
+                      longKey: 'position.long',
+                    })
+                  }
                 />
                 <Text>{formikProps.values.position.lat}</Text>
                 <Text>{formikProps.values.position.long}</Text>

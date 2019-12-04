@@ -7,17 +7,18 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { ListItem, Button, Overlay, Icon } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux';
 import { theme } from '../../constants/theme';
 import OrderModal from './OrderModal';
-import { CartContext } from '../../context/CartContext';
-import { AuthContext } from '../../context/AuthContext';
 import API from '../../services/OrderService';
+import { createOrder } from '../../actions/orderActions';
 
 export default function CheckoutScreen({ navigation }) {
-  const { cartIndex } = navigation.state.params;
+  const { localCartIndex } = navigation.state.params;
   const [isVisible, setIsVisible] = useState(false);
-  const { cart } = useContext(CartContext);
-  const { authInfo } = useContext(AuthContext);
+  const globalCart = useSelector(state => state.cartReducer.cart);
+  const userId = useSelector(state => state.authReducer.userId);
+  const dispatch = useDispatch();
   const [paymentInfo, setpaymentInfo] = useState({
     deliveryAddress: '',
     paymentType: '',
@@ -78,7 +79,7 @@ export default function CheckoutScreen({ navigation }) {
     ],
   });
 
-  console.log(cart[cartIndex]);
+  console.log(globalCart[localCartIndex]);
   const selectAddress = item => {
     // eslint-disable-next-line no-param-reassign
     item.isSelect = !item.isSelect;
@@ -235,14 +236,12 @@ export default function CheckoutScreen({ navigation }) {
             }}
             onPress={() => {
               toggleModal();
-              API.createOrder(
-                {
-                  ...authInfo,
+              dispatch(
+                createOrder({
+                  userId,
                   ...paymentInfo,
-                  ...cart[cartIndex],
-                },
-                res => console.log(res.data),
-                err => console.log(err)
+                  ...globalCart[localCartIndex],
+                })
               );
             }}
           />

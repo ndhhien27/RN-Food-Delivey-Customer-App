@@ -4,21 +4,26 @@
 import React from 'react';
 import { Input } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import FieldWrapper from './FieldWrapper';
 import { theme } from '../constants/theme';
+
+const InputAnimated = Animatable.createAnimatableComponent(Input);
 
 const StyledInput = ({ formikProps, formikKey, ...rest }) => {
   return (
     <FieldWrapper formikKey={formikKey} formikProps={formikProps}>
-      <Input
+      <InputAnimated
+        animation={
+          formikProps.touched[formikKey] && formikProps.errors[formikKey]
+            ? 'shake'
+            : null
+        }
+        delay={1500}
         placeholderTextColor={theme.color.darkGray}
         onChangeText={formikProps.handleChange(formikKey)}
         onBlur={formikProps.handleBlur(formikKey)}
-        containerStyle={
-          formikProps.touched[formikKey] && formikProps.errors[formikKey]
-            ? styles.error
-            : styles.normal
-        }
+        containerStyle={styles.normal}
         inputContainerStyle={{
           borderBottomColor: 'transparent',
           height: 44,

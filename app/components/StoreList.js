@@ -66,7 +66,7 @@ class StoreList extends React.Component {
                 onPress={() =>
                   this.props.navigation.navigate('Store', {
                     storeName: item.name,
-                    storeId: item._id,
+                    restaurantId: item._id,
                   })
                 }
               />

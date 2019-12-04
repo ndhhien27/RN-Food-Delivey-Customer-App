@@ -1,17 +1,16 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-alert */
 /* eslint-disable no-undef */
 import React, { useContext } from 'react';
 import { Text, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Formik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-community/async-storage';
 import { theme } from '../../constants/theme';
-import { image } from '../../constants/images';
 import StyledInput from '../../components/StyledInput';
-import API from '../../services/AuthService';
-import UserService from '../../services/UserService';
-import { AuthContext } from '../../context/AuthContext';
+import { login } from '../../actions/index';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -28,13 +27,16 @@ const validationSchema = yup.object().shape({
 
 export default function LoginScreen(props) {
   const { navigation } = props;
-  const { storeAuthContext, authInfo, storeUserContext } = useContext(
-    AuthContext
-  );
+  // const { storeAuthContext, authInfo, storeUserContext } = useContext(
+  //   AuthContext
+  // );
+  const authInfo = useSelector(state => state.authReducer.authToken);
+  const isLoading = useSelector(state => state.uiReducer.isLoading);
+  const dispatch = useDispatch();
   return (
     <View style={{ paddingHorizontal: 16, marginTop: 88 }}>
-      <View>
-        <Text>WelCome back</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>WelCome back</Text>
       </View>
       <Formik
         initialValues={{
@@ -42,19 +44,15 @@ export default function LoginScreen(props) {
           password: 'hien123456',
         }}
         onSubmit={(values, actions) => {
-          API.login2(
-            values,
-            res => {
-              console.log(res.data);
-              // actions.setSubmitting(false);
-              // if (res.data.errors) alert(`${res.data.errors[0].message}`);
-              // else if (res.data.data.login) {
-              //   storeAuthContext(res.data.data.login);
-              //   navigation.navigate('Main');
-              // }
-            },
-            err => console.log(err)
-          );
+          dispatch(login(values.email, values.password));
+          // API.login2(values).then(res => {
+          //   if (res.errors) alert(res.errors.message);
+          //   else if (res.data.login) {
+          //     // navigation.navigate('Main');
+          //     actions.setSubmitting(false);
+          //   }
+          // });
+          actions.setSubmitting(false);
         }}
         validationSchema={validationSchema}
       >
@@ -74,8 +72,8 @@ export default function LoginScreen(props) {
                 secureTextEntry
               />
             </View>
-            {formikProps.isSubmitting ? (
-              <ActivityIndicator size={30} />
+            {isLoading ? (
+              <ActivityIndicator size={44} style={{ marginVertical: 40 }} />
             ) : (
               <Button
                 title="Login"
@@ -116,6 +114,14 @@ const styles = StyleSheet.create({
     fontFamily: theme.text.fonts.sfpt,
     fontSize: 20,
     color: theme.color.primary,
+  },
+  title: {
+    fontFamily: theme.text.fonts['sfpd-bold'],
+    fontSize: theme.text.size['2xl'],
+  },
+  titleContainer: {
+    alignItems: 'center',
+    paddingVertical: 40,
   },
 });
 

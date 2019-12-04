@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect } from 'react';
 import { View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { CartContext } from '../context/CartContext';
-import NormalCart from '../components/NormalCart';
+import NormalCart from './NormalCart';
 import EmptyCart from '../components/EmptyCart';
 import { theme } from '../constants/theme';
 
@@ -16,20 +17,22 @@ function CartScreen({ navigation }) {
   // })
 
   // const { cart } = useContext(CartContext);
-  const { storeName, increase, storeId } = navigation.state.params;
-  const [state, setstate] = useState(0);
-  const { cart } = useContext(CartContext);
-  useEffect(() => {
-    const index = cart.findIndex(el => el.storeId === storeId);
-    setstate(index);
-  }, []);
+  const { storeName, increase, localCartIndex } = navigation.state.params;
+  // const [state, setstate] = useState(0);
+  // const { cart } = useContext(CartContext);
+  const cart = useSelector(state => state.cartReducer.cart);
+  // useEffect(() => {
+  //   const index = cart.findIndex(el => el.restaurantId === restaurantId);
+  //   setstate(index);
+  // }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.color.lightGray }}>
-      {cart[state].items.length === 0 && <EmptyCart />}
-      {cart[state].items.length > 0 && (
+      {cart[localCartIndex].items.length === 0 && <EmptyCart />}
+      {cart[localCartIndex].items.length > 0 && (
         <NormalCart
           // cart={cart}
+          localCartIndex={localCartIndex}
           storeName={storeName}
           increase={() => increase()}
         />

@@ -13,7 +13,7 @@ export default function FoodItem(props) {
       title={item.name}
       titleStyle={styles.title}
       subtitle={item.price.value}
-      subtitleStyle={styles.subtitle}
+      subtitleStyle={styles.subtitleSty}
       bottomDivider
       checkmark={{
         color: theme.color.primary,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.text.fonts.sfpt,
     fontSize: theme.text.size.md,
   },
-  subtitle: {
+  subtitleSty: {
     fontFamily: theme.text.fonts.sfpt,
     fontSize: theme.text.size.sm,
     color: theme.color.darkGray,

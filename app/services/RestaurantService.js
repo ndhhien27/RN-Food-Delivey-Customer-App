@@ -1,4 +1,5 @@
 import axios from 'axios';
+import request from './request';
 import { API_URL } from './api_contants';
 
 const getRestaurants = (resCallback, errCallBack) => {
@@ -55,12 +56,9 @@ const getRestaurantDetail = (restaurantId, resCb, errCb) => {
     .catch(errCb);
 };
 
-const searchRestaurant = (queryInput, resCallback, errCallBack) => {
-  axios({
-    url: API_URL,
-    method: 'post',
-    data: {
-      query: `
+const searchRestaurant = queryInput => {
+  const data = {
+    query: `
             query Search($query: String!){
               searchRestaurant(query: $query){
                 _id
@@ -69,13 +67,11 @@ const searchRestaurant = (queryInput, resCallback, errCallBack) => {
               }
             }
           `,
-      variables: {
-        query: queryInput,
-      },
+    variables: {
+      query: queryInput,
     },
-  })
-    .then(resCallback)
-    .catch(errCallBack);
+  };
+  return request({ url: '/graphql', method: 'post', data });
 };
 
 const getFoods = (queryInput, resCallback, errCallBack) => {
@@ -130,12 +126,59 @@ const getMenu = (restaurantId, resCallback, errCallback) => {
     .catch(errCallback);
 };
 
+const getRestaurantsWithSaga = () => {
+  console.log('calling');
+  const data = {
+    query: `
+      query {
+        restaurants{
+          _id
+          name
+          address
+        }
+      }
+    `,
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
+const getRestaurantDetailWithSaga = restaurantId => {
+  const data = {
+    query: `
+            query RestaurantInfo($restaurantId: ID!) {
+              restaurantById(restaurantId: $restaurantId){
+                address
+                name
+                menu_info{
+                  _id
+                  name
+                  foods{
+                    _id
+                    is_active
+                    name
+                    price{
+                      value
+                    }
+                  }
+                }
+              }
+            }
+          `,
+    variables: {
+      restaurantId,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
 export default {
   getRestaurants,
   getFoods,
   getMenu,
   getRestaurantDetail,
   searchRestaurant,
+  getRestaurantsWithSaga,
+  getRestaurantDetailWithSaga,
 };
 
 // AIzaSyDbGSMJEdxu7ajQyHA5F1b0mOalhnHxzTQ

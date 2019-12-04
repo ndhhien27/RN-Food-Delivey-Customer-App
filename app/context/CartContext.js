@@ -51,13 +51,13 @@ export default function CartProvider(props) {
   //   console.log('store');
   // }, [cart]);
 
-  const addFoodToCart = (food, storeId) => {
+  const addFoodToCart = (food, restaurantId) => {
     setCart(prevCart => {
       let afterCart = {};
       if (!prevCart.cartItem.find(item => item.foodId === food._id)) {
         afterCart = {
           ...prevCart,
-          storeId,
+          restaurantId,
           cartItem: [
             ...prevCart.cartItem,
             {
@@ -85,16 +85,16 @@ export default function CartProvider(props) {
   };
 
   const deleteChildCart = newCart => {
-    const index = cart.findIndex(el => el.storeId === newCart.storeId);
+    const index = cart.findIndex(el => el.restaurantId === newCart.restaurantId);
     const newCartContext = [...cart];
     newCartContext.splice(index, 1);
     setCart(newCartContext);
   };
 
   const updateCartContext = newCart => {
-    // const index = cart.find(el => el.storeId === newCart.storeId);
+    // const index = cart.find(el => el.restaurantId === newCart.restaurantId);
     const newCartContext = produce(cart, draft => {
-      const index = cart.findIndex(el => el.storeId === newCart.storeId);
+      const index = cart.findIndex(el => el.restaurantId === newCart.restaurantId);
       if (index !== -1) draft[index] = newCart;
       else draft.push({ ...newCart });
     });

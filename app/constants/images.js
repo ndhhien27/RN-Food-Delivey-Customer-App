@@ -18,4 +18,12 @@ export const image = {
     noodle: require('../assets/noodlesW.png'),
     riceW: require('../assets/riceW.png'),
   },
+  orderImg: {
+    order: require('../assets/img/bill-small.png'),
+    payment: require('../assets/img/payment-method.png'),
+    delivering: require('../assets/img/motorcycle.png'),
+    delivered: require('../assets/img/package.png'),
+    address: require('../assets/img/home.png'),
+    star: require('../assets/img/star.png'),
+  },
 };

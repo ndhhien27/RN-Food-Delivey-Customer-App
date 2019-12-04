@@ -7,8 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 import { theme } from '../constants/theme';
 
 function Profile(props) {
-  const { userInfo } = useContext(AuthContext);
-  const { navigation } = props;
+  const { navigation, userInfo } = props;
   return (
     <View
       style={{

@@ -1,14 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
+import ContentLoader, { Rect } from 'react-content-loader/native';
+import { useSelector } from 'react-redux';
 // import { CartContext } from '../context/CartContext';
 import { theme } from '../constants/theme';
 import FoodItem from './FoodItem';
 
 function MenuItem(props) {
   // const { cart, addFoodToCart } = useContext(CartContext);
-  const { menu, storeId } = props;
-
+  const { menu, restaurantId } = props;
+  const isLoading = useSelector(state => state.uiReducer.isLoading);
   return (
     <View style={{ paddingLeft: 16 }}>
       <FlatList
@@ -16,7 +18,7 @@ function MenuItem(props) {
         renderItem={({ item }) => (
           <FoodItem
             item={item}
-            storeId={storeId}
+            restaurantId={restaurantId}
             handleItem={props.handleItem}
           />
         )}

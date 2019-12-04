@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
+import { View, Animated, StyleSheet, Platform } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
@@ -13,7 +13,7 @@ function Header(props) {
       style={{
         backgroundColor: style.headerStyle,
         // backgroundColor: 'red',
-        height: 56,
+        height: Platform.OS === 'ios' ? 88 : 56,
         justifyContent: 'flex-end',
         borderBottomWidth: style.borderStyle,
         position: 'absolute',

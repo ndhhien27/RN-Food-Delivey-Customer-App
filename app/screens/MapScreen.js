@@ -20,8 +20,6 @@ import {
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationActions } from 'react-navigation';
 import { theme } from '../constants/theme';
 
 const MapStyle = [

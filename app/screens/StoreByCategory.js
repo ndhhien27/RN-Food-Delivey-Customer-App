@@ -3,23 +3,26 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ImageBackground, Dimensions } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-native-modal';
 import StoreListByCategory from '../components/StoreListByCategory';
 import { theme } from '../constants/theme';
 import FilterModal from './FilterModal';
 import RestaurantService from '../services/RestaurantService';
+import restaurantReducer from '../reducers/restaurantReducer';
+import { search } from '../actions';
 
 export default function StoreByCategory(props) {
   const { navigation } = props;
   const [storeList, setStoreList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const searchResult = useSelector(
+    state => state.restaurantReducer.searchResult
+  );
+  const dispatch = useDispatch();
   const toggleModal = () => setModalVisible(!modalVisible);
   useEffect(() => {
-    RestaurantService.searchRestaurant(
-      navigation.state.params.query,
-      res => setStoreList(res.data.data.searchRestaurant),
-      err => console.log(err)
-    );
+    dispatch(search(navigation.state.params.query));
     navigation.setParams({ toggleModal });
   }, []);
   const devideHeight = Dimensions.get('window').height;
@@ -38,7 +41,7 @@ export default function StoreByCategory(props) {
         <Text>Image</Text>
       </ImageBackground>
       <View style={{ flex: 1, marginTop: 16 }}>
-        <StoreListByCategory data={storeList} />
+        <StoreListByCategory data={searchResult} />
       </View>
       <Modal
         isVisible={modalVisible}

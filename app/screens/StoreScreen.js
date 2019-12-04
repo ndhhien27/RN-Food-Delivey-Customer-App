@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
@@ -5,48 +7,50 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, FlatList, Animated, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
 import MenuItem from '../components/MenuItem';
 import Banner from '../components/Banner';
 import Header from '../components/Header';
 import { theme } from '../constants/theme';
 import { CartContext } from '../context/CartContext';
 import API from '../services/RestaurantService';
+import { fetchRestaurantById } from '../actions/index';
+import { modifyCart } from '../actions/cartActions';
+import StoreLoading from '../components/StoreLoading';
 
 function StoreScreen(props) {
-  const { cart, updateCartContext, deleteChildCart } = useContext(CartContext);
   const { navigation } = props;
-  const { storeId, storeName } = navigation.state.params;
+  const { restaurantId, storeName } = navigation.state.params;
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
   const [childCart, setChildCart] = useState({
-    storeId,
+    restaurantId,
     items: [],
     subtotal: 0,
     total: 0,
   });
+  const restaurantInfo = useSelector(
+    state => state.restaurantReducer.restaurantInfo
+  );
+  const isLoading = useSelector(state => state.uiReducer.isLoading);
+  const globalCart = useSelector(state => state.cartReducer.cart);
+  const localCartIndex = useSelector(state =>
+    selectCartIndex(state, restaurantId)
+  );
+  const dispatch = useDispatch();
+  const fetchRestaurantInfo = () => dispatch(fetchRestaurantById(restaurantId));
+  const modifyCurrentCart = () => dispatch(modifyCart(childCart));
   // eslint-disable-next-line no-unused-vars
-  const [restaurantDetail, setRestaurantDetail] = useState([]);
   useEffect(() => {
+    fetchRestaurantInfo();
     console.log('callAPI');
-    API.getRestaurantDetail(
-      storeId,
-      res => setRestaurantDetail(res.data.data.restaurantById),
-      err => console.log(err)
-    );
-    if (cart.length === 0)
-      setChildCart({
-        storeId,
-        items: [],
-        subtotal: 0,
-        total: 0,
-      });
-    else {
-      const index = cart.findIndex(el => el.storeId === storeId);
-      if (index !== -1) setChildCart(cart[index]);
-    }
+    if (localCartIndex >= 0) setChildCart(globalCart[localCartIndex]);
   }, []);
   useEffect(() => {
-    updateCartContext(childCart);
+    modifyCurrentCart();
   }, [childCart]);
+
+  // console.log('store', _.isEmpty(restaurantInfo));
 
   const increase = item => {
     setChildCart(prev => {
@@ -74,15 +78,7 @@ function StoreScreen(props) {
       const index = newItems.findIndex(el => el.foodQty === 0);
       if (index !== -1) {
         newItems.splice(index, 1);
-        const ids = [item.foodId];
-        const test = restaurantDetail.menu_info;
-        test.forEach(function iter(a) {
-          if (ids.includes(a._id)) {
-            a.checked = true;
-          }
-          Array.isArray(a.children) && a.children.forEach(iter);
-        });
-        console.log(test[0]);
+        // console.log(test[0]);
       }
       return {
         ...prev,
@@ -94,21 +90,21 @@ function StoreScreen(props) {
   };
 
   const handleItem = item => {
-    item.is_active = !item.is_active;
-    setRestaurantDetail(prev => {
-      return {
-        ...prev,
-        menu_info: prev.menu_info.map(el =>
-          el._id !== item._id ? { ...el, is_active: false } : { ...item }
-        ),
-      };
-    });
+    // item.is_active = !item.is_active;
+    // setRestaurantDetail(prev => {
+    //   return {
+    //     ...prev,
+    //     menu_info: prev.menu_info.map(el =>
+    //       el._id !== item._id ? { ...el, is_active: false } : { ...item }
+    //     ),
+    //   };
+    // });
     setChildCart(prevCart => {
       let afterCart = {};
       if (!prevCart.items.find(el => el.foodId === item._id)) {
         afterCart = {
           ...prevCart,
-          storeId,
+          restaurantId,
           items: [
             ...prevCart.items,
             {
@@ -182,61 +178,67 @@ function StoreScreen(props) {
         animated
         barStyle={isLight ? 'light-content' : 'dark-content'}
       /> */}
-      <FlatList
-        data={restaurantDetail.menu_info}
-        scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 44 }}
-        // onScroll={Animated.event(
-        //   [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-        //   { listener: debounce(checkStatusBarColor, 16) }
-        // )}
-        onScroll={Animated.event([
-          { nativeEvent: { contentOffset: { y: scrollY } } },
-        ])}
-        renderItem={({ item }) => (
-          <MenuItem
-            menu={item}
-            storeId={storeId}
-            handleItem={handleItem}
-            childCart={childCart}
-            increase={increase}
-            decrease={decrease}
-          />
-        )}
-        keyExtractor={item => `${item._id}`}
-        // contentContainerStyle={styles.container}
-        ListHeaderComponent={
-          <Banner
-            storeName={restaurantDetail.name}
-            address={restaurantDetail.address}
-            // foods={foods[1]}
-          />
-        }
-      />
-      <Button
-        title={`Add to Order (${childCart.total})`}
-        titleStyle={styles.titleBtn}
-        buttonStyle={styles.orderBtn}
-        activeOpacity={0.5}
-        containerStyle={{ paddingHorizontal: 16 }}
-        onPress={() =>
-          navigation.navigate('Cart', {
-            cart: childCart,
-            storeName,
-            increase,
-            decrease,
-            address: restaurantDetail.address,
-            storeId,
-          })
-        }
-      />
+      {isLoading && <StoreLoading />}
+      {!isLoading && (
+        <FlatList
+          data={restaurantInfo.menu_info}
+          scrollEventThrottle={16}
+          contentContainerStyle={{ paddingBottom: 44 }}
+          // onScroll={Animated.event(
+          //   [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          //   { listener: debounce(checkStatusBarColor, 16) }
+          // )}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { y: scrollY } } },
+          ])}
+          renderItem={({ item }) => (
+            <MenuItem
+              menu={item}
+              restaurantId={restaurantId}
+              handleItem={handleItem}
+              childCart={childCart}
+              increase={increase}
+              decrease={decrease}
+            />
+          )}
+          keyExtractor={item => `${item._id}`}
+          // contentContainerStyle={styles.container}
+          ListHeaderComponent={
+            <Banner
+              storeName={restaurantInfo.name}
+              address={restaurantInfo.address}
+              // foods={foods[1]}
+            />
+          }
+        />
+      )}
+      {!isLoading && (
+        <Button
+          title={`Add to Order (${childCart.total})`}
+          titleStyle={styles.titleBtn}
+          buttonStyle={styles.orderBtn}
+          activeOpacity={0.5}
+          containerStyle={{ paddingHorizontal: 16 }}
+          onPress={() =>
+            navigation.navigate('Cart', {
+              cart: childCart,
+              storeName,
+              increase,
+              decrease,
+              address: restaurantInfo.address,
+              restaurantId,
+              localCartIndex,
+            })
+          }
+        />
+      )}
       <Header
         style={{
           headerStyle,
           borderStyle,
           backBtnStyle,
         }}
-        storeName={restaurantDetail.name}
+        storeName={restaurantInfo.name}
       />
     </View>
   );
@@ -256,5 +258,26 @@ const styles = StyleSheet.create({
     fontSize: theme.text.size.md,
   },
 });
+
+const selectCartIndex = createSelector(
+  state => state.cartReducer.cart,
+  (_, restaurantId) => restaurantId,
+  (cart, restaurantId) => cart.findIndex(el => el.restaurantId === restaurantId)
+);
+
+// const mapStateToProps = state => {
+//   return {
+//     restaurantInfo: state.restaurantReducer.restaurantInfo,
+//   };
+// };
+
+// const mapDispatchToProps = dispatch => {
+//   return bindActionCreators(
+//     {
+//       fetchRestaurantById,
+//     },
+//     dispatch
+//   );
+// };
 
 export default StoreScreen;

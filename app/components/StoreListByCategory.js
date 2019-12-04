@@ -28,7 +28,7 @@ function StoreListByCategory(props) {
         <TouchableOpacity
           style={styles.shadow}
           onPress={() =>
-            props.navigation.navigate('Store', { storeId: item._id })
+            props.navigation.navigate('Store', { restaurantId: item._id })
           }
         >
           <View style={styles.itemContainer}>

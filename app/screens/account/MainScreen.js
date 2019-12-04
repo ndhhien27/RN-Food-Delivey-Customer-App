@@ -1,10 +1,10 @@
 import React, { useState, userContext, useContext } from 'react';
 import { View, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
 import Profile from '../../components/Profile';
 import Address from '../../components/Address';
 import { theme } from '../../constants/theme';
-import { AuthContext } from '../../context/AuthContext';
 
 // import { theme } from '../../constants/theme';
 
@@ -17,7 +17,8 @@ export default function MainScreen(props) {
   //   return () => { _navListener.remove() }
   // })
   // eslint-disable-next-line no-unused-vars
-  const { userInfo } = useContext(AuthContext);
+  // const { userInfo } = useContext(AuthContext);
+  const userInfo = useSelector(state => state.authReducer.userInfo);
   const [listAddress, setlistAddress] = useState([
     {
       id: 1,

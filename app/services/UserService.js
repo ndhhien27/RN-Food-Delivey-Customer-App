@@ -1,13 +1,8 @@
-import Axios from 'axios';
-import { API_URL } from './api_contants';
+import request from './request';
 
-const getUserInfo = (userId, resCallback, errCallback) => {
-  console.log(userId);
-  Axios({
-    url: API_URL,
-    method: 'POST',
-    data: {
-      query: `
+const getUserInfo = userId => {
+  const data = {
+    query: `
        query GetUserInfo($userId: ID!){
         userById(userId: $userId){
           fName
@@ -26,13 +21,11 @@ const getUserInfo = (userId, resCallback, errCallback) => {
         }
       }
       `,
-      variables: {
-        userId,
-      },
+    variables: {
+      userId,
     },
-  })
-    .then(resCallback)
-    .catch(errCallback);
+  };
+  return request({ url: '/graphql', method: 'post', data });
 };
 
 // const login = ({ email, password }) => {
