@@ -5,18 +5,19 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, FlatList, Dimensions } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { withNavigationFocus } from 'react-navigation';
 import { AuthContext } from '../../context/AuthContext';
 import API from '../../services/OrderService';
 import OrderTrackItem from '../../components/OrderTrackItem';
 import { theme } from '../../constants/theme';
 import { fetchingMyOrder } from '../../actions/orderActions';
 
-export default function OrderTrack({ navigation }) {
+function OrderTrack({ navigation, isFocused }) {
   const myOrders = useSelector(state => state.orderReducer.myOrders);
   const isLoading = useSelector(state => state.uiReducer.isLoading);
   const userId = useSelector(state => state.authReducer.userId);
   const dispatch = useDispatch();
-  const fectOrder = () => dispatch(fetchingMyOrder(userId));
+  const fetchOrder = () => dispatch(fetchingMyOrder(userId));
   const [state, setState] = useState({
     index: 0,
     routes: [
@@ -25,25 +26,30 @@ export default function OrderTrack({ navigation }) {
     ],
   });
 
-  const navigationWillFocusListener = navigation.addListener(
-    'willFocus',
-    () => {
-      fectOrder();
-    }
-  );
+  // const navigationDidFocusListener = navigation.addListener('didFocus', () => {
+  //   console.log('did focus');
+  //   fetchOrder();
+  // });
+
+  // const navigationDidBlurListener = navigation.addListener('didBlur', () => {
+  //   console.log('did blur');
+  //   navigationDidFocusListener.remove();
+  // });
 
   const handleRefresh = () => {
-    fectOrder();
+    fetchOrder();
   };
 
   useEffect(() => {
-    fectOrder();
-    return function cleanup() {
-      navigationWillFocusListener.remove();
-    };
+    fetchOrder();
+    // console.log(isFocused);
+    // return () => {
+    //   navigationDidFocusListener.remove();
+    // };
   }, []);
   return (
     <TabView
+      swipeEnabled
       renderTabBar={props => (
         <TabBar
           {...props}
@@ -93,3 +99,4 @@ export default function OrderTrack({ navigation }) {
     />
   );
 }
+export default withNavigationFocus(OrderTrack);

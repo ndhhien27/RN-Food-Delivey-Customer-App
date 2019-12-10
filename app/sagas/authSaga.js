@@ -6,9 +6,8 @@ import * as types from '../constants';
 import API from '../services/AuthService';
 import UserAPI from '../services/UserService';
 
-function* taskAuth(action) {
-  const { payload } = action;
-  const res = yield call(API.login2, payload.email, payload.password);
+function* taskAuth({ payload }) {
+  const res = yield call(API.login2, payload.loginInput);
   yield put({
     type: types.SHOW_LOADING,
   });
@@ -74,9 +73,40 @@ function* taskGetUserInfo({ payload }) {
   }
 }
 
+function* taskUpdateUserInfo({ payload }) {
+  const res = yield call(
+    UserAPI.updateUser,
+    payload.userId,
+    payload.updateValue
+  );
+  if (res.errors) {
+    const { message } = res.errors[0];
+    yield put({
+      type: types.UPDATE_USER_INFO_ERROR,
+      payload: {
+        error: message,
+      },
+    });
+    // yield delay(1500);
+    // yield put({
+    //   type: types.HIDE_LOADING,
+    // });
+    alert(res.errors[0].message);
+    // alert(message);
+  } else if (res.data.updateUser) {
+    yield put({
+      type: types.UPDATE_USER_INFO_SUCCESS,
+      payload: {
+        userInfo: res.data.updateUser,
+      },
+    });
+  }
+}
+
 function* authSaga() {
   yield takeLatest(types.LOGIN, taskAuth);
   yield takeLatest(types.GET_USER_INFO, taskGetUserInfo);
+  yield takeLatest(types.UPDATE_USER_INFO, taskUpdateUserInfo);
 }
 
 export default authSaga;

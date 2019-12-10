@@ -67,7 +67,7 @@ const validationSchema = yup.object().shape({
 export default function SignupScreen({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ marginTop: 56, paddingHorizontal: 16, flex: 1 }}>
+      <View style={{ paddingHorizontal: 16, flex: 1 }}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Create an account</Text>
         </View>

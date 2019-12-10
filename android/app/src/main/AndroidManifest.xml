@@ -15,12 +15,19 @@
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
+        android:launchMode="singleTask"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="customer" />
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
@@ -32,9 +39,9 @@
       </service>
       <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCrL7txc_1d2P83b0MpSSdZb378Sbkjgq4"/>
-      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-      <activity android:windowSoftInputMode="adjustPan"/>
+        android:value="AIzaSyDbGSMJEdxu7ajQyHA5F1b0mOalhnHxzTQ"/>
+      <!-- <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+      <activity android:windowSoftInputMode="adjustPan"/> -->
     </application>
 
 </manifest>

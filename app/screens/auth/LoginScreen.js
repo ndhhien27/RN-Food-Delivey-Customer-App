@@ -30,7 +30,7 @@ export default function LoginScreen(props) {
   // const { storeAuthContext, authInfo, storeUserContext } = useContext(
   //   AuthContext
   // );
-  const authInfo = useSelector(state => state.authReducer.authToken);
+  const authInfo = useSelector(state => state.authReducer);
   const isLoading = useSelector(state => state.uiReducer.isLoading);
   const dispatch = useDispatch();
   return (
@@ -44,7 +44,12 @@ export default function LoginScreen(props) {
           password: 'hien123456',
         }}
         onSubmit={(values, actions) => {
-          dispatch(login(values.email, values.password));
+          const loginInput = {
+            ...values,
+            fcmToken: authInfo.fcmToken,
+            uniqueId: authInfo.uniqueId,
+          };
+          dispatch(login(loginInput));
           // API.login2(values).then(res => {
           //   if (res.errors) alert(res.errors.message);
           //   else if (res.data.login) {

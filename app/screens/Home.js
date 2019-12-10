@@ -11,7 +11,11 @@ import CategoryWithIcon from '../components/CategoryWithIcon';
 import PopularList from '../components/PopularList';
 import { theme } from '../constants/theme';
 import RestaurantService from '../services/RestaurantService';
-import { fetchAllRestaurant, getUserInfo } from '../actions/index';
+import {
+  fetchAllRestaurant,
+  getUserInfo,
+  getNotification,
+} from '../actions/index';
 
 function Home(props) {
   // useEffect(() => {
@@ -26,6 +30,8 @@ function Home(props) {
   useEffect(() => {
     props.fetchAllRestaurant();
     props.getUserInfo(props.userId);
+    props.getNotification(props.userId);
+    props.navigation.setParams({ a: '12' });
   }, []);
   return (
     <ScrollView>
@@ -70,6 +76,7 @@ const mapDispatchToProps = dispatch => {
     {
       fetchAllRestaurant,
       getUserInfo,
+      getNotification,
     },
     dispatch
   );

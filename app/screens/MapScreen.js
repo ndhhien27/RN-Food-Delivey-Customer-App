@@ -426,6 +426,8 @@ const LocationPickerScreen = props => {
             lat: location.lat,
             long: location.lng,
           });
+          setLat(location.lat);
+          setLong(location.lng);
           goToLocation(location.lat, location.lng);
         }}
         getDefaultValue={() => ''}
@@ -494,6 +496,12 @@ const LocationPickerScreen = props => {
         //   inputLocationRef.current.triggerBlur();
         // }}
         style={styles.map}
+        initialRegion={{
+          latitude: 16,
+          longitude: 108,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}
         region={{
           latitude: lat,
           longitude: long,

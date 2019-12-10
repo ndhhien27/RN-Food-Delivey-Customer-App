@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import StepIndicator from 'react-native-step-indicator';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Icon, Rating, AirbnbRating } from 'react-native-elements';
 import { theme } from '../../constants/theme';
 import { image } from '../../constants/images';
@@ -74,7 +74,7 @@ export default function OrderDetail({ navigation }) {
     );
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={{ height: 400, paddingHorizontal: 16 }}>
         <StepIndicator
           renderStepIndicator={renderStepIndicator}
@@ -112,7 +112,7 @@ export default function OrderDetail({ navigation }) {
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

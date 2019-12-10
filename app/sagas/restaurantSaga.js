@@ -52,7 +52,7 @@ function* taskSearchRestaurant(action) {
       },
     });
   } else {
-    const { message } = res.errors;
+    const { message } = res.errors[0];
     yield put({
       type: types.SEARCH_RESTAURANT_ERROR,
       payload: {

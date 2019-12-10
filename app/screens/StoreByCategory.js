@@ -29,7 +29,7 @@ export default function StoreByCategory(props) {
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground
+      {/* <ImageBackground
         source={{ uri: 'http://via.placeholder.com/375x238' }}
         style={{
           width: '100%',
@@ -39,7 +39,7 @@ export default function StoreByCategory(props) {
         }}
       >
         <Text>Image</Text>
-      </ImageBackground>
+      </ImageBackground> */}
       <View style={{ flex: 1, marginTop: 16 }}>
         <StoreListByCategory data={searchResult} />
       </View>

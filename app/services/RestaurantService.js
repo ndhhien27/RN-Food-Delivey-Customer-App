@@ -12,7 +12,11 @@ const getRestaurants = (resCallback, errCallBack) => {
               restaurants{
                 _id
                 name
-                address
+                position{
+                  address
+                  lat
+                  long
+                }
               }
             }
           `,
@@ -30,7 +34,11 @@ const getRestaurantDetail = (restaurantId, resCb, errCb) => {
       query: `
             query RestaurantInfo($restaurantId: ID!) {
               restaurantById(restaurantId: $restaurantId){
-                address
+                position{
+                  address
+                  lat
+                  long
+                }
                 name
                 menu_info{
                   _id
@@ -63,7 +71,11 @@ const searchRestaurant = queryInput => {
               searchRestaurant(query: $query){
                 _id
                 name
-                address
+                position{
+                  address
+                  lat
+                  long
+                }
               }
             }
           `,
@@ -84,7 +96,11 @@ const getFoods = (queryInput, resCallback, errCallBack) => {
               searchRestaurant(query: $query){
                 _id
                 name
-                address
+                position{
+                  address
+                  lat
+                  long
+                }
               }
             }
           `,
@@ -134,7 +150,11 @@ const getRestaurantsWithSaga = () => {
         restaurants{
           _id
           name
-          address
+          position{
+            address
+            lat
+            long
+          }
         }
       }
     `,
@@ -147,7 +167,11 @@ const getRestaurantDetailWithSaga = restaurantId => {
     query: `
             query RestaurantInfo($restaurantId: ID!) {
               restaurantById(restaurantId: $restaurantId){
-                address
+                position{
+                  address
+                  lat
+                  long
+                }
                 name
                 menu_info{
                   _id

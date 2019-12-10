@@ -6,7 +6,6 @@ import { CartContext } from '../context/CartContext';
 
 export default function CartItem(props) {
   const { item, increase, qty, decrease } = props;
-  const { cart } = useContext(CartContext);
   return (
     <View style={styles.container}>
       <View style={styles.info}>

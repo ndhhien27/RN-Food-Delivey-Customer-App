@@ -5,7 +5,7 @@ import API from '../services/OrderService';
 function* taskGetOrder({ payload }) {
   const res = yield call(API.getOrderByUser, payload.userId);
   if (res.errors) {
-    const { message } = res.errors;
+    const { message } = res.errors[0];
     yield put({
       type: types.FETCHING_MY_ORDER_ERROR,
       payload: {

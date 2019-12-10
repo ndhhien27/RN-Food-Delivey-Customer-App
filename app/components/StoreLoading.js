@@ -1,7 +1,6 @@
 import React from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { View, FlatList, Platform } from 'react-native';
-import { theme } from '../constants/theme';
+import { FlatList, Platform } from 'react-native';
 
 export default function StoreLoading() {
   const tempArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -10,7 +9,7 @@ export default function StoreLoading() {
       data={tempArr}
       keyExtractor={item => `i-${item}`}
       contentContainerStyle={{ paddingHorizontal: 16 }}
-      renderItem={({ item }) => (
+      renderItem={() => (
         <ContentLoader
           style={{ marginTop: 16 }}
           height={60}

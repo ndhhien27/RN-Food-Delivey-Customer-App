@@ -74,7 +74,7 @@ function StoreListItem(props) {
             <Text numberOfLines={1} style={styles.name}>
               {item.name}
             </Text>
-            <Text numberOfLines={1}>{item.address}</Text>
+            <Text numberOfLines={1}>{item.position.address}</Text>
           </View>
         </View>
       </View>

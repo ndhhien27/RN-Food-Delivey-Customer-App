@@ -53,12 +53,12 @@ const signup = (userInput, resCallback, errCallback) => {
     .catch(errCallback);
 };
 
-const login2 = (email, password) => {
-  console.log(email, password);
+const login2 = loginInput => {
+  console.log(loginInput);
   const data = {
     query: `
-        mutation Login($email: String!, $password: String!){
-          login(email: $email, password: $password){
+        mutation Login($loginInput: LoginInput!){
+          login(loginInput: $loginInput){
             userId
             authToken
             fName
@@ -66,8 +66,7 @@ const login2 = (email, password) => {
         }
       `,
     variables: {
-      email,
-      password,
+      loginInput,
     },
   };
   return request({ url: '/graphql', method: 'post', data });

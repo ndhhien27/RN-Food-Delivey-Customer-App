@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import * as types from '../constants';
+import * as notificationTypes from '../constants/notificationTypes';
 
 export const fetchAllRestaurant = () => {
   return {
@@ -17,12 +18,11 @@ export const fetchRestaurantById = restaurantId => {
   };
 };
 
-export const login = (email, password) => {
+export const login = loginInput => {
   return {
     type: types.LOGIN,
     payload: {
-      email,
-      password,
+      loginInput,
     },
   };
 };
@@ -41,6 +41,44 @@ export const search = param => {
     type: types.SEARCH_RESTAURANT,
     payload: {
       param,
+    },
+  };
+};
+
+export const getNotification = userId => {
+  return {
+    type: types.FETCHING_NOTIFICATION,
+    payload: {
+      userId,
+    },
+  };
+};
+
+export const getDeviceInfo = (fcmToken, uniqueId) => {
+  return {
+    type: types.GET_DEVICE_TOKEN,
+    payload: {
+      fcmToken,
+      uniqueId,
+    },
+  };
+};
+
+export const updateUser = (userId, updateValue) => {
+  return {
+    type: types.UPDATE_USER_INFO,
+    payload: {
+      userId,
+      updateValue,
+    },
+  };
+};
+
+export const updateWithFCM = newNoti => {
+  return {
+    type: notificationTypes.UPDATE_WITH_FCM,
+    payload: {
+      newNoti,
     },
   };
 };

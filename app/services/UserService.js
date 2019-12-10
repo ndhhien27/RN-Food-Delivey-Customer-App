@@ -18,6 +18,7 @@ const getUserInfo = userId => {
             paymentType
             detail
           }
+          numNotification
         }
       }
       `,
@@ -48,6 +49,38 @@ const getUserInfo = userId => {
 //   return request({ url: 'http://192.168.1.113:8080/graphql', data });
 // };
 
+const updateUser = (userId, updateValue) => {
+  const data = {
+    query: `
+      mutation UpdateUser($updateValue: UpdateUserInput!, $userId: ID!){
+        updateUser(userId: $userId, updateValue: $updateValue){
+          fName
+          lName
+          email
+          position{
+            address
+            lat
+            long
+          }
+          phone
+          payment{
+            paymentType
+            detail
+          }
+          numNotification
+          _id
+        }
+      }
+    `,
+    variables: {
+      userId,
+      updateValue,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
 export default {
   getUserInfo,
+  updateUser,
 };

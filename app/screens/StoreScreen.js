@@ -18,6 +18,7 @@ import API from '../services/RestaurantService';
 import { fetchRestaurantById } from '../actions/index';
 import { modifyCart } from '../actions/cartActions';
 import StoreLoading from '../components/StoreLoading';
+import { AuthContext } from '../context/AuthContext';
 
 function StoreScreen(props) {
   const { navigation } = props;
@@ -206,7 +207,9 @@ function StoreScreen(props) {
           ListHeaderComponent={
             <Banner
               storeName={restaurantInfo.name}
-              address={restaurantInfo.address}
+              address={
+                restaurantInfo.position ? restaurantInfo.position.address : ''
+              }
               // foods={foods[1]}
             />
           }
@@ -225,7 +228,7 @@ function StoreScreen(props) {
               storeName,
               increase,
               decrease,
-              address: restaurantInfo.address,
+              address: restaurantInfo.position.address,
               restaurantId,
               localCartIndex,
             })
@@ -249,6 +252,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.color.primary,
     position: 'absolute',
     bottom: 30,
+    alignSelf: 'center',
     width: '100%',
     borderRadius: theme.radius.xs,
     height: 44,

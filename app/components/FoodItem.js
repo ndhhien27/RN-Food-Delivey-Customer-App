@@ -7,7 +7,7 @@ import { CartContext } from '../context/CartContext';
 export default function FoodItem(props) {
   const { item, childCart } = props;
   const [isSelect, setisSelect] = useState(false);
-  const { addFoodToCart } = useContext(CartContext);
+  // const { addFoodToCart } = useContext(CartContext);
   return (
     <ListItem
       title={item.name}

@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
 
 CheckoutScreen.navigationOptions = ({ navigation }) => {
   return {
-    headerBackImage: (
+    headerLeft: (
       <Button
         icon={
           <Icon
@@ -295,9 +295,7 @@ CheckoutScreen.navigationOptions = ({ navigation }) => {
           />
         }
         onPress={() => navigation.goBack()}
-        buttonStyle={{
-          backgroundColor: null,
-        }}
+        type="clear"
       />
     ),
   };
