@@ -89,6 +89,11 @@ const OrderStack = createStackNavigator(
     MyOrderScreen: {
       screen: OrderTrack,
       path: 'myorder',
+      navigationOptions: () => {
+        return {
+          title: 'My Orders',
+        };
+      },
     },
     OrderDetailScreen: {
       screen: OrderDetail,
@@ -116,10 +121,17 @@ const OrderStack = createStackNavigator(
       };
     },
     headerBackTitleVisible: false,
-    navigationOptions: () => ({
-      tabBarLabel: 'Order',
-    }),
+    navigationOptions: ({ navigation }) => {
+      let tabBarVisible = false;
+      if (getActiveRoute(navigation.state).routeName === 'MyOrderScreen')
+        tabBarVisible = true;
+      return {
+        tabBarVisible,
+        tabBarLabel: 'Order',
+      };
+    },
     initialRouteName: 'MyOrderScreen',
+    headerLayoutPreset: 'center',
   }
 );
 
@@ -261,14 +273,12 @@ const TabNavigator = createBottomTabNavigator(
       tabBarOnPress: ({ defaultHandler }) => {
         const { state } = navigation;
         if (state.routeName === 'OrderTab') {
-          const { authReducer } = store.getState();
-          store.dispatch(fetchingMyOrder(authReducer.userId));
+          const { auth } = store.getState();
+          store.dispatch(fetchingMyOrder(auth.userId));
         }
         if (state.routeName === 'Notification') {
-          const { authReducer } = store.getState();
-          store.dispatch(
-            updateUser(authReducer.userId, { numNotification: 0 })
-          );
+          const { auth } = store.getState();
+          store.dispatch(updateUser(auth.userId, { numNotification: 0 }));
         }
         defaultHandler();
       },

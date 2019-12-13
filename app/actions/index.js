@@ -82,3 +82,9 @@ export const updateWithFCM = newNoti => {
     },
   };
 };
+
+export const signOut = () => {
+  return {
+    type: types.SIGN_OUT,
+  };
+};

@@ -30,7 +30,7 @@ export default function LoginScreen(props) {
   // const { storeAuthContext, authInfo, storeUserContext } = useContext(
   //   AuthContext
   // );
-  const authInfo = useSelector(state => state.authReducer);
+  const authInfo = useSelector(state => state.auth);
   const isLoading = useSelector(state => state.uiReducer.isLoading);
   const dispatch = useDispatch();
   return (
@@ -40,13 +40,13 @@ export default function LoginScreen(props) {
       </View>
       <Formik
         initialValues={{
-          email: 'Ndhien@gmail.com',
-          password: 'hien123456',
+          email: 'Ndhien@gmail.com', // Ndhien@gmail.com
+          password: 'hien123456', // hien123456
         }}
         onSubmit={(values, actions) => {
           const loginInput = {
             ...values,
-            fcmToken: authInfo.fcmToken,
+            fcmTokenUser: authInfo.fcmToken,
             uniqueId: authInfo.uniqueId,
           };
           dispatch(login(loginInput));

@@ -64,11 +64,11 @@ function NormalCart(props) {
           title="SubTotal"
           price={globalCart[localCartIndex].subtotal}
         />
-        <CostDetail title="Delivery" price={globalCart[localCartIndex].total} />
+        <CostDetail title="Delivery" price={0} />
         <Divider style={{ backgroundColor: theme.color.darkGray }} />
         <CostDetail
           title="Total"
-          price={25000}
+          price={globalCart[localCartIndex].total}
           style={{
             fontFamily: theme.text.fonts['sfpt-bold'],
             fontSize: 20,

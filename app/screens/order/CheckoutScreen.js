@@ -17,7 +17,7 @@ export default function CheckoutScreen({ navigation }) {
   const { localCartIndex } = navigation.state.params;
   const [isVisible, setIsVisible] = useState(false);
   const globalCart = useSelector(state => state.cartReducer.cart);
-  const userId = useSelector(state => state.authReducer.userId);
+  const userId = useSelector(state => state.auth.userId);
   const dispatch = useDispatch();
   const [paymentInfo, setpaymentInfo] = useState({
     deliveryAddress: '',

@@ -13,7 +13,8 @@ function OrderTrackItem(props) {
       activeOpacity={0.5}
       onPress={() =>
         navigation.navigate('OrderDetailScreen', {
-          deliveryAddress: orderItem.delivery_address,
+          orderDetail: orderItem,
+          orderId: orderItem._id,
         })
       }
     >

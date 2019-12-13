@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
 import * as notificationTypes from '../constants/notificationTypes';
 import API from '../services/NotificationService';
+import { navigate } from '../services/NavigationService';
 
 function* taskNotification(action) {
   const { payload } = action;
@@ -41,6 +43,7 @@ function* taskMarkAsRead(action) {
         newNotification: res.data.markAsRead,
       },
     });
+    navigate('OrderDetailScreen', { orderId: res.data.markAsRead.order._id });
   }
 }
 

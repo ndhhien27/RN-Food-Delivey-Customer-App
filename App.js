@@ -12,11 +12,15 @@ import {
 } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import firebase from 'react-native-firebase';
 import { getUniqueId } from 'react-native-device-info';
 import AppSwitch from './AppNavigator';
-import store from './app/store';
-import { setTopLevelNavigator } from './app/services/NavigationService';
+import store, { persistor } from './app/store';
+import {
+  setTopLevelNavigator,
+  navigate,
+} from './app/services/NavigationService';
 import { getDeviceInfo, updateWithFCM } from './app/actions';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
@@ -99,6 +103,7 @@ export default function App() {
           hasRead: data.hasRead,
         };
         store.dispatch(updateWithFCM(newNoti));
+        navigate('OrderDetailScreen', { orderId: data.orderId });
       });
     /*
      * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
@@ -107,7 +112,11 @@ export default function App() {
       .notifications()
       .getInitialNotification();
     if (notificationOpen) {
-      const { title, body } = notificationOpen.notification;
+      const { title, body, data } = notificationOpen.notification;
+      // if(data.screen === 'order'){
+      console.log(data);
+      navigate('OrderDetailScreen', { orderId: data.orderId });
+      // }
     }
     /*
      * Triggered for data only payload in foreground
@@ -129,12 +138,14 @@ export default function App() {
   }, []);
   return (
     <Provider store={store}>
-      <AppContainer
-        ref={navigatorRef => {
-          setTopLevelNavigator(navigatorRef);
-        }}
-        uriPrefix={prefix}
-      />
+      <PersistGate loading={null} persistor={persistor}>
+        <AppContainer
+          ref={navigatorRef => {
+            setTopLevelNavigator(navigatorRef);
+          }}
+          uriPrefix={prefix}
+        />
+      </PersistGate>
     </Provider>
   );
 }

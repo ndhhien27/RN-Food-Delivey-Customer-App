@@ -35,7 +35,7 @@ export default (state = initialState, { type, payload }) => {
     case notificationTypes.UPDATE_WITH_FCM:
       return {
         ...state,
-        notifications: [...state.notifications, payload.newNoti],
+        notifications: [payload.newNoti, ...state.notifications],
       };
     default:
       return state;

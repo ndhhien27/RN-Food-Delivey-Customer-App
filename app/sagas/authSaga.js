@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
 import { call, put, takeLatest, delay } from 'redux-saga/effects';
+import AsyncStorage from '@react-native-community/async-storage';
 import { navigate } from '../services/NavigationService';
 import * as types from '../constants';
 import API from '../services/AuthService';
@@ -103,8 +104,26 @@ function* taskUpdateUserInfo({ payload }) {
   }
 }
 
+function* taskSignOut({ payload }) {
+  try {
+    yield call(AsyncStorage.clear);
+    yield put({
+      type: types.SIGN_OUT_SUCCESS,
+    });
+    navigate('Auth', null);
+  } catch (error) {
+    yield put({
+      type: types.SIGN_OUT_ERROR,
+      payload: {
+        error,
+      },
+    });
+  }
+}
+
 function* authSaga() {
   yield takeLatest(types.LOGIN, taskAuth);
+  yield takeLatest(types.SIGN_OUT, taskSignOut);
   yield takeLatest(types.GET_USER_INFO, taskGetUserInfo);
   yield takeLatest(types.UPDATE_USER_INFO, taskUpdateUserInfo);
 }

@@ -7,7 +7,7 @@ import { theme } from '../constants/theme';
 
 export default function IconWithBadge(props) {
   const { name, color, size } = props;
-  const userInfo = useSelector(state => state.authReducer.userInfo);
+  const userInfo = useSelector(state => state.auth.userInfo);
   return (
     <View>
       <Icon name={name} size={size} color={color} />

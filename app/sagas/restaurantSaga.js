@@ -1,6 +1,7 @@
 import { call, put, takeLatest, delay } from 'redux-saga/effects';
 import * as types from '../constants';
 import API from '../services/RestaurantService';
+import { getDistanceFromLatLonInKm } from '../helpers/distance';
 
 function* restaurantTask(action) {
   const { payload } = action;

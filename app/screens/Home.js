@@ -67,7 +67,7 @@ Home.navigationOptions = ({ navigation }) => {
 const mapStateToProps = state => {
   return {
     restaurantList: state.restaurantReducer.fullList,
-    userId: state.authReducer.userId,
+    userId: state.auth.userId,
   };
 };
 

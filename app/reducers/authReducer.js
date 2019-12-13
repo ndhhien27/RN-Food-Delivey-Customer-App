@@ -59,6 +59,18 @@ export default (state = initialState, { type, payload }) => {
           numNotification: state.userInfo.numNotification + 1,
         },
       };
+    case types.SIGN_OUT_SUCCESS:
+      return {
+        ...state,
+        authToken: '',
+        userId: '',
+      };
+    case types.SIGN_OUT_ERROR:
+      return {
+        ...state,
+        signOutError: payload.error,
+      };
+
     default:
       return state;
   }

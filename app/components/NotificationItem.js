@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
@@ -16,7 +17,9 @@ function NotificationItem(props) {
       activeOpacity={0.5}
     >
       <View
-        style={item.hasRead ? styles.contentContainer : styles.contentContainerNew}
+        style={
+          item.hasRead ? styles.contentContainer : styles.contentContainerNew
+        }
       >
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.orderId}>{`Order - ${item.order._id}`}</Text>

@@ -1,4 +1,7 @@
 import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import AsyncStorage from '@react-native-community/async-storage';
 import restaurantReducer from './restaurantReducer';
 import uiReducer from './uiReducer';
 import cartReducer from './cartReducer';
@@ -6,11 +9,18 @@ import authReducer from './authReducer';
 import orderReducer from './orderReducer';
 import notificationReducer from './notificationReducer';
 
+const authPersistConfig = {
+  key: 'auth',
+  storage: AsyncStorage,
+  whitelist: ['authToken', 'userId'],
+  stateReconciler: autoMergeLevel2,
+};
+
 const rootReducer = combineReducers({
   restaurantReducer,
   uiReducer,
   cartReducer,
-  authReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
   orderReducer,
   notificationReducer,
 });

@@ -5,6 +5,7 @@ import { Button } from 'react-native-elements';
 import Profile from '../../components/Profile';
 import Address from '../../components/Address';
 import { theme } from '../../constants/theme';
+import { signOut } from '../../actions/index';
 
 // import { theme } from '../../constants/theme';
 
@@ -18,7 +19,8 @@ export default function MainScreen(props) {
   // })
   // eslint-disable-next-line no-unused-vars
   // const { userInfo } = useContext(AuthContext);
-  const userInfo = useSelector(state => state.authReducer.userInfo);
+  const userInfo = useSelector(state => state.auth.userInfo);
+  const dispatch = useDispatch();
   const [listAddress, setlistAddress] = useState([
     {
       id: 1,
@@ -36,7 +38,7 @@ export default function MainScreen(props) {
         <Address listAddress={userInfo.position} />
         <Button
           title="Sign out"
-          onPress={() => props.navigation.navigate('Auth')}
+          onPress={() => dispatch(signOut())}
           buttonStyle={{
             backgroundColor: theme.color.primary,
             borderRadius: 8,

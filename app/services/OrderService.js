@@ -51,6 +51,68 @@ const getOrderByUser = userId => {
             restaurant{
               name
             }
+            status
+          }
+        }
+      `,
+    variables: {
+      userId,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
+const updateOrder = (orderId, status) => {
+  const data = {
+    query: `
+      mutation UpdateOrder($orderId: ID!, $status: String!){
+        updateOrder(orderId:$orderId status:$status){
+          _id
+          delivery_address
+          status
+        }
+      }
+      `,
+    variables: {
+      orderId,
+      status,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
+const reviewOrder = (orderId, { star, desc }) => {
+  const data = {
+    query: `
+      mutation ReviewOrder($orderId: ID!, $star: Int!, $desc: String!){
+        reviewOrder(orderId:$orderId star:$star description: $desc){
+          _id
+          review{
+            star
+            description
+          }
+        }
+      }
+      `,
+    variables: {
+      orderId,
+      star,
+      desc,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
+const fetchOrderById = orderId => {
+  const data = {
+    query: `
+        query GetOrderById($orderId: ID!){
+          orderById(orderId: $orderId){
+            _id
+            createdAt
+            restaurant{
+              name
+            }
             delivery_address
             total
             status
@@ -59,9 +121,15 @@ const getOrderByUser = userId => {
               paymentType
               detail
             }
+            review{
+              star
+              description
+            }
             items{
+              _id
               qty
               food{
+                _id
                 name
                 price{
                   value
@@ -72,12 +140,16 @@ const getOrderByUser = userId => {
         }
       `,
     variables: {
-      userId,
+      orderId,
     },
   };
   return request({ url: '/graphql', method: 'post', data });
 };
+
 export default {
   createOrder,
   getOrderByUser,
+  updateOrder,
+  fetchOrderById,
+  reviewOrder,
 };
