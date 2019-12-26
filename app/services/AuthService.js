@@ -26,31 +26,23 @@ const login = ({ email, password }, resCallback, errCallback) => {
     .catch(errCallback);
 };
 
-const signup = (userInput, resCallback, errCallback) => {
-  Axios({
-    url: API_URL,
-    method: 'POST',
-    data: {
-      query: `
-      mutation Signup($userInput: UserInput!){
+const signup = userInput => {
+  const data = {
+    query: `
+      mutation SignUp($userInput: UserInput!){
         createUser(userInput: $userInput){
           _id
           fName
+          lName
           email
-          password
-          createdRestaurants{
-            name
-          }
         }
       }
-      `,
-      variables: {
-        userInput,
-      },
+    `,
+    variables: {
+      userInput,
     },
-  })
-    .then(resCallback)
-    .catch(errCallback);
+  };
+  return request({ url: '/graphql', method: 'post', data });
 };
 
 const login2 = loginInput => {

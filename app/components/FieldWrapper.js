@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import _ from 'lodash';
 import { theme } from '../constants/theme';
 
 const FieldWrapper = ({ children, formikProps, formikKey }) => (
@@ -7,12 +8,14 @@ const FieldWrapper = ({ children, formikProps, formikKey }) => (
     {children}
     <Text
       style={
-        formikProps.touched[formikKey] && formikProps.errors[formikKey]
+        _.get(formikProps, `touched.${formikKey}`) &&
+        _.get(formikProps, `errors.${formikKey}`)
           ? styles.errors
           : styles.normal
       }
     >
-      {formikProps.touched[formikKey] && formikProps.errors[formikKey]}
+      {_.get(formikProps, `touched.${formikKey}`) &&
+        _.get(formikProps, `errors.${formikKey}`)}
     </Text>
   </View>
 );

@@ -1,11 +1,12 @@
 import React, { useState, userContext, useContext } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import Profile from '../../components/Profile';
 import Address from '../../components/Address';
 import { theme } from '../../constants/theme';
 import { signOut } from '../../actions/index';
+import PaymentInfo from '../../components/PaymentInfo';
 
 // import { theme } from '../../constants/theme';
 
@@ -29,21 +30,67 @@ export default function MainScreen(props) {
     },
   ]);
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ScrollView
         alwaysBounceVertical={false}
         contentContainerStyle={{ paddingHorizontal: 16 }}
       >
         <Profile userInfo={userInfo} />
-        <Address listAddress={userInfo.position} />
-        <Button
-          title="Sign out"
-          onPress={() => dispatch(signOut())}
-          buttonStyle={{
-            backgroundColor: theme.color.primary,
-            borderRadius: 8,
-          }}
-        />
+        <View style={styles.info}>
+          <Address listAddress={userInfo.position} />
+          <PaymentInfo payment={userInfo.payment} />
+        </View>
+        <View style={styles.btnGroup}>
+          <Button
+            containerStyle={{
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+            }}
+            icon={
+              <Icon
+                type="material-community"
+                name="settings-outline"
+                color={theme.color.primary}
+                containerStyle={{ marginRight: 8 }}
+              />
+            }
+            title="Setting"
+            type="clear"
+            titleStyle={{
+              color: theme.color.primary,
+              fontFamily: theme.text.fonts['sfpd-bold'],
+              fontSize: theme.text.size.lg,
+            }}
+            buttonStyle={{
+              paddingHorizontal: 0,
+            }}
+          />
+          <Button
+            containerStyle={{
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+            }}
+            icon={
+              <Icon
+                type="material-community"
+                name="logout-variant"
+                color={theme.color.primary}
+                containerStyle={{ marginRight: 8 }}
+              />
+            }
+            title="Sign out"
+            type="clear"
+            titleStyle={{
+              color: theme.color.primary,
+              fontFamily: theme.text.fonts['sfpd-bold'],
+              fontSize: theme.text.size.lg,
+            }}
+            onPress={() => dispatch(signOut())}
+            buttonStyle={{
+              paddingHorizontal: 0,
+            }}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -52,5 +99,16 @@ export default function MainScreen(props) {
 MainScreen.navigationOptions = () => ({
   headerStyle: {
     borderBottomWidth: 0,
+    backgroundColor: '#fff',
+    elevation: 0,
+  },
+});
+
+const styles = StyleSheet.create({
+  btnGroup: {
+    marginTop: 16,
+  },
+  info: {
+    paddingTop: 16,
   },
 });

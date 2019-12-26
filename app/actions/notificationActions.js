@@ -9,3 +9,12 @@ export const markAsRead = notiId => {
     },
   };
 };
+
+export const deleteNoti = notiId => {
+  return {
+    type: notificationTypes.DELETE_NOTI,
+    payload: {
+      notiId,
+    },
+  };
+};

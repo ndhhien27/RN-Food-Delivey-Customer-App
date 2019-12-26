@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { theme } from '../constants/theme';
@@ -14,11 +14,12 @@ function SearchHeader(props) {
             type="material-community"
             name="close"
             size={theme.icon.size.md}
+            color={theme.color.primary}
           />
         }
         type="clear"
         containerStyle={{
-          height: 88,
+          height: Platform.OS === 'ios' ? 88 : 56,
           justifyContent: 'flex-end',
           alignItems: 'flex-start',
         }}

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
-import { CartContext } from '../context/CartContext';
+import { currencyFormat } from '../helpers/string';
 
 export default function CartItem(props) {
   const { item, increase, qty, decrease } = props;
@@ -12,7 +12,9 @@ export default function CartItem(props) {
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>{item.foodName}</Text>
           <View>
-            <Text style={styles.price}>{item.foodPrice}</Text>
+            <Text style={styles.price}>{`${currencyFormat(
+              item.foodPrice.toString()
+            )}đ`}</Text>
           </View>
         </View>
       </View>
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     height: 25,
   },
   title: {
-    fontSize: theme.text.size.xl,
+    fontSize: theme.text.size.md,
     fontFamily: theme.text.fonts.sfpt,
   },
   info: {

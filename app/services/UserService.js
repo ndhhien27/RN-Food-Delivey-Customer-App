@@ -1,6 +1,9 @@
 import request from './request';
 
-const getUserInfo = userId => {
+const getUserInfo = (userId, token) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   const data = {
     query: `
        query GetUserInfo($userId: ID!){
@@ -9,12 +12,17 @@ const getUserInfo = userId => {
           lName
           email
           position{
+            _id
             address
             lat
             long
           }
+          bookmarks{
+            _id
+          }
           phone
           payment{
+            _id
             paymentType
             detail
           }
@@ -26,7 +34,7 @@ const getUserInfo = userId => {
       userId,
     },
   };
-  return request({ url: '/graphql', method: 'post', data });
+  return request({ url: '/graphql', method: 'post', data, headers });
 };
 
 // const login = ({ email, password }) => {
@@ -80,7 +88,44 @@ const updateUser = (userId, updateValue) => {
   return request({ url: '/graphql', method: 'post', data });
 };
 
+const clearDevice = uniqueId => {
+  const data = {
+    query: `
+      mutation ClearDevice($uniqueId: String!){
+        clearUserDeviceInfo(uniqueId: $uniqueId){
+          _id
+          fcmTokenUser
+        }
+      }
+    `,
+    variables: {
+      uniqueId,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
+const bookmark = (restId, userId) => {
+  const data = {
+    query: `
+      mutation BookMark($restId: ID!, $userId: ID!){
+        bookmark(restaurantId: $restId,userId: $userId){
+          _id
+          email
+        }
+      }
+    `,
+    variables: {
+      restId,
+      userId,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
 export default {
   getUserInfo,
   updateUser,
+  clearDevice,
+  bookmark,
 };

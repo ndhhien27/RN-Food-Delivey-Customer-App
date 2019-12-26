@@ -2,9 +2,12 @@
 import * as types from '../constants';
 import * as notificationTypes from '../constants/notificationTypes';
 
-export const fetchAllRestaurant = () => {
+export const fetchAllRestaurant = userLocation => {
   return {
     type: types.FETCHING_RESTAURANT,
+    payload: {
+      userLocation,
+    },
   };
 };
 
@@ -27,11 +30,12 @@ export const login = loginInput => {
   };
 };
 
-export const getUserInfo = userId => {
+export const getUserInfo = (userId, token) => {
   return {
     type: types.GET_USER_INFO,
     payload: {
       userId,
+      token,
     },
   };
 };
@@ -45,7 +49,7 @@ export const search = param => {
   };
 };
 
-export const getNotification = userId => {
+export const getNotification = (userId = null) => {
   return {
     type: types.FETCHING_NOTIFICATION,
     payload: {
@@ -86,5 +90,45 @@ export const updateWithFCM = newNoti => {
 export const signOut = () => {
   return {
     type: types.SIGN_OUT,
+  };
+};
+
+export const clearRestInfo = () => {
+  return {
+    type: types.CLEAR_REST_INFO,
+  };
+};
+
+export const signUp = userInput => {
+  return {
+    type: types.SIGN_UP,
+    payload: {
+      userInput,
+    },
+  };
+};
+
+export const getCurrentLocation = (lat, long) => {
+  return {
+    type: types.GET_CURRENT_LOCATION,
+    payload: {
+      lat,
+      long,
+    },
+  };
+};
+
+export const clearSearch = () => {
+  return {
+    type: types.CLEAR_SEARCH,
+  };
+};
+
+export const fetchingReview = restId => {
+  return {
+    type: types.FETCHING_REVIEW,
+    payload: {
+      restId,
+    },
   };
 };

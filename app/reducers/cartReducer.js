@@ -11,6 +11,16 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         cart: payload.newCart,
       };
+    case types.CLEAR_CART:
+      return {
+        ...state,
+        cart: state.cart.filter(el => el.restaurantId !== payload.restaurantId),
+      };
+    case types.DELETE_CART:
+      return {
+        ...state,
+        cart: state.cart.filter(el => el.restaurantId !== payload.restaurantId),
+      };
     default:
       return state;
   }

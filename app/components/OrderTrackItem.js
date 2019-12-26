@@ -1,16 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { theme } from '../constants/theme';
+import dateFormat from '../helpers/date';
 
 function OrderTrackItem(props) {
   const { orderItem, navigation } = props;
   return (
     <TouchableOpacity
       style={styles.shadow}
-      activeOpacity={0.5}
+      activeOpacity={0.7}
       onPress={() =>
         navigation.navigate('OrderDetailScreen', {
           orderDetail: orderItem,
@@ -27,7 +28,21 @@ function OrderTrackItem(props) {
           <Text style={styles.restaurantName} numberOfLines={1}>
             {orderItem.restaurant.name}
           </Text>
-          <Text style={styles.time}>{orderItem.createdAt}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingTop: 8,
+            }}
+          >
+            <Icon
+              type="material-community"
+              name="clock-outline"
+              size={17}
+              iconStyle={{ color: theme.color.darkGray }}
+            />
+            <Text style={styles.time}>{dateFormat(+orderItem.createdAt)}</Text>
+          </View>
           <Text style={styles.status}>{orderItem.status}</Text>
         </View>
         <View>
@@ -55,6 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    elevation: 10,
   },
   orderId: {
     fontFamily: theme.text.fonts['sfpd-medium'],
@@ -70,7 +86,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.text.fonts.sfpt,
     fontSize: theme.text.size.md,
     color: theme.color.darkGray,
-    paddingTop: 8,
+    paddingLeft: 4,
   },
   status: {
     fontFamily: theme.text.fonts.sfpt,

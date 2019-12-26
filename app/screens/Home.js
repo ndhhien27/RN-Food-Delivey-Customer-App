@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/destructuring-assignment */
-import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,6 @@ import MyCarousel from '../components/Carousel';
 import CategoryWithIcon from '../components/CategoryWithIcon';
 import PopularList from '../components/PopularList';
 import { theme } from '../constants/theme';
-import RestaurantService from '../services/RestaurantService';
 import {
   fetchAllRestaurant,
   getUserInfo,
@@ -25,21 +24,36 @@ function Home(props) {
 
   //   return () => { _navListener.remove() }
   // }, [])
-
-  const [state, setstate] = useState([]);
+  const userLocation = {
+    lat: props.userInfo.position[0].lat,
+    long: props.userInfo.position[0].long,
+  };
   useEffect(() => {
-    props.fetchAllRestaurant();
-    props.getUserInfo(props.userId);
+    props.fetchAllRestaurant(userLocation);
     props.getNotification(props.userId);
-    props.navigation.setParams({ a: '12' });
   }, []);
+
+  const handleRefresh = () => {
+    props.fetchAllRestaurant(userLocation);
+    props.getNotification(props.userId);
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={props.isLoading}
+          onRefresh={handleRefresh}
+          size={30}
+          colors={[theme.color.primary]}
+        />
+      }
+    >
       {/* <StatusBar barStyle='dark-content' /> */}
-      <MyCarousel />
+      <MyCarousel data={props.restSortByTime} />
       <CategoryWithIcon />
-      <StoreList storeList={props.restaurantList} />
-      <PopularList />
+      <StoreList data={props.restaurantList} />
+      <PopularList data={props.restaurantList} />
     </ScrollView>
   );
 }
@@ -55,6 +69,7 @@ Home.navigationOptions = ({ navigation }) => {
             type="material-community"
             name="magnify"
             size={theme.icon.size.md}
+            color={theme.color.primary}
           />
         }
         type="clear"
@@ -68,6 +83,8 @@ const mapStateToProps = state => {
   return {
     restaurantList: state.restaurantReducer.fullList,
     userId: state.auth.userId,
+    userInfo: state.auth.userInfo,
+    isLoading: state.uiReducer.isLoading,
   };
 };
 

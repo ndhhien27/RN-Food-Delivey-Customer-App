@@ -13,12 +13,9 @@ import MenuItem from '../components/MenuItem';
 import Banner from '../components/Banner';
 import Header from '../components/Header';
 import { theme } from '../constants/theme';
-import { CartContext } from '../context/CartContext';
-import API from '../services/RestaurantService';
-import { fetchRestaurantById } from '../actions/index';
-import { modifyCart } from '../actions/cartActions';
+import { fetchRestaurantById, clearRestInfo } from '../actions/index';
+import { modifyCart, clearCart } from '../actions/cartActions';
 import StoreLoading from '../components/StoreLoading';
-import { AuthContext } from '../context/AuthContext';
 
 function StoreScreen(props) {
   const { navigation } = props;
@@ -27,14 +24,22 @@ function StoreScreen(props) {
   const [childCart, setChildCart] = useState({
     restaurantId,
     items: [],
-    subtotal: 0,
+    subtotal: null,
     total: 0,
   });
+  const resetChildCart = () => {
+    setChildCart({
+      restaurantId,
+      items: [],
+      subtotal: null,
+      total: 0,
+    });
+  };
   const restaurantInfo = useSelector(
     state => state.restaurantReducer.restaurantInfo
   );
   const isLoading = useSelector(state => state.uiReducer.isLoading);
-  const globalCart = useSelector(state => state.cartReducer.cart);
+  const globalCart = useSelector(state => state.cart.cart);
   const localCartIndex = useSelector(state =>
     selectCartIndex(state, restaurantId)
   );
@@ -44,14 +49,19 @@ function StoreScreen(props) {
   // eslint-disable-next-line no-unused-vars
   useEffect(() => {
     fetchRestaurantInfo();
-    console.log('callAPI');
     if (localCartIndex >= 0) setChildCart(globalCart[localCartIndex]);
+    return () => {
+      dispatch(clearRestInfo());
+    };
   }, []);
   useEffect(() => {
     modifyCurrentCart();
-  }, [childCart]);
+    if (childCart.total <= 0) dispatch(clearCart(restaurantId));
+  }, [childCart.total]);
 
-  // console.log('store', _.isEmpty(restaurantInfo));
+  const handleRefresh = () => {
+    fetchRestaurantInfo();
+  };
 
   const increase = item => {
     setChildCart(prev => {
@@ -151,7 +161,7 @@ function StoreScreen(props) {
   // };
 
   const headerStyle = scrollY.interpolate({
-    inputRange: [0, 150, 260, 262],
+    inputRange: [0, 150, 190, theme.height * (3 / 7) - 56],
     outputRange: [
       'rgba(255,255,255,0)',
       'rgba(255,255,255,0.7)',
@@ -161,18 +171,17 @@ function StoreScreen(props) {
     extrapolate: 'clamp',
   });
   const borderStyle = scrollY.interpolate({
-    inputRange: [0, 230, 262],
+    inputRange: [0, 190, theme.height * (3 / 7) - 56],
     outputRange: [0, 0, 1],
     extrapolate: 'clamp',
   });
   const backBtnStyle = scrollY.interpolate({
-    inputRange: [0, 150, 262],
+    inputRange: [0, 150, theme.height * (3 / 7) - 56],
     outputRange: ['#fff', '#fff', theme.color.primary],
     extrapolate: 'clamp',
   });
 
   // const { cart, addFoodToCart } = useContext(CartContext)
-
   return (
     <View style={{ flex: 1 }}>
       {/* <StatusBar
@@ -192,6 +201,8 @@ function StoreScreen(props) {
           onScroll={Animated.event([
             { nativeEvent: { contentOffset: { y: scrollY } } },
           ])}
+          refreshing={isLoading}
+          onRefresh={handleRefresh}
           renderItem={({ item }) => (
             <MenuItem
               menu={item}
@@ -207,15 +218,15 @@ function StoreScreen(props) {
           ListHeaderComponent={
             <Banner
               storeName={restaurantInfo.name}
-              address={
-                restaurantInfo.position ? restaurantInfo.position.address : ''
-              }
+              restaurantInfo={restaurantInfo}
+              position={restaurantInfo.position ? restaurantInfo.position : ''}
+              img={restaurantInfo.img_url}
               // foods={foods[1]}
             />
           }
         />
       )}
-      {!isLoading && (
+      {childCart.items.length > 0 && !isLoading && (
         <Button
           title={`Add to Order (${childCart.total})`}
           titleStyle={styles.titleBtn}
@@ -225,12 +236,13 @@ function StoreScreen(props) {
           onPress={() =>
             navigation.navigate('Cart', {
               cart: childCart,
-              storeName,
+              storeName: restaurantInfo.name,
               increase,
               decrease,
               address: restaurantInfo.position.address,
               restaurantId,
               localCartIndex,
+              resetChildCart,
             })
           }
         />
@@ -264,7 +276,7 @@ const styles = StyleSheet.create({
 });
 
 const selectCartIndex = createSelector(
-  state => state.cartReducer.cart,
+  state => state.cart.cart,
   (_, restaurantId) => restaurantId,
   (cart, restaurantId) => cart.findIndex(el => el.restaurantId === restaurantId)
 );

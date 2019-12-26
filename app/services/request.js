@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { host, port } from '../../config';
 
-const API_URL = 'http://192.168.1.2:8080';
+const API_URL = `http://${host}:${port}`;
 const client = axios.create({
   baseURL: API_URL,
 });

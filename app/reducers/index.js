@@ -16,10 +16,17 @@ const authPersistConfig = {
   stateReconciler: autoMergeLevel2,
 };
 
+const cartPersistConfig = {
+  key: 'cart',
+  storage: AsyncStorage,
+  whitelist: ['cart'],
+  stateReconciler: autoMergeLevel2,
+};
+
 const rootReducer = combineReducers({
   restaurantReducer,
   uiReducer,
-  cartReducer,
+  cart: persistReducer(cartPersistConfig, cartReducer),
   auth: persistReducer(authPersistConfig, authReducer),
   orderReducer,
   notificationReducer,

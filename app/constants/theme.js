@@ -1,13 +1,18 @@
 /* eslint-disable import/prefer-default-export */
+import { Dimensions } from 'react-native';
+
 const color = {
   orange: '#F35324',
-  primary: '#F68A2B',
+  primary: '#ff5722',
+  secondary: '#f7b67c',
   darkGray: '#99999E',
   gray: '#EDEDEE',
   lightGray: '#F2F2F7',
   yellow: '#FFCC00',
   red: '#ff0000',
 };
+
+const { width, height } = Dimensions.get('window');
 
 export const theme = {
   color,
@@ -65,9 +70,12 @@ export const theme = {
     xl: 40,
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOpacity: 0.12,
+    shadowColor: 'red',
+    shadowOpacity: 0.3,
     shadowRadius: 10,
     shadowOffset: { height: 5, width: 0 },
+    elevation: 5,
   },
+  width,
+  height,
 };

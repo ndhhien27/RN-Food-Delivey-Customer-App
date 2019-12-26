@@ -20,7 +20,7 @@ function CartScreen({ navigation }) {
   const { storeName, increase, localCartIndex } = navigation.state.params;
   // const [state, setstate] = useState(0);
   // const { cart } = useContext(CartContext);
-  const cart = useSelector(state => state.cartReducer.cart);
+  const cart = useSelector(state => state.cart.cart);
   // useEffect(() => {
   //   const index = cart.findIndex(el => el.restaurantId === restaurantId);
   //   setstate(index);
@@ -28,8 +28,8 @@ function CartScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.color.lightGray }}>
-      {cart[localCartIndex].items.length === 0 && <EmptyCart />}
-      {cart[localCartIndex].items.length > 0 && (
+      {!cart[localCartIndex] && <EmptyCart />}
+      {cart[localCartIndex] && (
         <NormalCart
           // cart={cart}
           localCartIndex={localCartIndex}

@@ -1,3 +1,7 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-alert */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useContext } from 'react';
 import {
   Text,
@@ -10,91 +14,69 @@ import { ListItem, Button, Overlay, Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import { theme } from '../../constants/theme';
 import OrderModal from './OrderModal';
-import API from '../../services/OrderService';
 import { createOrder } from '../../actions/orderActions';
+import ChooseAddress from './ChooseAddress';
 
 export default function CheckoutScreen({ navigation }) {
   const { localCartIndex } = navigation.state.params;
   const [isVisible, setIsVisible] = useState(false);
-  const globalCart = useSelector(state => state.cartReducer.cart);
+  const [isPositionModal, setIsPositionModal] = useState(false);
+  const globalCart = useSelector(state => state.cart.cart);
   const userId = useSelector(state => state.auth.userId);
+  const userInfo = useSelector(state => state.auth.userInfo);
   const dispatch = useDispatch();
+  const [otherAddress, setOtherAddress] = useState({
+    _id: 'otherAddress-001',
+    address: null,
+    lat: null,
+    long: null,
+    isSelect: false,
+  });
   const [paymentInfo, setpaymentInfo] = useState({
-    deliveryAddress: '',
-    paymentType: '',
-    paymentInfo: '',
+    deliveryAddress: {
+      address: null,
+      lat: null,
+      long: null,
+    },
+    paymentType: null,
+    paymentInfo: null,
   });
   const [state, setstate] = useState({
-    location: [
-      {
-        id: 1,
-        type: 'home address',
-        address: '382 Ton Duc Thang, Lien Chieu, Da Nang',
+    location: userInfo.position.map(el => {
+      return {
+        ...el,
         isSelect: false,
-      },
-      {
-        id: 2,
-        type: 'workplace',
-        address: '54 Nguyen Luong Bang, Hoa Khanh, Da Nang',
+      };
+    }),
+    payment_method: userInfo.payment.map(el => {
+      return {
+        ...el,
         isSelect: false,
-      },
-      {
-        id: 3,
-        type: 'workplace',
-        address: '54 Nguyen Luong Bang, Hoa Khanh, Da Nang',
-        isSelect: false,
-      },
-      {
-        id: 4,
-        type: 'workplace',
-        address: '54 Nguyen Luong Bang, Hoa Khanh, Da Nang',
-        isSelect: false,
-      },
-    ],
-    payment_method: [
-      {
-        id: 1,
-        type: 'Visa',
-        card_info: '312381203813',
-        isSelect: false,
-      },
-      {
-        id: 2,
-        type: 'Cash',
-        card_info: 'Giao hang truc tiep',
-        isSelect: false,
-      },
-      {
-        id: 3,
-        type: 'Visa',
-        card_info: '312381203813',
-        isSelect: false,
-      },
-      {
-        id: 4,
-        type: 'Visa',
-        card_info: '312381203813',
-        isSelect: false,
-      },
-    ],
+      };
+    }),
   });
 
-  console.log(globalCart[localCartIndex]);
   const selectAddress = item => {
     // eslint-disable-next-line no-param-reassign
-    item.isSelect = !item.isSelect;
+    // item.isSelect = !item.isSelect;
     setstate(prev => {
       return {
         ...prev,
         location: prev.location.map(el =>
-          el.id !== item.id ? { ...el, isSelect: false } : { ...item }
+          el._id !== item._id
+            ? { ...el, isSelect: false }
+            : { ...el, isSelect: true }
         ),
       };
     });
     setpaymentInfo(prev => {
       return {
         ...prev,
-        deliveryAddress: item.address,
+        deliveryAddress: {
+          address: item.address,
+          lat: item.lat,
+          long: item.long,
+        },
       };
     });
   };
@@ -103,27 +85,28 @@ export default function CheckoutScreen({ navigation }) {
 
   const selectPayment = item => {
     // eslint-disable-next-line no-param-reassign
-    item.isSelect = !item.isSelect;
     setstate(prev => {
       return {
         ...prev,
         payment_method: prev.payment_method.map(el =>
-          el.id !== item.id ? { ...el, isSelect: false } : { ...item }
+          el._id !== item._id
+            ? { ...el, isSelect: false }
+            : { ...el, isSelect: true }
         ),
       };
     });
     setpaymentInfo(prev => {
       return {
         ...prev,
-        paymentType: item.type,
-        paymentInfo: item.card_info,
+        paymentType: item.paymentType,
+        paymentInfo: item.detail,
       };
     });
   };
 
-  const renderListAdress = ({ item }) => (
+  const renderListAdress = ({ item, index }) => (
     <ListItem
-      title={item.type}
+      title={`Address ${index + 1}`}
       titleStyle={styles.listItemTitle}
       contentContainerStyle={{
         marginHorizontal: -5,
@@ -154,12 +137,12 @@ export default function CheckoutScreen({ navigation }) {
 
   const renderListPayment = ({ item }) => (
     <ListItem
-      title={item.type}
+      title={item.paymentType}
       titleStyle={styles.listItemTitle}
       contentContainerStyle={{
         marginHorizontal: -5,
       }}
-      subtitle={item.card_info}
+      subtitle={item.detail}
       subtitleProps={{ numberOfLines: 1 }}
       subtitleStyle={{
         fontFamily: theme.text.fonts.sfpt,
@@ -187,6 +170,54 @@ export default function CheckoutScreen({ navigation }) {
     setIsVisible(!isVisible);
   };
 
+  const addAddress = address => {
+    setOtherAddress(prev => {
+      return {
+        ...prev,
+        address: address.address,
+        lat: address.lat,
+        long: address.long,
+      };
+    });
+  };
+
+  const payment = () => {
+    if (paymentInfo.deliveryAddress.address && paymentInfo.paymentInfo) {
+      toggleModal();
+      dispatch(
+        createOrder({
+          userId,
+          ...paymentInfo,
+          ...globalCart[localCartIndex],
+        })
+      );
+    } else {
+      alert('Please choose payment info');
+    }
+  };
+
+  useEffect(() => {
+    if (otherAddress.address) {
+      const index = state.location.findIndex(el => el._id === otherAddress._id);
+      if (index !== -1)
+        setstate(prev => {
+          return {
+            ...prev,
+            location: prev.location.map(el =>
+              el._id === otherAddress._id ? { ...otherAddress } : { ...el }
+            ),
+          };
+        });
+      else
+        setstate(prev => {
+          return {
+            ...prev,
+            location: [...prev.location, { ...otherAddress }],
+          };
+        });
+    }
+  }, [otherAddress.address]);
+
   return (
     <View
       style={{
@@ -205,45 +236,64 @@ export default function CheckoutScreen({ navigation }) {
         >
           <OrderModal hideModal={toggleModal} />
         </Overlay>
+        <Overlay
+          isVisible={isPositionModal}
+          onBackdropPress={() => setIsPositionModal(false)}
+          animationType="slide"
+          height="80%"
+          width="100%"
+          overlayStyle={{ padding: 0, position: 'absolute', bottom: 0 }}
+        >
+          <ChooseAddress
+            onPress={() => setIsVisible(false)}
+            addAddress={addAddress}
+            hideModal={() => setIsPositionModal(false)}
+            // formikProps={formikProps}
+            // formikKey="position.address"
+            // latKey="position.lat"
+            // longKey="position.long"
+          />
+        </Overlay>
+
         <View style={styles.contentContainer}>
           <View style={{ flex: 1 }}>
-            <View style={{ maxHeight: 180 }}>
+            <View style={{ maxHeight: 220 }}>
               <Text style={styles.title}>delivery address</Text>
               <FlatList
                 data={state.location}
                 renderItem={renderListAdress}
-                keyExtractor={item => `address-${item.id}`}
-                extraData={state.location}
+                keyExtractor={item => `address-${item._id}`}
                 alwaysBounceVertical={false}
+                showsVerticalScrollIndicator={false}
+              />
+              <Button
+                title="Choose other address"
+                type="clear"
+                onPress={() => setIsPositionModal(true)}
+                titleStyle={{ color: theme.color.primary }}
+                containerStyle={{ alignItems: 'flex-start' }}
               />
             </View>
-            <View style={{ maxHeight: 180, marginTop: 50 }}>
+            <View style={{ maxHeight: 220, marginTop: 30 }}>
               <Text style={styles.title}>payment method</Text>
               <FlatList
                 data={state.payment_method}
                 renderItem={renderListPayment}
-                keyExtractor={item => `pay-${item.id}`}
+                keyExtractor={item => `pay-${item._id}`}
                 alwaysBounceVertical={false}
+                showsVerticalScrollIndicator={false}
               />
             </View>
           </View>
           <Button
             title="Payment"
+            titleStyle={{ fontFamily: theme.text.fonts.sfpt, fontSize: 22 }}
             buttonStyle={{
               backgroundColor: theme.color.primary,
               borderRadius: 8,
               // marginTop: 50,
             }}
-            onPress={() => {
-              toggleModal();
-              dispatch(
-                createOrder({
-                  userId,
-                  ...paymentInfo,
-                  ...globalCart[localCartIndex],
-                })
-              );
-            }}
+            onPress={() => payment()}
           />
         </View>
       </View>
@@ -260,6 +310,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8,
     height: '100%',
+    elevation: 10,
   },
   title: {
     textTransform: 'uppercase',

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
@@ -8,7 +9,8 @@ import MapView, {
   Callout,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
-import { Icon } from 'react-native-elements';
+import { decode } from '@mapbox/polyline';
+import { Icon, Button } from 'react-native-elements';
 import {
   AppRegistry,
   StyleSheet,
@@ -16,11 +18,14 @@ import {
   Image,
   Text,
   View,
-  Button,
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
+import { useSelector } from 'react-redux';
 import { theme } from '../constants/theme';
+import MapAPI from '../services/MapService';
+import { image } from '../constants/images';
+import { navigate } from '../services/NavigationService';
 
 const MapStyle = [
   {
@@ -273,7 +278,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   textInputContainer: {
-    marginTop: 44,
     backgroundColor: 'transparent',
     alignItems: 'center',
     // height: 56,
@@ -293,18 +297,20 @@ const styles = StyleSheet.create({
     zIndex: 10000000,
   },
   myLocation: {
-    width: 50,
-    height: 50,
     zIndex: 10000,
     position: 'absolute',
     bottom: 20,
     right: 20,
-    borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.color.white,
-    borderColor: theme.color.primary,
-    borderWidth: 3,
+  },
+  direction: {
+    zIndex: 10000,
+    position: 'absolute',
+    bottom: 80,
+    right: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   chooseBtn: {
     width: '50%',
@@ -315,60 +321,92 @@ const styles = StyleSheet.create({
   slide: {
     height: 200,
   },
+  directionInfoContainer: {
+    position: 'absolute',
+    zIndex: 1000,
+    backgroundColor: '#fff',
+    bottom: 40,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginLeft: 16,
+  },
+  directionInfoText: {
+    fontFamily: theme.text.fonts['sfpt-medium'],
+    fontSize: theme.text.size.md,
+  },
+  backBtn: {
+    zIndex: 10000,
+    position: 'absolute',
+    top: 20,
+    left: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 const LocationPickerScreen = props => {
+  const currentLocation = useSelector(state => state.auth.currentLocation);
   const { navigation } = props;
-  const [lat, setLat] = useState(16.0216792);
-  const [long, setLong] = useState(108.2257474);
+  const { storeLat, storeLong, storeName } = navigation.state.params;
   const [error, setError] = useState('');
-  const [inputLocation, setInputLocation] = useState('');
-  const inputLocationRef = useRef();
-  const [addressTextInput, setAddressTextInput] = useState('');
   const mapRef = useRef();
-  const [choosenGeometry, setChoosenGeometry] = useState();
-  const { formikProps, formikKey, latKey, longKey } = navigation.state.params;
+  const [directionData, setDirectionData] = useState({
+    coords: null,
+    distance: null,
+    time: null,
+    isDirection: false,
+  });
+  // const { formikProps, formikKey, latKey, longKey } = navigation.state.params;
+
+  // useEffect(() => {
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       setLat(position.coords.latitude);
+  //       setLong(position.coords.longitude);
+  //     },
+  //     error => setError(error.message),
+  //     { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
+  //   );
+
+  //   // setAddressTextInput(inputLocationRef.current.getAddressText());
+  //   // direction();
+  // }, []);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        setLat(position.coords.latitude);
-        setLong(position.coords.longitude);
-      },
-      error => setError(error.message),
-      { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
-    );
-
-    setAddressTextInput(inputLocationRef.current.getAddressText());
+    direction();
   }, []);
 
-  const clearText = () => {
-    // console.log(inputLocationRef.current)
-    inputLocationRef.current.setAddressText('');
+  // console.log(lat, long, storeLat, storeLong);
+  const direction = () => {
+    const originStr = `${currentLocation.lat},${currentLocation.long}`;
+    const destStr = `${storeLat},${storeLong}`;
+    MapAPI.directions(
+      originStr,
+      destStr,
+      res => {
+        const routes = res.data.routes[0];
+        const points = decode(routes.overview_polyline.points);
+        const coords = points.map(point => {
+          return {
+            latitude: point[0],
+            longitude: point[1],
+          };
+        });
+        const distanceTime = routes.legs[0];
+        const distance = distanceTime.distance.text;
+        const time = distanceTime.duration.text;
+        setDirectionData({ coords, distance, time });
+      },
+      err => console.log(err)
+    );
   };
-
   const goBackMyLocation = () => {
     mapRef.current.animateCamera(
       {
         center: {
-          latitude: lat,
-          longitude: long,
-        },
-        pitch: 2,
-        heading: 20,
-        altitude: 200,
-        zoom: 17,
-      },
-      1000
-    );
-  };
-
-  const goToLocation = (latt, longg) => {
-    mapRef.current.animateCamera(
-      {
-        center: {
-          latitude: latt,
-          longitude: longg,
+          latitude: currentLocation.lat,
+          longitude: currentLocation.long,
         },
         pitch: 2,
         heading: 20,
@@ -395,101 +433,8 @@ const LocationPickerScreen = props => {
   ]);
   const [showCarousel, setShowCarousel] = useState(false);
 
-  const goBack = () => {
-    navigation.goBack();
-  };
-
-  const addUserLocation = () => {
-    formikProps.setFieldValue(formikKey, inputLocationRef.current.state.text);
-    formikProps.setFieldValue(latKey, choosenGeometry.lat);
-    formikProps.setFieldValue(longKey, choosenGeometry.long);
-    console.log(inputLocationRef.current.state.text);
-    console.log(choosenGeometry);
-  };
-
   return (
     <>
-      <GooglePlacesAutocomplete
-        ref={inputLocationRef}
-        placeholder="Search"
-        minLength={2} // minimum length of text to search
-        autoFocus={false}
-        returnKeyType="search" // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-        // keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
-        listViewDisplayed="false" // true/false/undefined
-        fetchDetails
-        // renderDescription={row => row.description} // custom description render
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          const { location } = details.geometry;
-          setChoosenGeometry({
-            lat: location.lat,
-            long: location.lng,
-          });
-          setLat(location.lat);
-          setLong(location.lng);
-          goToLocation(location.lat, location.lng);
-        }}
-        getDefaultValue={() => ''}
-        query={{
-          // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyDbGSMJEdxu7ajQyHA5F1b0mOalhnHxzTQ',
-          language: 'vi', // language of the results
-          // types: '(cities)' // default: 'geocode'
-        }}
-        styles={{
-          container: styles.mapContainer,
-          listView: styles.listView,
-          textInputContainer: styles.textInputContainer,
-          poweredContainer: styles.poweredContainer,
-          textInput: styles.textInput,
-        }}
-        nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-        GoogleReverseGeocodingQuery={
-          {
-            // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-          }
-        }
-        GooglePlacesSearchQuery={{
-          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-          rankby: 'distance',
-          type: 'cafe',
-        }}
-        GooglePlacesDetailsQuery={{
-          // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
-          fields: 'formatted_address',
-        }}
-        filterReverseGeocodingByTypes={[
-          'locality',
-          'administrative_area_level_3',
-        ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-        // predefinedPlaces={[homePlace, workPlace]}
-        // renderRightButton={() => {
-        //   const textRef = inputLocationRef.current;
-        //   if (!textRef || textRef.getAddressText() !== '') {
-        //     return (
-        //       <View style={styles.btnContainer}>
-        //         <Icon type="material" name="close" onPress={clearText} />
-        //       </View>
-        //     );
-        //   }
-        // }}
-        renderLeftButton={() => (
-          <View style={styles.btnContainer}>
-            <Icon
-              type="material-community"
-              name="chevron-left"
-              color="#000"
-              onPress={() => {
-                console.log('done');
-                navigation.goBack(null);
-              }}
-            />
-          </View>
-        )}
-        debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-      />
-
       <MapView
         ref={mapRef}
         // onTouchStart={() => {
@@ -497,14 +442,14 @@ const LocationPickerScreen = props => {
         // }}
         style={styles.map}
         initialRegion={{
-          latitude: 16,
-          longitude: 108,
+          latitude: storeLat,
+          longitude: storeLat,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
         region={{
-          latitude: lat,
-          longitude: long,
+          latitude: storeLat,
+          longitude: storeLong,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
@@ -513,55 +458,103 @@ const LocationPickerScreen = props => {
         showsUserLocation
         provider={PROVIDER_GOOGLE}
       >
-        {!!lat && !!long && (
+        {!!currentLocation.lat && !!currentLocation.long && (
           <>
             <Marker
-              coordinate={{ latitude: lat, longitude: long }}
-              title="Your Location"
+              coordinate={{ latitude: storeLat, longitude: storeLong }}
+              title={storeName}
               onPress={() => setShowCarousel(true)}
+              image={image.location}
             />
           </>
         )}
+        {directionData.isDirection && (
+          <Polyline
+            strokeWidth={5}
+            strokeColor="#3490de"
+            // strokeColor={theme.color.primary}
+            coordinates={directionData.coords}
+          />
+        )}
       </MapView>
-      <View style={styles.chooseBtn}>
-        <Button
-          title="Choose this location"
-          color={theme.color.primary}
-          onPress={addUserLocation}
-        />
-      </View>
-      <View style={styles.myLocation}>
-        <Icon
-          type="font-awesome"
-          name="location-arrow"
-          size={30}
-          color={theme.color.primary}
-          onPress={goBackMyLocation}
-        />
-      </View>
-      {showCarousel && (
-        <Carousel
-          // ref={carouselRef}
-          sliderWidth={screenWidth}
-          itemWidth={screenWidth - 100}
-          data={data}
-          renderItem={_renderItem}
-          hasParallaxImages
-          // slideStyle={{ marginLeft: -10, marginRight: 10 }}
-          containerCustomStyle={{
-            zIndex: 1000,
-            // backgroundColor: 'red',
-            position: 'absolute',
-            bottom: 80,
-          }}
-          slideStyle={{
-            backgroundColor: theme.color.white,
-          }}
-          style={{
-            backfaceVisibility: 'visible',
-          }}
-          sliderHeight={300}
-        />
+      <Button
+        buttonStyle={{
+          backgroundColor: '#fff',
+          width: 50,
+          height: 50,
+          borderRadius: 25,
+        }}
+        containerStyle={styles.direction}
+        type="clear"
+        icon={
+          <Icon
+            type="material-community"
+            name="directions"
+            size={30}
+            color={theme.color.primary}
+          />
+        }
+        onPress={() =>
+          setDirectionData(prev => {
+            return {
+              ...prev,
+              isDirection: true,
+            };
+          })
+        }
+      />
+      <Button
+        buttonStyle={{
+          width: 50,
+          height: 50,
+          borderRadius: 25,
+          padding: 0,
+        }}
+        containerStyle={styles.backBtn}
+        type="clear"
+        icon={
+          <Icon
+            type="material-community"
+            name="arrow-left"
+            size={30}
+            color={theme.color.primary}
+          />
+        }
+        onPress={() => navigation.goBack()}
+      />
+
+      {/* <View style={styles.myLocation}> */}
+      <Button
+        type="clear"
+        icon={
+          <Icon
+            type="material-community"
+            name="crosshairs-gps"
+            size={30}
+            color={theme.color.primary}
+            onPress={goBackMyLocation}
+            underlayColor="transparent"
+          />
+        }
+        buttonStyle={{
+          backgroundColor: '#fff',
+          width: 50,
+          height: 50,
+          borderRadius: 25,
+        }}
+        containerStyle={styles.myLocation}
+        // containerStyle={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}
+      />
+      {/* </View> */}
+      {directionData.isDirection && (
+        <View style={styles.directionInfoContainer}>
+          <Text style={styles.directionInfoText}>
+            Distance: {directionData.distance}
+          </Text>
+          <Text style={styles.directionInfoText}>
+            Time: {directionData.time}
+          </Text>
+        </View>
       )}
     </>
   );

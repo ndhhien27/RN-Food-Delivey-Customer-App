@@ -1,24 +1,25 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { theme } from '../constants/theme';
-import { CartContext } from '../context/CartContext';
+import { currencyFormat } from '../helpers/string';
 
 export default function FoodItem(props) {
   const { item, childCart } = props;
-  const [isSelect, setisSelect] = useState(false);
   // const { addFoodToCart } = useContext(CartContext);
   return (
     <ListItem
       title={item.name}
       titleStyle={styles.title}
-      subtitle={item.price.value}
+      subtitle={`${currencyFormat(item.price.value.toString())}đ`}
       subtitleStyle={styles.subtitleSty}
       bottomDivider
+      Component={TouchableOpacity}
+      activeOpacity={0.5}
       checkmark={{
         color: theme.color.primary,
         type: 'material-community',
-        name: 'cart',
+        name: 'plus-circle',
         // opacity: item.isSelect ? 1 : 0,
         size: 26,
       }}

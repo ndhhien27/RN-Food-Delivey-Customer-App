@@ -1,15 +1,20 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { theme } from '../../constants/theme';
 
 export default function StarInfo(props) {
-  const { style } = props;
+  const { style, name, label, value, onPress, disabled } = props;
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      activeOpacity={0.5}
       style={[
         {
           borderRightWidth: 1,
           borderColor: '#fff',
+          alignItems: 'center',
           flex: 1,
           paddingHorizontal: 20,
           paddingVertical: 10,
@@ -17,23 +22,27 @@ export default function StarInfo(props) {
         { ...style },
       ]}
     >
-      <View style={{ flexDirection: 'row' }}>
-        <Icon
-          name="bookmark"
-          type="material-community"
-          color="#fff"
-          size={16}
-        />
-        <Text style={{ color: '#fff', fontSize: 16, paddingLeft: 6 }}>4.8</Text>
-      </View>
-      <Text
+      <View
         style={{
-          color: '#fff',
-          fontSize: 16,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        djadjaslkd
-      </Text>
-    </View>
+        <Icon name={name} type="material-community" color="#fff" size={16} />
+        <Text style={{ color: '#fff', fontSize: 16, paddingLeft: 6 }}>
+          {value}
+        </Text>
+      </View>
+      <Text style={styles.label}>{label}</Text>
+    </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    fontFamily: theme.text.fonts.sfpt,
+    fontSize: theme.text.size.md,
+    color: '#fff',
+  },
+});

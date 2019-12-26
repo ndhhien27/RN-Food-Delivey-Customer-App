@@ -2,7 +2,7 @@ import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
 import * as types from '../constants';
 import { modifyArr } from '../helpers/array';
 
-const cartSelector = state => state.cartReducer.cart || [];
+const cartSelector = state => state.cart.cart || [];
 
 function* taskUpdateNewCart(action) {
   const { payload } = action;

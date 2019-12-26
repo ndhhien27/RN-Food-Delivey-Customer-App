@@ -3,9 +3,10 @@ import Reactotron from 'reactotron-react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import sagaPlugin from 'reactotron-redux-saga';
 import { reactotronRedux } from 'reactotron-redux';
+import { host } from './config';
 
 const reactotron = Reactotron.setAsyncStorageHandler(AsyncStorage) // AsyncStorage would either come from `react-native` or `@react-native-community/async-storage` depending on where you get it from
-  .configure({ host: '192.168.1.2' }) // controls connection & communication settings
+  .configure({ host }) // controls connection & communication settings
   .use(sagaPlugin())
   .use(reactotronRedux())
   .useReactNative() // add all built-in react native plugins

@@ -1,20 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-const-assign */
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  FlatList,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Platform } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { SearchBar } from 'react-native-elements';
 import SearchHeader from '../components/SearchHeader';
 import { theme } from '../constants/theme';
 import { search } from '../actions';
+import SmallStoreListItem from '../components/SmallStoreListItem';
 
 export default function SearchScreen() {
   const [searchValue, setSearchValue] = useState('');
@@ -27,27 +21,33 @@ export default function SearchScreen() {
     dispatch(search(text));
   };
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <SearchHeader />
-      <ScrollView>
+      <View style={{ flex: 1 }}>
         <Text style={styles.title}>Search</Text>
         <SearchBar
           placeholder="Search"
           value={searchValue}
-          platform="ios"
-          inputContainerStyle={{ backgroundColor: theme.color.gray }}
-          containerStyle={{ backgroundColor: null }}
+          platform={Platform.OS === 'ios' ? 'ios' : 'android'}
+          inputContainerStyle={{
+            backgroundColor: theme.color.gray,
+            paddingHorizontal: 0,
+          }}
+          containerStyle={{ backgroundColor: null, paddingHorizontal: 16 }}
           onChangeText={text => handleSearch(text)}
         />
-        <Text>Search</Text>
-        <View>
+        <View style={{ flex: 1 }}>
           <FlatList
             data={searchResult}
             keyExtractor={item => `rest-${item._id}`}
-            renderItem={({ item }) => <Text>{item.name}</Text>}
+            contentContainerStyle={{
+              paddingHorizontal: 16,
+              paddingTop: 16,
+            }}
+            renderItem={({ item }) => <SmallStoreListItem item={item} />}
           />
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -59,5 +59,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 34,
+    paddingLeft: 16,
+    color: theme.color.primary,
   },
 });

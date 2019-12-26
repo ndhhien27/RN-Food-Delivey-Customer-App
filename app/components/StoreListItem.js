@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
-
 import { theme } from '../constants/theme';
+import Decimal from '../helpers/decimal';
 
 function StoreListItem(props) {
   const { item, onPress } = props;
@@ -17,13 +17,14 @@ function StoreListItem(props) {
   const [bookmark, setBookmark] = useState(false);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.5}>
-      <View style={styles.shadow}>
+    <View>
+      <TouchableOpacity
+        onPress={onPress}
+        activeOpacity={0.5}
+        style={theme.shadow}
+      >
         <View style={styles.container}>
-          <ImageBackground
-            style={styles.image}
-            source={{ uri: 'http://via.placeholder.com/180x180' }}
-          >
+          <ImageBackground style={styles.image} source={{ uri: item.img_url }}>
             <Button
               icon={
                 <Icon
@@ -54,7 +55,7 @@ function StoreListItem(props) {
                   size={15}
                 />
               }
-              title="4.8"
+              title={`${Decimal.round10(item.rating.avg, -1)}`}
               disabledTitleStyle={{ color: '#fff', fontSize: 15 }}
               disabled
               disabledStyle={{
@@ -77,8 +78,8 @@ function StoreListItem(props) {
             <Text numberOfLines={1}>{item.position.address}</Text>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     height: 180,
     borderTopRightRadius: theme.radius['2xs'],
     borderTopLeftRadius: theme.radius['2xs'],
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   container: {
     marginBottom: 20,
@@ -95,8 +96,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     overflow: 'hidden',
     width: 180,
+    elevation: 10,
   },
-  shadow: theme.shadow,
+  shadow: {
+    ...theme.shadow,
+  },
   info: {
     padding: 8,
   },

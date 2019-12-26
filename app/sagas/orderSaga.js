@@ -1,12 +1,21 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-undef */
-import { call, put, takeLatest, delay } from 'redux-saga/effects';
+import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import * as types from '../constants';
 import API from '../services/OrderService';
+import { clearCart } from '../actions/cartActions';
+import { fetchAllRestaurant } from '../actions';
+
+const userInfo = state => state.auth.userInfo;
+const userId = state => state.auth.userId;
 
 function* taskGetOrder({ payload }) {
-  const res = yield call(API.getOrderByUser, payload.userId);
+  const userIdValue = yield select(userId);
+  yield put({
+    type: types.SHOW_LOADING,
+  });
+  const res = yield call(API.getOrderByUser, payload.userId || userIdValue);
   if (res.errors) {
     const { message } = res.errors[0];
     yield put({
@@ -23,6 +32,10 @@ function* taskGetOrder({ payload }) {
       },
     });
   }
+  yield delay(500);
+  yield put({
+    type: types.HIDE_LOADING,
+  });
 }
 
 function* taskCreateOrder({ payload }) {
@@ -42,6 +55,7 @@ function* taskCreateOrder({ payload }) {
         myOrders: res.data.createOrder,
       },
     });
+    yield put(clearCart(payload.orderDetail.restaurantId));
   }
 }
 
@@ -59,7 +73,7 @@ function* taskUpdateOrder({ payload }) {
     // yield put({
     //   type: types.HIDE_LOADING,
     // });
-    alert(res.errors[0].message);
+    alert(message);
     // alert(message);
   } else if (res.data.updateOrder) {
     yield put({
@@ -121,6 +135,8 @@ function* taskReviewOrder({ payload }) {
         newOrder: reviewOrder,
       },
     });
+    const userData = yield select(userInfo);
+    yield put(fetchAllRestaurant(userData.position[0]));
     Alert.alert('Thanks for your review');
   }
 }

@@ -1,20 +1,31 @@
-import { call, put, takeLatest, delay } from 'redux-saga/effects';
+import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
 import * as types from '../constants';
 import API from '../services/RestaurantService';
-import { getDistanceFromLatLonInKm } from '../helpers/distance';
+
+const userInfo = state => state.auth.userInfo;
 
 function* restaurantTask(action) {
   const { payload } = action;
-  const res = yield call(API.getRestaurantsWithSaga);
+  const userInfoValue = yield select(userInfo);
+  console.log(userInfoValue);
+  yield put({
+    type: types.SHOW_LOADING,
+  });
+  const res = yield call(API.getRestaurantsWithSaga, payload.userLocation);
   if (res.data.restaurants) {
-    const data = res.data.restaurants;
+    // const data = res.data.restaurants;
+    // const newRest = checkBookmark(userInfoValue.bookmarks, data);
     yield put({
       type: types.FETCHING_RESTAURANT_SUCCESS,
       payload: {
-        data,
+        data: res.data.restaurants,
       },
     });
   }
+  yield delay(1000);
+  yield put({
+    type: types.HIDE_LOADING,
+  });
 }
 
 function* restaurantByIdTask(action) {
@@ -63,10 +74,34 @@ function* taskSearchRestaurant(action) {
   }
 }
 
+function* taskFetchingReviews(action) {
+  const { payload } = action;
+  yield delay(500);
+  const res = yield call(API.getReviews, payload.restId);
+  if (res.data) {
+    const reviews = res.data.reviewsByRestaurant;
+    yield put({
+      type: types.FETCHING_REVIEW_SUCCESS,
+      payload: {
+        reviews,
+      },
+    });
+  } else {
+    const { message } = res.errors[0];
+    yield put({
+      type: types.FETCHING_REVIEW_ERROR,
+      payload: {
+        error: message,
+      },
+    });
+  }
+}
+
 function* restaurantSaga() {
   yield takeLatest(types.FETCHING_RESTAURANT, restaurantTask);
   yield takeLatest(types.FETCHING_RESTAURANT_BY_ID, restaurantByIdTask);
   yield takeLatest(types.SEARCH_RESTAURANT, taskSearchRestaurant);
+  yield takeLatest(types.FETCHING_REVIEW, taskFetchingReviews);
 }
 
 export default restaurantSaga;

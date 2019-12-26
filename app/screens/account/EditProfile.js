@@ -2,13 +2,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Avatar } from 'react-native-elements';
 
 import { theme } from '../../constants/theme';
 
 function ProfileItem(props) {
   const { label, info, divider = true } = props;
-  const { userInfo } = props.navigation.state.params;
   return (
     <View style={[styles.container, { borderBottomWidth: divider ? 1 : 0 }]}>
       <Text style={styles.label}>{label}</Text>
@@ -25,13 +25,7 @@ export default function EditProfile() {
 
   //   return () => { _navListener.remove() }
   // }, [])
-
-  const [profile, setProfile] = useState({
-    fullName: 'Nguyen Duc Hien',
-    email: 'ndhien@gmail.com',
-    phone: '123456789',
-    gender: 1,
-  });
+  const userInfo = useSelector(state => state.auth.userInfo);
 
   return (
     <View style={{ justifyContent: 'center', flex: 1 }}>
@@ -43,22 +37,18 @@ export default function EditProfile() {
             info={`${userInfo.fName} ${userInfo.lName}`}
           />
           <ProfileItem label="Email" info={userInfo.email} />
-          <ProfileItem label="Phone" info={profile.phone} />
-          <ProfileItem
-            label="Gender"
-            info={profile.gender ? 'Male' : 'Female'}
-            divider={false}
-          />
+          <ProfileItem label="Phone" info={userInfo.phone} />
+          <ProfileItem label="Gender" info="Male" divider={false} />
         </View>
         <Avatar
-          source={{ uri: 'http://via.placeholder.com/86x86' }}
+          icon={{ type: 'material-community', name: 'account', size: 100 }}
+          overlayContainerStyle={{ backgroundColor: theme.color.primary }}
           size="xlarge"
           rounded
           containerStyle={styles.avatar}
           showEditButton
           editButton={{
             containerStyle: {
-              backgroundColor: theme.color.primary,
               width: 54,
               height: 54,
               borderRadius: 27,

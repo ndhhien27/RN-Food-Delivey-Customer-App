@@ -19,6 +19,7 @@ const rootPersistConfig = {
     'auth',
     'uiReducer',
     'orderReducer',
+    'cart',
     'userReducer',
     'restaurantReducer',
   ],

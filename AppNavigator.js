@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -29,6 +30,9 @@ import OrderDetail from './app/screens/my_order/OrderDetail';
 import store from './app/store';
 import { fetchingMyOrder } from './app/actions/orderActions';
 import { updateUser } from './app/actions';
+import RestaurantListByDistance from './app/screens/RestaurantListByDistance';
+import MapNearest from './app/screens/MapNearest';
+import ReviewScreen from './app/screens/ReviewScreen';
 
 const MapStack = createStackNavigator(
   {
@@ -38,9 +42,60 @@ const MapStack = createStackNavigator(
     headerMode: 'none',
   }
 );
+
+const RestaurantStack = createStackNavigator(
+  {
+    Store: {
+      screen: StoreScreen,
+      params: { statusbar: 'light-content' },
+      navigationOptions: ({ navigation }) => {
+        return {
+          header: null,
+        };
+      },
+      path: 'store/:restId',
+    },
+    Review: {
+      screen: ReviewScreen,
+      navigationOptions: () => {
+        return {
+          title: 'Reviews',
+          headerTintColor: theme.color.primary,
+        };
+      },
+    },
+    StoreMap: {
+      screen: LocationPickerScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerBackImage: (
+            <Button
+              icon={<Icon type="material-community" name="arrow-left" />}
+              type="clear"
+              // onPress={() => navigation.goBack(null)}
+              size={28}
+            />
+          ),
+          header: null,
+        };
+      },
+    },
+  },
+  {
+    initialRouteName: 'Store',
+    headerBackTitleVisible: false,
+    navigationOptions: () => {
+      return {
+        header: null,
+      };
+    },
+    headerLayoutPreset: 'center',
+  }
+);
+
 const AccountStack = createStackNavigator(
   {
-    Main: {
+    Info: {
       screen: MainScreen,
       // params: { statusbar: 'dark-content' }
     },
@@ -54,14 +109,6 @@ const AccountStack = createStackNavigator(
     },
   },
   {
-    // navigationOptions: ({ navigation }) => {
-    //   let tabBarVisible = false;
-    //   if (getActiveRoute(navigation.state).routeName === 'Main')
-    //     tabBarVisible = true;
-    //   return {
-    //     tabBarVisible,
-    //   };
-    // },
     defaultNavigationOptions: ({ navigation }) => ({
       headerBackImage: (
         <Button
@@ -81,6 +128,14 @@ const AccountStack = createStackNavigator(
       ),
     }),
     headerBackTitleVisible: false,
+    navigationOptions: ({ navigation }) => {
+      let tabBarVisible = false;
+      if (getActiveRoute(navigation.state).routeName === 'Info')
+        tabBarVisible = true;
+      return {
+        tabBarVisible,
+      };
+    },
   }
 );
 
@@ -118,6 +173,7 @@ const OrderStack = createStackNavigator(
             }}
           />
         ),
+        headerTintColor: theme.color.primary,
       };
     },
     headerBackTitleVisible: false,
@@ -144,7 +200,13 @@ const CartStack = createStackNavigator(
           headerLeft: (
             <Button
               onPress={() => navigation.goBack(null)}
-              icon={<Icon type="material-community" name="arrow-left" />}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="arrow-left"
+                  color={theme.color.primary}
+                />
+              }
               type="clear"
               size={28}
             />
@@ -155,13 +217,108 @@ const CartStack = createStackNavigator(
     },
     Checkout: {
       screen: CheckoutScreen,
+      navigationOptions: () => {
+        return {
+          title: 'Checkout',
+        };
+      },
     },
   },
   {
     initialRouteName: 'CartScreen',
     headerLayoutPreset: 'center',
+    defaultNavigationOptions: () => {
+      return {
+        headerTintColor: theme.color.primary,
+      };
+    },
   }
 );
+
+const RestaurantNearestStack = createStackNavigator(
+  {
+    StoreByDistacne: {
+      screen: RestaurantListByDistance,
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: 'Nearest',
+          headerLeft: (
+            <Button
+              icon={
+                <Icon
+                  type="material-community"
+                  name="arrow-left"
+                  color={theme.color.primary}
+                />
+              }
+              type="clear"
+              onPress={() => navigation.goBack(null)}
+              size={28}
+            />
+          ),
+          headerRight: (
+            <Button
+              icon={
+                <Icon
+                  type="material-community"
+                  name="map-search-outline"
+                  color={theme.color.primary}
+                />
+              }
+              type="clear"
+              onPress={() => navigation.navigate('MapNearest')}
+              size={28}
+            />
+          ),
+        };
+      },
+    },
+    MapNearest: {
+      screen: MapNearest,
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: 'Map',
+          headerBackImage: (
+            <Button
+              buttonStyle={{ padding: 0 }}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="arrow-left"
+                  color={theme.color.primary}
+                />
+              }
+              onPress={() => navigation.goBack()}
+              type="clear"
+              size={28}
+            />
+          ),
+        };
+      },
+    },
+  },
+  {
+    initialRouteName: 'StoreByDistacne',
+    headerBackTitleVisible: false,
+    headerLayoutPreset: 'center',
+    defaultNavigationOptions: () => {
+      return {
+        headerTintColor: theme.color.primary,
+      };
+    },
+  }
+);
+
+const ListStoreByRatingStack = createStackNavigator({
+  ListStoreByRating: {
+    screen: RestaurantListByDistance,
+    navigationOptions: () => {
+      return {
+        header: null,
+      };
+    },
+  },
+});
 
 const HomeStack = createStackNavigator(
   {
@@ -170,6 +327,7 @@ const HomeStack = createStackNavigator(
       // params: { statusbar: 'dark-content' },
       navigationOptions: {
         headerBackTitle: null,
+        headerTintColor: theme.color.primary,
       },
     },
     StoreByCategory: {
@@ -181,15 +339,24 @@ const HomeStack = createStackNavigator(
         };
       },
     },
-    Store: {
-      screen: StoreScreen,
-      params: { statusbar: 'light-content' },
+    Restaurant: {
+      screen: RestaurantStack,
+    },
+    ListStoreByRatingStack: {
+      screen: ListStoreByRatingStack,
+      navigationOptions: () => {
+        return {
+          title: 'Rating',
+        };
+      },
+    },
+    RestaurantByDistance: {
+      screen: RestaurantNearestStack,
       navigationOptions: ({ navigation }) => {
         return {
           header: null,
         };
       },
-      path: 'store/:restId',
     },
   },
   {
@@ -203,18 +370,33 @@ const HomeStack = createStackNavigator(
     },
     initialRouteName: 'Home',
     headerLayoutPreset: 'center',
+    defaultNavigationOptions: () => {
+      return {
+        headerTintColor: theme.color.primary,
+      };
+    },
   }
 );
 
-const NotificationStack = createStackNavigator({
-  Notification: {
-    screen: Notification,
+const NotificationStack = createStackNavigator(
+  {
+    Notification: {
+      screen: Notification,
+      navigationOptions: () => {
+        return {
+          title: 'Notification',
+          headerTintColor: theme.color.primary,
+        };
+      },
+    },
   },
-});
+  {
+    headerLayoutPreset: 'center',
+  }
+);
 
 const AuthStack = createStackNavigator(
   {
-    WelCome,
     Login: {
       screen: LoginScreen,
       // params: { statusbar: 'dark-content' },
@@ -223,22 +405,13 @@ const AuthStack = createStackNavigator(
       screen: SignupScreen,
       navigationOptions: ({ navigation }) => {
         return {
-          headerLeft: (
-            <Button
-              title="Back"
-              type="clear"
-              onPress={() => navigation.goBack()}
-            />
-          ),
+          header: null,
         };
       },
     },
-    Map: {
-      screen: MapStack,
-    },
   },
   {
-    initialRouteName: 'WelCome',
+    initialRouteName: 'Login',
     defaultNavigationOptions: () => ({
       headerTransparent: true,
     }),
@@ -311,6 +484,7 @@ const AppNavigator = createStackNavigator(
 
 const AppSwitch = createSwitchNavigator(
   {
+    AuthLoading: WelCome,
     Auth: AuthStack,
     Main: {
       screen: AppNavigator,
@@ -318,7 +492,7 @@ const AppSwitch = createSwitchNavigator(
     },
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'AuthLoading',
   }
 );
 

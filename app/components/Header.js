@@ -39,7 +39,7 @@ function Header(props) {
               size={28}
             />
           }
-          onPress={() => props.navigation.goBack()}
+          onPress={() => props.navigation.goBack(null)}
           buttonStyle={{
             backgroundColor: null,
           }}
@@ -58,7 +58,6 @@ function Header(props) {
               size={28}
             />
           }
-          onPress={() => props.goBack()}
           buttonStyle={{
             backgroundColor: null,
           }}

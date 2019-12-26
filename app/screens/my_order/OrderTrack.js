@@ -66,7 +66,9 @@ function OrderTrack({ navigation, isFocused }) {
       )}
       navigationState={tabState}
       renderScene={SceneMap({
-        first: () => <OrderTrackContent status={['pending', 'accepted']} />,
+        first: () => (
+          <OrderTrackContent status={['pending', 'accepted', 'delivering']} />
+        ),
         second: () => <OrderTrackContent status={['completed']} />,
         third: () => <OrderTrackContent status={['cancelled']} />,
       })}

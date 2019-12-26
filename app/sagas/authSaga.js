@@ -1,11 +1,15 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
-import { call, put, takeLatest, delay } from 'redux-saga/effects';
+import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Alert } from 'react-native';
 import { navigate } from '../services/NavigationService';
 import * as types from '../constants';
 import API from '../services/AuthService';
 import UserAPI from '../services/UserService';
+import { getUserInfo, fetchAllRestaurant } from '../actions';
+
+const uniqueId = state => state.auth.uniqueId;
 
 function* taskAuth({ payload }) {
   const res = yield call(API.login2, payload.loginInput);
@@ -20,7 +24,7 @@ function* taskAuth({ payload }) {
         error: message,
       },
     });
-    yield delay(1500);
+    yield delay(1000);
     yield put({
       type: types.HIDE_LOADING,
     });
@@ -35,7 +39,8 @@ function* taskAuth({ payload }) {
         authToken,
       },
     });
-    yield delay(1500);
+    yield put(getUserInfo(userId, authToken));
+    yield delay(1000);
     yield put({
       type: types.HIDE_LOADING,
     });
@@ -43,8 +48,37 @@ function* taskAuth({ payload }) {
   }
 }
 
+function* taskSignUp({ payload }) {
+  yield delay(1000);
+  yield put({
+    type: authTypes.SHOW_LOADING,
+  });
+  const res = yield call(API.signup, payload.userInput);
+  if (res.errors) {
+    const { message } = res.errors[0];
+    yield put({
+      type: types.SIGN_UP_ERROR,
+      payload: {
+        error: message,
+      },
+    });
+    alert(message);
+  } else if (res.data) {
+    yield put({
+      type: types.SIGN_UP_SUCCESS,
+    });
+    Alert.alert('Success', 'You have successfully registered', [
+      { text: 'OK', onPress: () => goBack(null) },
+    ]);
+  }
+  yield delay(1000);
+  yield put({
+    type: authTypes.HIDE_LOADING,
+  });
+}
+
 function* taskGetUserInfo({ payload }) {
-  const res = yield call(UserAPI.getUserInfo, payload.userId);
+  const res = yield call(UserAPI.getUserInfo, payload.userId, payload.token);
   if (res.errors) {
     const { message } = res.errors[0];
     yield put({
@@ -53,11 +87,12 @@ function* taskGetUserInfo({ payload }) {
         error: message,
       },
     });
+    navigate('Auth', null);
     // yield delay(1500);
     // yield put({
     //   type: types.HIDE_LOADING,
     // });
-    alert(res.errors[0].message);
+    // alert(res.errors[0].message);
     // alert(message);
   } else if (res.data.userById) {
     yield put({
@@ -70,7 +105,7 @@ function* taskGetUserInfo({ payload }) {
     // yield put({
     //   type: types.HIDE_LOADING,
     // });
-    // navigate('Main', { a: 'a' });
+    navigate('Main', null);
   }
 }
 
@@ -106,10 +141,21 @@ function* taskUpdateUserInfo({ payload }) {
 
 function* taskSignOut({ payload }) {
   try {
+    const uniqueIdValue = yield select(uniqueId);
     yield call(AsyncStorage.clear);
-    yield put({
-      type: types.SIGN_OUT_SUCCESS,
-    });
+    const res = yield call(UserAPI.clearDevice, uniqueIdValue);
+    if (res.errors) {
+      yield put({
+        type: types.SIGN_OUT_ERROR,
+        payload: {
+          error,
+        },
+      });
+    } else if (res.data.clearUserDeviceInfo) {
+      yield put({
+        type: types.SIGN_OUT_SUCCESS,
+      });
+    }
     navigate('Auth', null);
   } catch (error) {
     yield put({
@@ -121,11 +167,17 @@ function* taskSignOut({ payload }) {
   }
 }
 
+function* taskGetLocation({ payload }) {
+  yield put(fetchAllRestaurant(payload));
+}
+
 function* authSaga() {
   yield takeLatest(types.LOGIN, taskAuth);
   yield takeLatest(types.SIGN_OUT, taskSignOut);
+  yield takeLatest(types.SIGN_UP, taskSignUp);
   yield takeLatest(types.GET_USER_INFO, taskGetUserInfo);
   yield takeLatest(types.UPDATE_USER_INFO, taskUpdateUserInfo);
+  yield takeLatest(types.GET_CURRENT_LOCATION, taskGetLocation);
 }
 
 export default authSaga;

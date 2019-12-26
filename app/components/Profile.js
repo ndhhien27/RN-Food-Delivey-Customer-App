@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { Avatar, Button, Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
-import { AuthContext } from '../context/AuthContext';
 
 import { theme } from '../constants/theme';
 
@@ -18,7 +17,8 @@ function Profile(props) {
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
         <Avatar
           rounded
-          source={{ uri: 'http://via.placeholder.com/86x86' }}
+          icon={{ type: 'material-community', name: 'account', size: 60 }}
+          overlayContainerStyle={{ backgroundColor: theme.color.primary }}
           size={86}
         />
         <View
@@ -57,7 +57,13 @@ function Profile(props) {
           backgroundColor: null,
           padding: 0,
         }}
-        onPress={() => navigation.navigate('EditProfile', { userInfo })}
+        containerStyle={{
+          position: 'absolute',
+          zIndex: 1000,
+          top: 0,
+          right: 0,
+        }}
+        onPress={() => navigation.navigate('EditProfile')}
       />
     </View>
   );

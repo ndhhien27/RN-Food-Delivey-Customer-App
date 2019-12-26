@@ -18,3 +18,21 @@ export const modifyCart = childCart => {
     },
   };
 };
+
+export const clearCart = restaurantId => {
+  return {
+    type: types.CLEAR_CART,
+    payload: {
+      restaurantId,
+    },
+  };
+};
+
+export const deleteCart = cartIndex => {
+  return {
+    type: types.DELETE_CART,
+    payload: {
+      cartIndex,
+    },
+  };
+};

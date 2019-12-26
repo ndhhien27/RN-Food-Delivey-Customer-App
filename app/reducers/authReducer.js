@@ -2,14 +2,20 @@ import * as types from '../constants';
 import * as notificationTypes from '../constants/notificationTypes';
 
 const initialState = {
-  authToken: null,
-  userId: null,
+  authToken: '',
+  userId: '',
   userInfo: {},
   loginError: null,
   getUserError: null,
   fcmToken: null,
   uniqueId: null,
   updateUserError: null,
+  signUpError: null,
+  bookmarkError: null,
+  currentLocation: {
+    lat: null,
+    long: null,
+  },
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -70,7 +76,36 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         signOutError: payload.error,
       };
-
+    case types.SIGN_UP_SUCCESS:
+      return {
+        ...state,
+      };
+    case types.SIGN_UP_ERROR:
+      return {
+        ...state,
+        signUpError: payload.error,
+      };
+    case types.GET_CURRENT_LOCATION:
+      return {
+        ...state,
+        currentLocation: {
+          lat: payload.lat,
+          long: payload.long,
+        },
+      };
+    case types.BOOKMARK_SUCCESS:
+      return {
+        ...state,
+        userInfo: {
+          ...state.userInfo,
+          bookmarks: [...state.userInfo.bookmarks, payload.restId],
+        },
+      };
+    case types.BOOKMARK_ERROR:
+      return {
+        ...state,
+        bookmarkError: payload.error,
+      };
     default:
       return state;
   }

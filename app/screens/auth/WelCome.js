@@ -1,6 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { Text, StyleSheet, View, ImageBackground } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ImageBackground,
+  ActivityIndicator,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Input, Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,17 +14,38 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { bindActionCreators } from 'redux';
 import { theme } from '../../constants/theme';
 import { image } from '../../constants/images';
-import { fetchAllRestaurant } from '../../actions/index';
+import { fetchAllRestaurant, getUserInfo } from '../../actions/index';
+import { removeQuotes } from '../../helpers/string';
+import { navigate } from '../../services/NavigationService';
 
 function WelCome(props) {
-  const { navigation } = props;
-  const checkAuthtoken = async () => {
-    await AsyncStorage.getItem('@auth_token');
+  useEffect(() => {
+    // clearStorage();
+    loadAuthToken();
+  }, []);
+
+  const clearStorage = async () => {
+    await AsyncStorage.clear();
+    const auth = await AsyncStorage.clear();
+    const authParse = JSON.parse(auth);
+    console.log('auth', authParse);
+    navigate('Auth');
   };
-  // useEffect(() => {
-  //   props.fetchAllRestaurant();
-  // }, []);
-  // console.log(props.restaurantList);
+
+  const loadAuthToken = async () => {
+    const auth = await AsyncStorage.getItem('persist:auth');
+    const authParse = JSON.parse(auth);
+    console.log('auth', authParse);
+    if (!authParse) navigate('Auth', null);
+    else {
+      console.log(removeQuotes(authParse.authToken));
+      if (removeQuotes(authParse.authToken)) {
+        console.log(removeQuotes(authParse.authToken));
+        const userId = removeQuotes(authParse.userId);
+        props.getUserInfo(userId, removeQuotes(authParse.authToken));
+      } else navigate('Auth', null);
+    }
+  };
   return (
     <ImageBackground style={styles.container} source={image.bg}>
       <LinearGradient
@@ -31,7 +58,8 @@ function WelCome(props) {
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <Text style={styles.text}>Delivered fast Food to your door.</Text>
           </View>
-          <Button
+          <ActivityIndicator size="large" />
+          {/* <Button
             title="Login"
             buttonStyle={{
               backgroundColor: theme.color.primary,
@@ -40,7 +68,7 @@ function WelCome(props) {
             activeOpacity={0.5}
             containerStyle={{ paddingBottom: 44 }}
             onPress={() => navigation.navigate('Login')}
-          />
+          /> */}
         </View>
       </LinearGradient>
     </ImageBackground>
@@ -77,6 +105,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       fetchAllRestaurant,
+      getUserInfo,
     },
     dispatch
   );

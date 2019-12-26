@@ -1,10 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { withNavigation } from 'react-navigation';
-
-import CategoryListItem from './StoreListItem';
+import { Button } from 'react-native-elements';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import StoreListItem from './StoreListItem';
+import { theme } from '../constants/theme';
 
 function StoreList(props) {
   // componentDidMount() {
@@ -35,20 +38,51 @@ function StoreList(props) {
   //     })
   //     .catch(err => console.log(err))
   // }
+  const { navigation } = props;
+  const isLoading = useSelector(state => state.uiReducer.isLoading);
   return (
-    <View>
-      <Text>MENU</Text>
+    <View style={{ paddingTop: 16 }}>
+      <View
+        style={{
+          paddingLeft: 16,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Text
+          style={{ fontFamily: theme.text.fonts['sfpd-medium'], fontSize: 20 }}
+        >
+          Rating
+        </Text>
+        <Button
+          title="More"
+          type="clear"
+          titleStyle={styles.btnTitle}
+          buttonStyle={styles.btn}
+          onPress={() =>
+            navigation.navigate('ListStoreByRatingStack', {
+              data: [...props.data]
+                .sort((rest1, rest2) => rest1.rating.avg - rest2.rating.avg)
+                .reverse(),
+              type: 'star',
+            })
+          }
+        />
+      </View>
       <FlatList
-        data={props.storeList}
+        data={[...props.data]
+          .sort((rest1, rest2) => rest1.rating.avg - rest2.rating.avg)
+          .reverse()
+          .slice(0, 6)}
         contentContainerStyle={styles.container}
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <View style={styles.wrapper}>
-            <CategoryListItem
+            <StoreListItem
               item={item}
               onPress={() =>
-                props.navigation.navigate('Store', {
+                props.navigation.navigate('Restaurant', {
                   storeName: item.name,
                   restaurantId: item._id,
                 })
@@ -69,6 +103,15 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     paddingHorizontal: 8,
+  },
+  btnTitle: {
+    fontFamily: theme.text.fonts['sfpd-medium'],
+    fontSize: 20,
+    color: theme.color.primary,
+  },
+  btn: {
+    padding: 0,
+    paddingRight: 16,
   },
 });
 

@@ -8,7 +8,11 @@ const createOrder = orderDetail => {
       mutation Order($orderInput: OrderInput!){
         createOrder(orderInput: $orderInput){
           _id
-          delivery_address
+          delivery_position{
+            address
+            lat
+            long
+          }
           user{
             _id
             fName
@@ -21,7 +25,7 @@ const createOrder = orderDetail => {
     variables: {
       orderInput: {
         restaurant: orderDetail.restaurantId,
-        delivery_address: orderDetail.deliveryAddress,
+        delivery_position: orderDetail.deliveryAddress,
         user: orderDetail.userId,
         subtotal: orderDetail.subtotal,
         total: orderDetail.total,
@@ -48,6 +52,7 @@ const getOrderByUser = userId => {
           orderByUser(userId: $userId){
             _id
             createdAt
+            updatedAt
             restaurant{
               name
             }
@@ -68,7 +73,11 @@ const updateOrder = (orderId, status) => {
       mutation UpdateOrder($orderId: ID!, $status: String!){
         updateOrder(orderId:$orderId status:$status){
           _id
-          delivery_address
+          delivery_position{
+            address
+            lat
+            long
+          }
           status
         }
       }
@@ -111,9 +120,14 @@ const fetchOrderById = orderId => {
             _id
             createdAt
             restaurant{
+              _id
               name
             }
-            delivery_address
+            delivery_position{
+              address
+              lat
+              long
+            }
             total
             status
             subtotal

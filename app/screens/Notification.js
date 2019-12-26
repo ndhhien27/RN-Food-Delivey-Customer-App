@@ -2,203 +2,233 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undef */
 /* eslint-disable react/no-this-in-sfc */
-import React from 'react';
-import { View, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  FlatList,
+  Animated,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  RefreshControl,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { Icon } from 'react-native-elements';
 import NotificationItem from '../components/NotificationItem';
-import { markAsRead } from '../actions/notificationActions';
+import { markAsRead, deleteNoti } from '../actions/notificationActions';
+import { getNotification } from '../actions';
+import { theme } from '../constants/theme';
 
 export default function Norification() {
   const notifications = useSelector(
     state => state.notificationReducer.notifications
   );
+  const isLoading = useSelector(state => state.uiReducer.isLoading);
+  // const [listViewData, setListViewData] = useState([...notifications]);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   const channel = new firebase.notifications.Android.Channel(
-  //     'test-channel',
-  //     'test channel',
-  //     firebase.notifications.Android.Importance.Max
-  //   );
-  //   firebase.notifications().android.createChannel(channel);
-  //   checkPermission();
-  //   messageListener();
-  //   // createNotificationListeners();
-  // }, []);
 
-  // const checkPermission = async () => {
-  //   const enabled = await firebase.messaging().hasPermission();
-  //   if (enabled) {
-  //     getFcmToken();
-  //   } else {
-  //     requestPermission();
-  //   }
-  // };
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  };
 
-  // const getFcmToken = async () => {
-  //   const fcmToken = await firebase.messaging().getToken();
-  //   if (fcmToken) {
-  //     console.log(fcmToken);
-  //     // showAlert('Your Firebase Token is:', fcmToken);
-  //   } else {
-  //     showAlert('Failed', 'No token received');
-  //   }
-  // };
+  const deleteRow = (rowMap, rowKey) => {
+    console.log(rowMap, rowKey);
+    closeRow(rowMap, rowKey);
+    dispatch(deleteNoti(rowKey));
+    // const newData = [...listViewData];
+    // const prevIndex = listViewData.findIndex(item => item._id === rowKey);
+    // console.log(prevIndex);
+    // newData.splice(prevIndex, 1);
+    // setListViewData(newData);
+  };
 
-  // const requestPermission = async () => {
-  //   try {
-  //     await firebase.messaging().requestPermission();
-  //     // User has authorised
-  //   } catch (error) {
-  //     // User has rejected permissions
-  //   }
-  // };
+  const rowSwipeAnimatedValues = {};
+  notifications.forEach((el, i) => {
+    rowSwipeAnimatedValues[`${el._id}`] = new Animated.Value(0);
+  });
 
-  // const messageListener = async () => {
-  //   firebase.notifications().onNotification(notification => {
-  //     console.log(notification.data);
-  //     const { title, body } = notification;
-  //     // console.log(data);
-  //     // showAlert(title, body);
-  //   });
+  const onSwipeValueChange = swipeData => {
+    const { key, value } = swipeData;
+    rowSwipeAnimatedValues[key].setValue(Math.abs(value));
+  };
 
-  //   firebase.notifications().onNotificationOpened(notificationOpen => {
-  //     const { data } = notificationOpen.notification;
-  //     navigation.navigate('Home');
-  //     console.log(data);
-  //   });
-
-  //   const notificationOpen = await firebase
-  //     .notifications()
-  //     .getInitialNotification();
-  //   if (notificationOpen) {
-  //     console.log(notificationOpen);
-  //     const { title, body } = notificationOpen.notification;
-  //     // showAlert(title, body);
-  //   }
-
-  //   firebase.messaging().onMessage(message => {
-  //     console.log(JSON.stringify(message));
-  //   });
-  // };
-
-  // const createNotificationListeners = async () => {
-  //   firebase.notifications().onNotification(notification => {
-  //     notification.android.setChannelId('test-channel').setSound('default');
-  //     firebase.notifications().displayNotification(notification);
-  //   });
-  // };
-
-  // const showAlert = (title, message) => {
-  //   Alert.alert(
-  //     title,
-  //     message,
-  //     [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-  //     { cancelable: false }
-  //   );
-  // };
+  const onRowDidOpen = rowKey => {
+    console.log('This row opened', rowKey);
+  };
 
   return (
     <View style={{ flex: 1 }}>
-      <FlatList
-        data={notifications}
-        keyExtractor={item => `noti-${item._id}`}
-        renderItem={({ item }) => (
-          <NotificationItem
-            item={item}
-            onPress={() => dispatch(markAsRead(item._id))}
-          />
-        )}
-      />
+      {notifications.length === 0 && (
+        <View
+          style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+        >
+          <Text
+            style={{
+              fontFamily: theme.text.fonts['sfpd-bold'],
+              fontSize: theme.text.size['2xl'],
+              color: theme.color.gray,
+            }}
+          >
+            Empty
+          </Text>
+        </View>
+      )}
+      {notifications.length > 0 && (
+        <SwipeListView
+          data={notifications}
+          keyExtractor={item => `${item._id}`}
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={() => dispatch(getNotification())}
+              colors={[theme.color.primary]}
+              size={50}
+            />
+          }
+          renderItem={({ item }) => (
+            <NotificationItem
+              item={item}
+              onPress={() => dispatch(markAsRead(item._id))}
+            />
+          )}
+          renderHiddenItem={(data, rowMap) => (
+            <View style={styles.rowBack}>
+              {/* <Text>Left</Text> */}
+              {/* <TouchableOpacity
+              style={[styles.backRightBtn, styles.backRightBtnLeft]}
+              onPress={() => closeRow(rowMap, data.item._id)}
+            >
+              <Text style={styles.backTextWhite}>Close</Text>
+            </TouchableOpacity> */}
+              <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                activeOpacity={0.5}
+                onPress={() => deleteRow(rowMap, data.item._id)}
+                // onPress={() => console.log(data.item._id)}
+              >
+                <Animated.View
+                  style={[
+                    styles.trash,
+                    {
+                      transform: [
+                        {
+                          scale: rowSwipeAnimatedValues[
+                            data.item._id
+                          ].interpolate({
+                            inputRange: [10, 50],
+                            outputRange: [0, 1],
+                            extrapolate: 'clamp',
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                >
+                  <Icon
+                    type="material-community"
+                    name="trash-can-outline"
+                    size={30}
+                    iconStyle={{ color: '#fff' }}
+                  />
+                </Animated.View>
+              </TouchableOpacity>
+            </View>
+          )}
+          rightOpenValue={-60}
+          previewRowKey="0"
+          previewOpenValue={-60}
+          previewOpenDelay={1000}
+          onRowDidOpen={onRowDidOpen}
+          onSwipeValueChange={onSwipeValueChange}
+          disableRightSwipe
+        />
+      )}
     </View>
   );
 }
-// ////////////////////////////
 
-// import React, { useEffect, useContext } from ‘react’;
-// import Navigator from ‘./Navigator’;
-// import AppProvider, { AppContext } from ‘./AppProvider’;
-// import { Platform, Alert } from ‘react-native’;
-// import firebase from ‘react-native-firebase’;
-// import NotificationProvider, { NotificationContext } from ‘./components/core/NotificationsContext’;
-// import { NavigationService } from ‘./services/NavigationService’;
-// const App = () => {
-//   const notificationContext = useContext(NotificationContext)
-//   console.log(notificationContext)
-//   const checkPermission = async () => {
-//     const enabled = await firebase.messaging().hasPermission();
-//     if (enabled) {
-//       getFcmToken();
-//     } else {
-//       requestPermission();
-//     }
-//   };
-//   const getFcmToken = async () => {
-//     const fcmToken = await firebase.messaging().getToken();
-//     if (fcmToken) {
-//       Alert.alert(fcmToken);
-//       console.log(fcmToken);
-//       // const deviceUuid = DeviceInfo.getUniqueId();
-//       // await DeviceService.addOrUpdateDevice(fcmToken, Platform.OS, deviceUuid);
-//     } else {
-//       console.log(‘No token received’);
-//     }
-//   };
-//   const requestPermission = async () => {
-//     try {
-//       await firebase.messaging().requestPermission();
-//     } catch (error) { }
-//   };
-//   const messageListener = async () => {
-//     /*
-//      * Triggered when a particular notification has been received in foreground
-//      * */
-//     const notificationListener = firebase
-//       .notifications()
-//       .onNotification(notification => {
-//         const { title, body, data } = notification;
-//         Alert.alert(title);
-//       });
-//     /*
-//      * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
-//      * */
-//     const notificationOpenedListener = firebase
-//       .notifications()
-//       .onNotificationOpened(notificationOpen => {
-//         const { title, body } = notificationOpen.notification;
-//       });
-//     /*
-//      * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
-//      * */
-//     const notificationOpen = await firebase
-//       .notifications()
-//       .getInitialNotification();
-//     if (notificationOpen) {
-//       const { title, body } = notificationOpen.notification;
-//     }
-//     /*
-//      * Triggered for data only payload in foreground
-//      * */
-//     firebase.messaging().onMessage(message => {
-//       console.log(‘FCM Message Data:’, message.data);
-//     });
-//   };
-//   useEffect(() => {
-//     checkPermission();
-//     messageListener();
-//   }, []);
-//   return (
-//     <AppProvider>
-//         <Navigator
-//           screenProps={
-//             {
-//               notificationCount: notificationContext.notificationCount.get,
-//               setNotificationCount: notificationContext.notificationCount.set
-//             }}
-//           ref={navigationRef =>
-//             NavigationService.setTopLevelNavigator(navigationRef)
-//           }
-//         />
-//     </AppProvider>
-//   );
-// };
-// export default App
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  standalone: {
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  standaloneRowFront: {
+    alignItems: 'center',
+    backgroundColor: '#CCC',
+    justifyContent: 'center',
+    height: 50,
+  },
+  standaloneRowBack: {
+    alignItems: 'center',
+    backgroundColor: '#8BC645',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 15,
+  },
+  backTextWhite: {
+    color: '#FFF',
+  },
+  rowFront: {
+    alignItems: 'center',
+    backgroundColor: '#CCC',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    justifyContent: 'center',
+    height: 50,
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: 'red',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+  },
+  backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 60,
+  },
+  backRightBtnLeft: {
+    backgroundColor: 'blue',
+    right: 75,
+  },
+  backRightBtnRight: {
+    backgroundColor: 'red',
+    right: 0,
+  },
+  controls: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 5,
+  },
+  switch: {
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'black',
+    paddingVertical: 10,
+    width: Dimensions.get('window').width / 4,
+  },
+  trash: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 25,
+    width: 60,
+  },
+});

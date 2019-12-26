@@ -1,41 +1,65 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { Icon, Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
+import Decimal from '../helpers/decimal';
 
 function LargeStoreChildElementNoShadow(props) {
-  const { item } = props;
+  const { item, navigation, type } = props;
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: 'http://via.placeholder.com/88x88' }}
-        style={styles.img}
-      />
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() =>
+        navigation.navigate('Restaurant', { restaurantId: item._id })
+      }
+      activeOpacity={0.5}
+    >
+      <Image source={{ uri: item.img_url }} style={styles.img} />
       <View style={styles.detailContainer}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.subtitle}>{item.address}</Text>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.subtitle}>{item.position.address}</Text>
         <View style={styles.otherDetailContainer}>
-          <Button
-            icon={
+          {type === 'distance' && (
+            <View style={{ flexDirection: 'row' }}>
               <Icon
                 type="material-community"
-                name="star"
-                color={theme.color.yellow}
+                name="map-marker-radius"
                 size={17}
+                iconStyle={{ color: theme.color.darkGray }}
               />
-            }
-            type="clear"
-            title={`${item.bookmark}`}
-            titleStyle={{
-              fontFamily: theme.text.fonts.sfpt,
-              fontSize: 13,
-              color: 'black',
-            }}
-            buttonStyle={{ padding: 0 }}
-          />
+              <Text style={styles.distance}>
+                {`${Decimal.round10(item.distance, -1)} km`}
+              </Text>
+            </View>
+          )}
+          {type === 'star' && (
+            <Button
+              type="clear"
+              icon={
+                <Icon
+                  type="material-community"
+                  name="star"
+                  color={theme.color.primary}
+                  size={15}
+                />
+              }
+              title={`${item.rating.avg}`}
+              disabledTitleStyle={{
+                color: theme.color.primary,
+                fontFamily: theme.text.fonts.sfpt,
+                fontSize: 17,
+              }}
+              disabled
+              disabledStyle={{
+                borderRadius: 8,
+                padding: 0,
+              }}
+            />
+          )}
           <Button
-            title={item.promotion}
+            title="Free ship"
             titleStyle={{ fontFamily: theme.text.fonts.sfpt, fontSize: 13 }}
             buttonStyle={{
               backgroundColor: theme.color.primary,
@@ -47,7 +71,7 @@ function LargeStoreChildElementNoShadow(props) {
           />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -55,6 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingVertical: 10,
+    alignItems: 'center',
   },
   img: {
     width: 88,
@@ -70,6 +95,7 @@ const styles = StyleSheet.create({
   otherDetailContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     fontSize: theme.text.size.md,
@@ -80,6 +106,11 @@ const styles = StyleSheet.create({
     fontFamily: theme.text.fonts.sfpt,
     color: theme.color.darkGray,
     paddingVertical: theme.space['2xs'],
+  },
+  distance: {
+    fontSize: theme.text.size.sm,
+    fontFamily: theme.text.fonts.sfpt,
+    color: theme.color.darkGray,
   },
 });
 

@@ -13,6 +13,7 @@ import {
 import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import Geolocation from '@react-native-community/geolocation';
 import firebase from 'react-native-firebase';
 import { getUniqueId } from 'react-native-device-info';
 import AppSwitch from './AppNavigator';
@@ -21,7 +22,13 @@ import {
   setTopLevelNavigator,
   navigate,
 } from './app/services/NavigationService';
-import { getDeviceInfo, updateWithFCM } from './app/actions';
+import {
+  getDeviceInfo,
+  updateWithFCM,
+  getCurrentLocation,
+} from './app/actions';
+import { fetchingMyOrder } from './app/actions/orderActions';
+import WelCome from './app/screens/auth/WelCome';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
@@ -29,6 +36,7 @@ const AppContainer = createAppContainer(AppSwitch);
 
 const prefix = 'customer://';
 
+//  ------ Android App ----------
 export default function App() {
   const uniqueId = getUniqueId();
   const checkPermission = async () => {
@@ -81,9 +89,10 @@ export default function App() {
           },
           _id: data._id,
           createdAt: data.createdAt,
-          hasRead: data.hasRead,
+          hasRead: false,
         };
         store.dispatch(updateWithFCM(newNoti));
+        store.dispatch(fetchingMyOrder());
         // Alert.alert(title);
       });
     /*
@@ -100,9 +109,10 @@ export default function App() {
           },
           _id: data._id,
           createdAt: data.createdAt,
-          hasRead: data.hasRead,
+          hasRead: false,
         };
         store.dispatch(updateWithFCM(newNoti));
+        store.dispatch(fetchingMyOrder());
         navigate('OrderDetailScreen', { orderId: data.orderId });
       });
     /*
@@ -114,7 +124,6 @@ export default function App() {
     if (notificationOpen) {
       const { title, body, data } = notificationOpen.notification;
       // if(data.screen === 'order'){
-      console.log(data);
       navigate('OrderDetailScreen', { orderId: data.orderId });
       // }
     }
@@ -135,6 +144,21 @@ export default function App() {
     checkPermission();
     messageListener();
     createNotificationListeners();
+    Geolocation.getCurrentPosition(
+      position => {
+        store.dispatch(
+          getCurrentLocation(
+            position.coords.latitude,
+            position.coords.longitude
+          )
+        );
+      },
+      error => console.log(error.message),
+      { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
+    );
+
+    // setAddressTextInput(inputLocationRef.current.getAddressText());
+    // direction();
   }, []);
   return (
     <Provider store={store}>
@@ -149,6 +173,28 @@ export default function App() {
     </Provider>
   );
 }
+
+// ------ IOS App ---------------
+// export default function App() {
+//   const uniqueId = getUniqueId();
+//   const fcmToken =
+//     'dMQU5M2bStU:APA91bEU_XxNlifrgQzVafv6GXCbzMgf-XxnHCqlat7jl8VIH_nUNJtucn-KwZnXPqTQIEikq7NwPPWNm6tEIfUwxQgRvkZbH4_K5ek8xB7UakdxiMbRuWFuuoAJ-dqDrZrCqfgIuoa8';
+//   useEffect(() => {
+//     store.dispatch(getDeviceInfo(fcmToken, uniqueId));
+//   }, []);
+//   return (
+//     <Provider store={store}>
+//       <PersistGate loading={null} persistor={persistor}>
+//         <AppContainer
+//           ref={navigatorRef => {
+//             setTopLevelNavigator(navigatorRef);
+//           }}
+//           uriPrefix={prefix}
+//         />
+//       </PersistGate>
+//     </Provider>
+//   );
+// }
 
 const styles = StyleSheet.create({
   container: {

@@ -14,17 +14,27 @@ function Address(props) {
   //   />
   // )
   return (
-    <View>
-      <Text
-        style={{
-          fontSize: 18,
-          fontFamily: theme.text.fonts['sfpt-bold'],
-        }}
-      >
-        Address
-      </Text>
+    <View style={{ paddingVertical: 8 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Icon
+          type="material-community"
+          name="map-marker-outline"
+          size={20}
+          iconStyle={{ paddingRight: 4 }}
+        />
+        <Text
+          style={{
+            fontSize: theme.text.size.lg,
+            fontFamily: theme.text.fonts['sfpd-bold'],
+            textTransform: 'uppercase',
+          }}
+        >
+          Address
+        </Text>
+      </View>
       {listAddress.map(item => (
         <ListItem
+          title="home"
           key={`${item.id}`}
           subtitle={item.address}
           bottomDivider
@@ -33,9 +43,10 @@ function Address(props) {
             fontSize: 16,
             fontFamily: theme.text.fonts.sfpt,
             color: theme.color.darkGray,
+            textTransform: 'uppercase',
           }}
           subtitleStyle={{
-            fontSize: 18,
+            fontSize: theme.text.size.md,
             fontFamily: theme.text.fonts.sfpt,
             marginTop: 6,
           }}
@@ -51,24 +62,22 @@ function Address(props) {
           paddingTop: 8,
         }}
       >
-        <Text
+        {/* <Text
           style={{
             fontFamily: theme.text.fonts.sfpt,
-            fontSize: 18,
+            fontSize: theme.text.size.md,
             color: theme.color.primary,
           }}
         >
           Add new address
-        </Text>
+        </Text> */}
         <Button
-          icon={
-            <Icon
-              type="material-community"
-              name="plus-circle"
-              color={theme.color.primary}
-              size={26}
-            />
-          }
+          title="Add new address"
+          titleStyle={{
+            fontFamily: theme.text.fonts.sfpt,
+            fontSize: theme.text.size.md,
+            color: theme.color.primary,
+          }}
           buttonStyle={{
             backgroundColor: null,
             padding: 0,

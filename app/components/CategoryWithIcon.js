@@ -24,7 +24,9 @@ function CategoryWithIcon(props) {
   ]);
   return (
     <View>
-      <Text style={{ paddingLeft: 16, fontSize: 20 }}>Categories</Text>
+      <Text style={{ paddingLeft: 16, fontSize: 20, paddingVertical: 16 }}>
+        Categories
+      </Text>
       <FlatList
         data={category}
         // contentContainerStyle={styles.container}

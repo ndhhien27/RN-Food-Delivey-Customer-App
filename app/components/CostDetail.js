@@ -1,6 +1,8 @@
+/* eslint-disable prefer-template */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { theme } from '../constants/theme';
+import { currencyFormat } from '../helpers/string';
 
 export default function CostDetail(props) {
   const { title, style, price } = props;
@@ -13,7 +15,9 @@ export default function CostDetail(props) {
       }}
     >
       <Text style={[styles.text, { ...style }]}>{title}</Text>
-      <Text style={[styles.text, { ...style }]}>{price}</Text>
+      <Text style={[styles.text, { ...style }]}>
+        {currencyFormat(price + '')}đ
+      </Text>
     </View>
   );
 }

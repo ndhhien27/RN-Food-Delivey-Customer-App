@@ -28,6 +28,7 @@ const StyledInput = ({ formikProps, formikKey, ...rest }) => {
           borderBottomColor: 'transparent',
           height: 44,
         }}
+        // selection={{ start: 0, end: 0 }}
         clearButtonMode="while-editing"
         {...rest}
       />

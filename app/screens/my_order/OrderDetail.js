@@ -22,12 +22,18 @@ import {
   clearOrderInfo,
   reviewOrder,
 } from '../../actions/orderActions';
+import dateFormat from '../../helpers/date';
+import { navigate } from '../../services/NavigationService';
 
 export default function OrderDetail({ navigation }) {
   const { orderId } = navigation.state.params;
   const orderDetail = useSelector(state => state.orderReducer.orderDetail);
   const [review, setReview] = useState({ star: null, desc: '' });
   const dispatch = useDispatch();
+  const handleSubmit = () => {
+    dispatch(reviewOrder(orderId, review));
+    setReview({ star: null, desc: '' });
+  };
   useEffect(() => {
     dispatch(fetchOrderById(orderId));
     return () => {
@@ -99,6 +105,7 @@ export default function OrderDetail({ navigation }) {
   //     </View>
   //   );
   // };
+  console.log(review);
   return (
     <ScrollView style={styles.container}>
       {orderDetail && (
@@ -116,20 +123,35 @@ export default function OrderDetail({ navigation }) {
       </View> */}
           <View
             style={{
-              paddingHorizontal: 16,
               marginBottom: 16,
             }}
           >
             {orderDetail.restaurant && (
-              <Text style={styles.restName}>{orderDetail.restaurant.name}</Text>
+              <Text
+                style={styles.restName}
+                onPress={() =>
+                  navigate('Store', {
+                    restaurantId: orderDetail.restaurant._id,
+                  })
+                }
+              >
+                {orderDetail.restaurant.name}
+              </Text>
             )}
             <Text style={styles.status}>{orderDetail.status}</Text>
+            <Text
+              style={{
+                fontFamily: theme.text.fonts.sfpt,
+                fontSize: theme.text.size.sm,
+              }}
+            >
+              {dateFormat(+orderDetail.createdAt)}
+            </Text>
           </View>
           <View>
             <FlatList
               data={orderDetail.items}
               keyExtractor={item => `${item._id}`}
-              contentContainerStyle={{ paddingHorizontal: 16 }}
               renderItem={({ item }) => (
                 <ListItem
                   title={item.food.name}
@@ -149,6 +171,7 @@ export default function OrderDetail({ navigation }) {
               <ListItem
                 title="total"
                 titleStyle={styles.totalTitle}
+                containerStyle={{ paddingHorizontal: 0 }}
                 rightElement={
                   <Text style={styles.total}>{`${currencyFormat(
                     orderDetail.total.toString()
@@ -168,7 +191,6 @@ export default function OrderDetail({ navigation }) {
             type="clear"
             titleStyle={styles.btnTitle}
             containerStyle={{
-              paddingLeft: 16,
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
             }}
@@ -184,7 +206,7 @@ export default function OrderDetail({ navigation }) {
                 <View style={styles.rightElement}>
                   <Text style={styles.title}>Delivery Address</Text>
                   <Text style={styles.subtitle}>
-                    {orderDetail.delivery_address}
+                    {orderDetail.delivery_position.address}
                   </Text>
                 </View>
               </View>
@@ -197,9 +219,10 @@ export default function OrderDetail({ navigation }) {
                     style={{ width: 30, height: 30 }}
                   />
                   <View style={styles.rightElement}>
-                    <Text style={styles.title}>Don't forget to rate</Text>
+                    <Text style={styles.title}>Don&#39;t forget to rate</Text>
                     <View style={{ alignItems: 'flex-start', paddingTop: 8 }}>
                       <AirbnbRating
+                        isDisabled={!!orderDetail.review.star}
                         size={20}
                         showRating={false}
                         defaultRating={
@@ -211,6 +234,7 @@ export default function OrderDetail({ navigation }) {
                       />
                       <Input
                         multiline
+                        disabled={!!orderDetail.review.description}
                         containerStyle={{
                           borderColor: theme.color.gray,
                           borderWidth: 1,
@@ -236,7 +260,7 @@ export default function OrderDetail({ navigation }) {
                         padding: 0,
                         paddingTop: 8,
                       }}
-                      onPress={() => dispatch(reviewOrder(orderId, review))}
+                      onPress={() => handleSubmit()}
                       titleStyle={{
                         color: theme.color.primary,
                         fontFamily: theme.text.fonts.sfpt,
@@ -311,7 +335,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     backgroundColor: '#fff',
     flexDirection: 'row',
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     paddingVertical: 8,
     borderRadius: 8,
   },

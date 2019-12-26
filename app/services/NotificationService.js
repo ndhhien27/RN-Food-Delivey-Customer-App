@@ -46,7 +46,31 @@ const markAsRead = notiId => {
   return request({ url: '/graphql', method: 'post', data });
 };
 
+const deleteNoti = notiId => {
+  const data = {
+    query: `
+      mutation DeleteNotification($notiId: ID!){
+        deleteNoti(notificationId:$notiId){
+          order{
+            _id
+          }
+          title
+          createdAt
+          _id
+          hasRead
+        }
+      }
+    `,
+    variables: {
+      notiId,
+    },
+  };
+
+  return request({ url: '/graphql', method: 'post', data });
+};
+
 export default {
   getNotification,
   markAsRead,
+  deleteNoti,
 };

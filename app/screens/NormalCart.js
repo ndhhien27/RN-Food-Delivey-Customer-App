@@ -1,65 +1,81 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import { Icon, Button, Divider } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { theme } from '../constants/theme';
 import CostDetail from '../components/CostDetail';
+import { modifyCart, clearCart } from '../actions/cartActions';
 import CartItem from '../components/CartItem';
 
 function NormalCart(props) {
   const { storeName, navigation, localCartIndex } = props;
-  const { address } = navigation.state.params;
+  const { address, resetChildCart } = navigation.state.params;
+  const dispatch = useDispatch();
   // const [cartIndex, setCartIndex] = useState(0);
-  const globalCart = useSelector(state => state.cartReducer.cart);
+  const globalCart = useSelector(state => state.cart.cart);
+  const deleteCart = () => {
+    Alert.alert('Detele cart', 'Are you sure?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'OK', onPress: () => resetChildCart() },
+    ]);
+  };
   return (
-    <View>
-      <View style={styles.shadow}>
-        <View style={styles.contentContainer}>
-          <View style={styles.storeInfo}>
-            <Text style={styles.storeName}>{storeName}</Text>
-            <View style={styles.addressRow}>
-              <Icon
-                type="material-community"
-                name="map-marker"
-                color={theme.color.darkGray}
-                size={18}
-              />
-              <Text style={styles.addressInfo} numberOfLines={1}>
-                {address}
-              </Text>
-            </View>
-            <View
-              style={{
-                backgroundColor: theme.color.primary,
-                alignSelf: 'flex-start',
-                paddingHorizontal: 12,
-                paddingVertical: 2,
-                borderRadius: 12,
-              }}
-            >
-              <Text style={{ color: '#fff', fontSize: 16 }}>
-                {localCartIndex}
-              </Text>
-            </View>
+    <View style={{ flex: 1 }}>
+      <View style={styles.contentContainer}>
+        <View style={styles.storeInfo}>
+          <Text style={styles.storeName}>{storeName}</Text>
+          <View style={styles.addressRow}>
+            <Icon
+              type="material-community"
+              name="map-marker"
+              color={theme.color.darkGray}
+              size={18}
+            />
+            <Text style={styles.addressInfo} numberOfLines={1}>
+              {address}
+            </Text>
           </View>
-          <FlatList
-            data={globalCart[localCartIndex].items}
-            renderItem={({ item }) => (
-              <CartItem
-                item={item}
-                increase={() => navigation.state.params.increase(item)}
-                decrease={() => navigation.state.params.decrease(item)}
-                qty={item.foodQty}
-              />
-            )}
-            keyExtractor={item => `item${item.foodId}`}
-            contentContainerStyle={styles.list}
-          />
+          <View
+            style={{
+              backgroundColor: theme.color.primary,
+              alignSelf: 'flex-start',
+              paddingHorizontal: 12,
+              paddingVertical: 2,
+              borderRadius: 12,
+            }}
+          >
+            <Text style={{ color: '#fff', fontSize: 16 }}>Free ship</Text>
+          </View>
         </View>
+        <Button
+          icon={
+            <Icon
+              type="material-community"
+              name="trash-can-outline"
+              iconStyle={{ color: theme.color.primary }}
+            />
+          }
+          onPress={deleteCart}
+          containerStyle={{ position: 'absolute', right: 0 }}
+          type="clear"
+        />
+        <FlatList
+          data={globalCart[localCartIndex].items}
+          renderItem={({ item }) => (
+            <CartItem
+              item={item}
+              increase={() => navigation.state.params.increase(item)}
+              decrease={() => navigation.state.params.decrease(item)}
+              qty={item.foodQty}
+            />
+          )}
+          keyExtractor={item => `item${item.foodId}`}
+          contentContainerStyle={styles.list}
+        />
       </View>
-      <SafeAreaView style={styles.total}>
+      <View style={styles.total}>
         <CostDetail
           title="SubTotal"
           price={globalCart[localCartIndex].subtotal}
@@ -80,12 +96,12 @@ function NormalCart(props) {
           buttonStyle={{
             backgroundColor: theme.color.primary,
             borderRadius: 8,
-            marginTop: 16,
+            // marginTop: 16,
           }}
           activeOpacity={0.5}
           onPress={() => navigation.navigate('Checkout', { localCartIndex })}
         />
-      </SafeAreaView>
+      </View>
     </View>
   );
 }
@@ -96,16 +112,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   storeInfo: {
-    paddingVertical: 16,
+    paddingTop: 8,
+    paddingBottom: 16,
     borderBottomWidth: 1,
     borderColor: theme.color.lightGray,
     paddingHorizontal: 16,
     backgroundColor: '#f3f3f3',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
-  shadow: theme.shadow,
   contentContainer: {
+    elevation: 5,
     backgroundColor: '#fff',
-    height: 400,
+    flex: 2,
     borderRadius: 8,
     marginTop: 16,
     marginHorizontal: 16,
@@ -123,10 +142,11 @@ const styles = StyleSheet.create({
   list: { paddingHorizontal: 16 },
   total: {
     paddingHorizontal: 16,
+    marginTop: 16,
     borderTopWidth: 0.5,
-    borderColor: theme.color.lightGray,
+    borderColor: theme.color.gray,
     backgroundColor: '#fff',
-    height: '100%',
+    flex: 1,
   },
 });
 

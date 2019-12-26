@@ -1,14 +1,12 @@
 /* eslint-disable global-require */
 /* eslint-disable import/prefer-default-export */
 export const image = {
-  addToCart: require('../assets/shopping-cart.png'),
-  increase: require('../assets/increase.png'),
-  decrease: require('../assets/decrease.png'),
-  delete: require('../assets/delete.png'),
   ft: require('../assets/FT1.png'),
   banner: require('../assets/Banner.png'),
   bg: require('../assets/img/bg.png'),
   loginBg: require('../assets/img/loginBg.png'),
+  location: require('../assets/img/pin_logo.png'),
+  user: require('../assets/img/pin_user.png'),
   categoryImg: {
     chicken: require('../assets/chicken-legW.png'),
     cake: require('../assets/cupcakeW.png'),

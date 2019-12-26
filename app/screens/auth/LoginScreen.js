@@ -36,12 +36,12 @@ export default function LoginScreen(props) {
   return (
     <View style={{ paddingHorizontal: 16, marginTop: 88 }}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>WelCome back</Text>
+        <Text style={styles.title}>Welcome back</Text>
       </View>
       <Formik
         initialValues={{
-          email: 'Ndhien@gmail.com', // Ndhien@gmail.com
-          password: 'hien123456', // hien123456
+          email: '', // ndhiencustomer@gmail.com
+          password: '', // hien123456
         }}
         onSubmit={(values, actions) => {
           const loginInput = {
@@ -77,27 +77,33 @@ export default function LoginScreen(props) {
                 secureTextEntry
               />
             </View>
-            {isLoading ? (
-              <ActivityIndicator size={44} style={{ marginVertical: 40 }} />
-            ) : (
-              <Button
-                title="Login"
-                buttonStyle={{
-                  padding: 0,
-                  height: 44,
-                  marginVertical: 40,
-                  borderRadius: 22,
-                  backgroundColor: theme.color.primary,
-                }}
-                onPress={formikProps.handleSubmit}
+            {isLoading && formikProps.values.email ? (
+              <ActivityIndicator
+                size={44}
+                style={{ marginVertical: 40 }}
+                color={theme.color.primary}
               />
+            ) : (
+              <View>
+                <Button
+                  title="Login"
+                  buttonStyle={{
+                    padding: 0,
+                    height: 44,
+                    marginTop: 40,
+                    borderRadius: 22,
+                    backgroundColor: theme.color.primary,
+                  }}
+                  onPress={formikProps.handleSubmit}
+                />
+                <Button
+                  title="Sign up"
+                  titleStyle={styles.signUp}
+                  type="clear"
+                  onPress={() => navigation.navigate('Signup')}
+                />
+              </View>
             )}
-            <Button
-              title="Sign up"
-              titleStyle={styles.signUp}
-              type="clear"
-              onPress={() => navigation.navigate('Signup')}
-            />
           </View>
         )}
       </Formik>

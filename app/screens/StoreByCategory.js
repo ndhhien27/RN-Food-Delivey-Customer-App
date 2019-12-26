@@ -5,12 +5,12 @@ import { View, Text, ImageBackground, Dimensions } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-native-modal';
-import StoreListByCategory from '../components/StoreListByCategory';
+import StoreListByCategory from './StoreListByCategory';
 import { theme } from '../constants/theme';
 import FilterModal from './FilterModal';
 import RestaurantService from '../services/RestaurantService';
 import restaurantReducer from '../reducers/restaurantReducer';
-import { search } from '../actions';
+import { search, clearSearch } from '../actions';
 
 export default function StoreByCategory(props) {
   const { navigation } = props;
@@ -24,6 +24,9 @@ export default function StoreByCategory(props) {
   useEffect(() => {
     dispatch(search(navigation.state.params.query));
     navigation.setParams({ toggleModal });
+    return () => {
+      dispatch(clearSearch());
+    };
   }, []);
   const devideHeight = Dimensions.get('window').height;
 
@@ -40,7 +43,7 @@ export default function StoreByCategory(props) {
       >
         <Text>Image</Text>
       </ImageBackground> */}
-      <View style={{ flex: 1, marginTop: 16 }}>
+      <View style={{ flex: 1 }}>
         <StoreListByCategory data={searchResult} />
       </View>
       <Modal

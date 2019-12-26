@@ -10,14 +10,17 @@ import {
   ActivityIndicator,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Icon, Overlay } from 'react-native-elements';
 import { Formik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { theme } from '../../constants/theme';
 import StyledInput from '../../components/StyledInput';
-import API from '../../services/AuthService';
+import SelectPositionModal from './SelectPositionModal';
+import { signUp } from '../../actions';
 
 const validationSchema = yup.object().shape({
   fName: yup
@@ -65,6 +68,9 @@ const validationSchema = yup.object().shape({
 });
 
 export default function SignupScreen({ navigation }) {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const isLoading = useSelector(state => state.uiReducer.isLoading);
+  const dispatch = useDispatch();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{ paddingHorizontal: 16, flex: 1 }}>
@@ -86,21 +92,15 @@ export default function SignupScreen({ navigation }) {
             },
           }}
           onSubmit={(values, actions) => {
-            alert(JSON.stringify(values));
-            API.signup(
-              values,
-              res => {
-                actions.setSubmitting(false);
-                if (res.data.errors) alert(res.data.errors.message);
-                else if (res.data.data.createUser) navigation.goBack();
-              },
-              err => console.log(err)
-            );
+            dispatch(signUp(values));
           }}
           validationSchema={validationSchema}
         >
           {formikProps => (
-            <KeyboardAwareScrollView style={{ flex: 1 }}>
+            <KeyboardAwareScrollView
+              style={{ flex: 1 }}
+              showsVerticalScrollIndicator={false}
+            >
               <View>
                 <StyledInput
                   formikProps={formikProps}
@@ -135,58 +135,70 @@ export default function SignupScreen({ navigation }) {
                   placeholder="Comfirm Password"
                   secureTextEntry
                 />
-                <StyledInput
-                  formikProps={formikProps}
-                  formikKey="position.address"
-                  editable={false}
-                  onTouchStart={() =>
-                    navigation.navigate('Login', {
-                      formikProps,
-                      formikKey: 'position.address',
-                      latKey: 'position.lat',
-                      longKey: 'position.long',
-                    })
-                  }
-                  placeholder="Address"
-                  defaultValue={formikProps.values.position.address}
-                />
-                {formikProps.errors.position ? (
-                  <Text>
-                    {formikProps.touched.position.address &&
-                      formikProps.errors.position.address}
-                  </Text>
-                ) : null}
-                <Button
-                  onPress={() =>
-                    navigation.navigate('Map', {
-                      formikProps,
-                      formikKey: 'position.address',
-                      latKey: 'position.lat',
-                      longKey: 'position.long',
-                    })
-                  }
-                />
-                <Text>{formikProps.values.position.lat}</Text>
-                <Text>{formikProps.values.position.long}</Text>
+                <TouchableOpacity
+                  onPress={() => setIsVisible(true)}
+                  activeOpacity={1}
+                >
+                  <StyledInput
+                    formikProps={formikProps}
+                    formikKey="position.address"
+                    editable={false}
+                    selection={{ start: 0, end: 0 }}
+                    placeholder="Choose address ..."
+                    defaultValue={formikProps.values.position.address}
+                  />
+                </TouchableOpacity>
                 {/* <Button
                   title="Address"
                   onPress={() => navigation.navigate('MapScreen')}
                 /> */}
+                <Overlay
+                  isVisible={isVisible}
+                  onBackdropPress={() => setIsVisible(false)}
+                  animationType="slide"
+                  height="80%"
+                  width="100%"
+                  overlayStyle={{ padding: 0, position: 'absolute', bottom: 0 }}
+                >
+                  <SelectPositionModal
+                    onPress={() => setIsVisible(false)}
+                    formikProps={formikProps}
+                    formikKey="position.address"
+                    latKey="position.lat"
+                    longKey="position.long"
+                  />
+                </Overlay>
               </View>
-              {formikProps.isSubmitting ? (
+              {isLoading ? (
                 <ActivityIndicator />
               ) : (
-                <Button
-                  title="Sign up"
-                  buttonStyle={{
-                    padding: 0,
-                    height: 44,
-                    marginVertical: 40,
-                    borderRadius: 22,
-                    backgroundColor: theme.color.primary,
-                  }}
-                  onPress={formikProps.handleSubmit}
-                />
+                <View style={{ paddingTop: 16 }}>
+                  <Button
+                    title="Sign up"
+                    buttonStyle={{
+                      padding: 0,
+                      height: 44,
+                      borderRadius: 22,
+                      backgroundColor: theme.color.primary,
+                    }}
+                    onPress={formikProps.handleSubmit}
+                  />
+                  <Button
+                    title="Go back Login"
+                    titleStyle={{
+                      fontFamily: theme.text.fonts.sfpt,
+                      fontSize: theme.text.size.md,
+                      color: theme.color.primary,
+                    }}
+                    type="clear"
+                    buttonStyle={{
+                      padding: 0,
+                      height: 44,
+                      borderRadius: 22,
+                    }}
+                    onPress={() => navigation.goBack()}
+                  />
+                </View>
               )}
             </KeyboardAwareScrollView>
           )}

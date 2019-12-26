@@ -1,42 +1,88 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import {
   View,
   ImageBackground,
   Text,
   StyleSheet,
-  FlatList,
+  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
 import StarInfo from '../commons/store/StarInfo';
-import FeaturedItem from './FeaturedItem';
 import { theme } from '../constants/theme';
+import { navigate } from '../services/NavigationService';
+import Decimal from '../helpers/decimal';
+
+const { width, height } = Dimensions.get('window');
 
 function Banner(props) {
-  const { storeName, address, foods } = props;
-  console.log(storeName);
+  const { storeName, position, restaurantInfo, img } = props;
   return (
     <View>
-      <ImageBackground
-        source={{ uri: 'http://via.placeholder.com/350x350' }}
-        style={styles.imgStyle}
-      >
-        <View style={{ backgroundColor: 'rgba(0,0,0,0.17)', flex: 1 }}>
-          <View style={styles.contentContainer}>
-            <View style={styles.promotionStyle}>
-              <Text style={{ color: '#fff', fontSize: 15 }}>Promotion</Text>
+      <ImageBackground source={{ uri: img }} style={styles.imgStyle}>
+        <LinearGradient
+          start={{ x: 0, y: 1 }}
+          end={{ x: 0, y: 0 }}
+          locations={[0, 0.4, 1]}
+          colors={['#000', 'transparent', 'transparent']}
+          style={{ flex: 1 }}
+        >
+          <View style={{ backgroundColor: 'rgba(0,0,0,0.17)', flex: 1 }}>
+            <View style={styles.contentContainer}>
+              <View style={styles.promotionStyle}>
+                <Text style={{ color: '#fff', fontSize: 15 }}>Free ship</Text>
+              </View>
+              <Text style={styles.storeName}>{storeName}</Text>
+              <TouchableOpacity
+                style={{ flexDirection: 'row' }}
+                onPress={() =>
+                  navigate('StoreMap', {
+                    storeLat: position.lat,
+                    storeLong: position.long,
+                    address: position.address,
+                    storeName,
+                  })
+                }
+              >
+                <Icon
+                  type="material-community"
+                  name="map-marker"
+                  color="#fff"
+                />
+                <Text style={styles.addressLine}>{position.address}</Text>
+              </TouchableOpacity>
             </View>
-            <Text style={styles.storeName}>{storeName}</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Icon type="material-community" name="map-marker" color="#fff" />
-              <Text style={styles.addressLine}>{address}</Text>
+            <View style={styles.moreInfo}>
+              <StarInfo
+                name="star"
+                label="Rating"
+                value={
+                  restaurantInfo.rating
+                    ? Decimal.round10(restaurantInfo.rating.avg, -1)
+                    : 0
+                }
+                disabled
+              />
+              <StarInfo
+                name="bookmark"
+                label="Bookmarks"
+                value={restaurantInfo.bookmarks}
+                disabled
+              />
+              <StarInfo
+                name="message-draw"
+                label="Reviews"
+                style={{ borderRightWidth: 0 }}
+                value={
+                  restaurantInfo.rating ? restaurantInfo.rating.total_review : 0
+                }
+                onPress={() => navigate('Review', null)}
+              />
             </View>
           </View>
-          <View style={styles.moreInfo}>
-            <StarInfo />
-            <StarInfo />
-            <StarInfo style={{ borderRightWidth: 0 }} />
-          </View>
-        </View>
+        </LinearGradient>
       </ImageBackground>
       {/* <View style={{ paddingVertical: 20 }}>
         <Text style={styles.title}>Featured Items</Text>
@@ -81,10 +127,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderTopWidth: 1,
     borderColor: '#fff',
+    width: '100%',
   },
   imgStyle: {
     width: '100%',
-    height: 350,
+    height: height * (3 / 7),
     resizeMode: 'cover',
   },
   title: {

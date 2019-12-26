@@ -1,68 +1,4 @@
-import axios from 'axios';
 import request from './request';
-import { API_URL } from './api_contants';
-
-const getRestaurants = (resCallback, errCallBack) => {
-  axios({
-    url: API_URL,
-    method: 'post',
-    data: {
-      query: `
-            query {
-              restaurants{
-                _id
-                name
-                position{
-                  address
-                  lat
-                  long
-                }
-              }
-            }
-          `,
-    },
-  })
-    .then(resCallback)
-    .catch(errCallBack);
-};
-
-const getRestaurantDetail = (restaurantId, resCb, errCb) => {
-  axios({
-    url: API_URL,
-    method: 'post',
-    data: {
-      query: `
-            query RestaurantInfo($restaurantId: ID!) {
-              restaurantById(restaurantId: $restaurantId){
-                position{
-                  address
-                  lat
-                  long
-                }
-                name
-                menu_info{
-                  _id
-                  name
-                  foods{
-                    _id
-                    is_active
-                    name
-                    price{
-                      value
-                    }
-                  }
-                }
-              }
-            }
-          `,
-      variables: {
-        restaurantId,
-      },
-    },
-  })
-    .then(resCb)
-    .catch(errCb);
-};
 
 const searchRestaurant = queryInput => {
   const data = {
@@ -76,6 +12,7 @@ const searchRestaurant = queryInput => {
                   lat
                   long
                 }
+                img_url
               }
             }
           `,
@@ -86,68 +23,12 @@ const searchRestaurant = queryInput => {
   return request({ url: '/graphql', method: 'post', data });
 };
 
-const getFoods = (queryInput, resCallback, errCallBack) => {
-  axios({
-    url: API_URL,
-    method: 'post',
-    data: {
-      query: `
-            query Search($query: String!){
-              searchRestaurant(query: $query){
-                _id
-                name
-                position{
-                  address
-                  lat
-                  long
-                }
-              }
-            }
-          `,
-      variables: {
-        query: queryInput,
-      },
-    },
-  })
-    .then(resCallback)
-    .catch(errCallBack);
-};
-
-const getMenu = (restaurantId, resCallback, errCallback) => {
-  axios({
-    url: API_URL,
-    method: 'post',
-    data: {
-      query: `
-        query Menu($restaurantId: ID!) {
-          menuByRestaurant(restaurantId: $restaurantId){
-            _id
-            name
-            foods{
-              _id
-              name
-              price{
-                value
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        restaurantId,
-      },
-    },
-  })
-    .then(resCallback)
-    .catch(errCallback);
-};
-
-const getRestaurantsWithSaga = () => {
+const getRestaurantsWithSaga = userLocation => {
   console.log('calling');
   const data = {
     query: `
-      query {
-        restaurants{
+      query Restaurants($userLocation: LocationInput!){
+        restaurants(userLocation: $userLocation){
           _id
           name
           position{
@@ -155,9 +36,19 @@ const getRestaurantsWithSaga = () => {
             lat
             long
           }
+          rating{
+            avg
+            total_review
+          }
+          distance
+          createdAt
+          img_url
         }
       }
     `,
+    variables: {
+      userLocation,
+    },
   };
   return request({ url: '/graphql', method: 'post', data });
 };
@@ -167,11 +58,18 @@ const getRestaurantDetailWithSaga = restaurantId => {
     query: `
             query RestaurantInfo($restaurantId: ID!) {
               restaurantById(restaurantId: $restaurantId){
+                _id
                 position{
                   address
                   lat
                   long
                 }
+                bookmarks
+                rating{
+                  avg
+                  total_review
+                }      
+                img_url
                 name
                 menu_info{
                   _id
@@ -185,6 +83,17 @@ const getRestaurantDetailWithSaga = restaurantId => {
                     }
                   }
                 }
+                orders{
+                  user{
+                    fName
+                    lName
+                  }
+                  review{
+                    star
+                    description
+                  }
+                  updatedAt
+                }
               }
             }
           `,
@@ -195,14 +104,32 @@ const getRestaurantDetailWithSaga = restaurantId => {
   return request({ url: '/graphql', method: 'post', data });
 };
 
+const getReviews = restId => {
+  const data = {
+    query: `
+      query GetReviews($restId: ID!){
+        reviewsByRestaurant(restaurantId: $restId){
+          user{
+            fName
+            lName
+          }
+          star
+          description
+        }
+      }
+    `,
+    variables: {
+      restId,
+    },
+  };
+  return request({ url: '/graphql', method: 'post', data });
+};
+
 export default {
-  getRestaurants,
-  getFoods,
-  getMenu,
-  getRestaurantDetail,
   searchRestaurant,
   getRestaurantsWithSaga,
   getRestaurantDetailWithSaga,
+  getReviews,
 };
 
 // AIzaSyDbGSMJEdxu7ajQyHA5F1b0mOalhnHxzTQ
