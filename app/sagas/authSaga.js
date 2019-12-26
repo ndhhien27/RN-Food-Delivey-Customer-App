@@ -3,7 +3,7 @@
 import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
-import { navigate } from '../services/NavigationService';
+import { navigate, goBack } from '../services/NavigationService';
 import * as types from '../constants';
 import API from '../services/AuthService';
 import UserAPI from '../services/UserService';
@@ -51,7 +51,7 @@ function* taskAuth({ payload }) {
 function* taskSignUp({ payload }) {
   yield delay(1000);
   yield put({
-    type: authTypes.SHOW_LOADING,
+    type: types.SHOW_LOADING,
   });
   const res = yield call(API.signup, payload.userInput);
   if (res.errors) {
@@ -73,7 +73,7 @@ function* taskSignUp({ payload }) {
   }
   yield delay(1000);
   yield put({
-    type: authTypes.HIDE_LOADING,
+    type: types.HIDE_LOADING,
   });
 }
 

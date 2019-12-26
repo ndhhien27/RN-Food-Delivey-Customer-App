@@ -10,6 +10,14 @@ export function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
 }
 
+export function goBack(key) {
+  _navigator.dispatch(
+    NavigationActions.back({
+      key,
+    })
+  );
+}
+
 export function navigate(routeName, params) {
   _navigator.dispatch(
     NavigationActions.navigate({

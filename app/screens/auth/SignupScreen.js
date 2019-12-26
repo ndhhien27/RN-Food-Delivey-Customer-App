@@ -170,7 +170,11 @@ export default function SignupScreen({ navigation }) {
                 </Overlay>
               </View>
               {isLoading ? (
-                <ActivityIndicator />
+                <ActivityIndicator
+                  size={44}
+                  style={{ marginVertical: 40 }}
+                  color={theme.color.primary}
+                />
               ) : (
                 <View style={{ paddingTop: 16 }}>
                   <Button
