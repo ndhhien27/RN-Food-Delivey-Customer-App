@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable default-case */
 /* eslint-disable no-shadow */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
@@ -9,9 +11,17 @@ import MapView, {
   Marker,
   Callout,
   PROVIDER_GOOGLE,
+  Circle,
 } from 'react-native-maps';
 import { decode } from '@mapbox/polyline';
-import { Icon, Button, Divider } from 'react-native-elements';
+import {
+  Icon,
+  Button,
+  Divider,
+  Rating,
+  AirbnbRating,
+  Tooltip,
+} from 'react-native-elements';
 import {
   AppRegistry,
   StyleSheet,
@@ -19,6 +29,7 @@ import {
   Image,
   Text,
   View,
+  TouchableHighlight,
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
@@ -30,6 +41,7 @@ import MapAPI from '../services/MapService';
 import MapStyle from '../components/MapStyle';
 import { navigate } from '../services/NavigationService';
 import { image } from '../constants/images';
+import Decimal from '../helpers/decimal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -48,7 +60,6 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: 1,
   },
   mapContainer: {
     position: 'absolute',
@@ -92,8 +103,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  changeRadius: {
+    backgroundColor: 'transparent',
+    zIndex: 100000,
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   direction: {
-    zIndex: 10000,
+    zIndex: 1000000,
     position: 'absolute',
     bottom: 260,
     right: 20,
@@ -132,19 +152,29 @@ const styles = StyleSheet.create({
 
 const filterRestByDistance = createSelector(
   state => state.restaurantReducer.fullList,
-  fullList => fullList.filter(rest => rest.distance <= 3)
+  (_, radius) => radius,
+  (fullList, radius) => fullList.filter(rest => rest.distance <= radius)
 );
 
 const MapNearest = props => {
   const { navigation } = props;
-  const restByDistance = useSelector(state => filterRestByDistance(state));
+  const [radius, setRadius] = useState(0.5);
+  const restByDistance = useSelector(state =>
+    filterRestByDistance(state, radius)
+  );
   const currentLocation = useSelector(state => state.auth.currentLocation);
   // const { storeLat, storeLong, storeName } = navigation.state.params;
   const [error, setError] = useState('');
   const mapRef = useRef();
   const [directionData, setDirectionData] = useState({
-    targetLat: restByDistance[0].position.lat,
-    targetLong: restByDistance[0].position.long,
+    targetLat:
+      restByDistance.length > 0
+        ? restByDistance[0].position.lat
+        : currentLocation.lat,
+    targetLong:
+      restByDistance.length > 0
+        ? restByDistance[0].position.long
+        : currentLocation.long,
     coords: null,
     distance: null,
     time: null,
@@ -154,9 +184,52 @@ const MapNearest = props => {
       address: null,
       img: null,
       restId: null,
+      star: null,
     },
     isShowInfo: false,
   });
+
+  useEffect(() => {
+    if (restByDistance.length === 0)
+      setDirectionData(prev => {
+        return {
+          ...prev,
+          targetLat: currentLocation.lat,
+          targetLong: currentLocation.long,
+          isDirection: false,
+          restInfo: {
+            name: null,
+            address: null,
+            img: null,
+            restId: null,
+            star: null,
+          },
+          isShowInfo: false,
+        };
+      });
+    else if (restByDistance.length > 0)
+      setDirectionData(prev => {
+        return {
+          ...prev,
+          targetLat: restByDistance[0].position.lat,
+          targetLong: restByDistance[0].position.long,
+        };
+      });
+  }, [restByDistance]);
+
+  const changeRadius = radius => {
+    switch (radius) {
+      case 0.5:
+        return 1;
+      case 1:
+        return 2;
+      case 2:
+        return 3;
+      case 3:
+        return 0.5;
+    }
+  };
+
   // const { formikProps, formikKey, latKey, longKey } = navigation.state.params;
 
   useEffect(() => {
@@ -218,12 +291,6 @@ const MapNearest = props => {
       </View>
     );
   };
-  const [data, setData] = useState([
-    { name: 'phuc', title: 'sss' },
-    { name: 'phuc', title: 'sss' },
-    { name: 'phuc', title: 'sss' },
-    { name: 'phuc', title: 'sss' },
-  ]);
   const [showCarousel, setShowCarousel] = useState(false);
 
   const onMarkerPress = rest => () => {
@@ -240,6 +307,7 @@ const MapNearest = props => {
           name: rest.name,
           address,
           img: rest.img_url,
+          star: Decimal.round10(rest.rating.avg, -1),
         },
         isShowInfo: true,
       };
@@ -264,6 +332,7 @@ const MapNearest = props => {
       </View>
     );
   };
+  console.log(directionData);
 
   return (
     <>
@@ -298,8 +367,21 @@ const MapNearest = props => {
             coordinates={directionData.coords}
           />
         )}
+        <Circle
+          center={{
+            latitude: currentLocation.lat,
+            longitude: currentLocation.long,
+          }}
+          fillColor="rgba(240,123,63,0.2)"
+          strokeColor="rgba(240,123,63,0.5)"
+          strokeWidth={2}
+          radius={radius * 1000}
+        />
       </MapView>
       <Button
+        activeOpacity={0.9}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="transparent"
         buttonStyle={{
           backgroundColor: '#fff',
           width: 50,
@@ -317,6 +399,7 @@ const MapNearest = props => {
             name="directions"
             size={30}
             color={theme.color.primary}
+            underlayColor="transparent"
           />
         }
         onPress={() =>
@@ -330,6 +413,25 @@ const MapNearest = props => {
       />
       {/* <View style={styles.myLocation}> */}
       <Button
+        activeOpacity={0.9}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="transparent"
+        type="clear"
+        title={`${radius} km`}
+        titleStyle={{ color: theme.color.primary }}
+        buttonStyle={{
+          backgroundColor: '#fff',
+          width: 50,
+          height: 50,
+          borderRadius: 25,
+        }}
+        onPress={() => setRadius(changeRadius(radius))}
+        containerStyle={[styles.changeRadius]}
+      />
+      <Button
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="transparent"
         type="clear"
         icon={
           <Icon
@@ -404,6 +506,22 @@ const MapNearest = props => {
                 <Text style={styles.restName}>
                   {directionData.restInfo.address}
                 </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Icon
+                    type="material-community"
+                    name="star"
+                    iconStyle={{ color: 'yellow' }}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: theme.text.fonts.sfpt,
+                      fontSize: theme.text.size.lg,
+                      color: 'yellow',
+                    }}
+                  >
+                    {directionData.restInfo.star}
+                  </Text>
+                </View>
               </View>
               <Divider
                 backgroundColor="#fff"

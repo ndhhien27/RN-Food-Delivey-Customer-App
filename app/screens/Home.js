@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/destructuring-assignment */
 import React, { useEffect } from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
+import { ScrollView, RefreshControl, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
@@ -24,17 +24,13 @@ function Home(props) {
 
   //   return () => { _navListener.remove() }
   // }, [])
-  const userLocation = {
-    lat: props.userInfo.position[0].lat,
-    long: props.userInfo.position[0].long,
-  };
   useEffect(() => {
-    props.fetchAllRestaurant(userLocation);
+    // props.fetchAllRestaurant();
     props.getNotification(props.userId);
   }, []);
 
   const handleRefresh = () => {
-    props.fetchAllRestaurant(userLocation);
+    props.fetchAllRestaurant();
     props.getNotification(props.userId);
   };
 
@@ -74,6 +70,9 @@ Home.navigationOptions = ({ navigation }) => {
         }
         type="clear"
         onPress={() => navigation.navigate('Search')}
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="#fff"
       />
     ),
   };

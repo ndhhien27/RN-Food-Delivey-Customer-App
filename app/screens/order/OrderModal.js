@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, TouchableHighlight } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { theme } from '../../constants/theme';
@@ -27,6 +27,9 @@ function OrderModal(props) {
       />
       <Text style={styles.title}>Success</Text>
       <Button
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="#fff"
         title="Continue Shopping"
         onPress={() => {
           navigation.navigate('Home');

@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  TouchableHighlight,
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { useSelector } from 'react-redux';
@@ -94,6 +95,9 @@ export default function ChooseOnMap(props) {
           top: 16,
           left: 16,
         }}
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="#fff"
       />
       <View style={{ flex: 1 }}>
         <MapView

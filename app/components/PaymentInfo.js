@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableHighlight } from 'react-native';
 import { Button, Icon, ListItem } from 'react-native-elements';
 import { theme } from '../constants/theme';
 
@@ -64,6 +64,9 @@ export default function PaymentInfo({ payment }) {
             backgroundColor: null,
             padding: 0,
           }}
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
           // onPress={() => navigation.navigate('AddAddress')}
         />
       </View>

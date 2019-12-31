@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { withNavigation, FlatList } from 'react-navigation';
 import { Divider, Button } from 'react-native-elements';
 import LargeStoreChildElementNoShadow from './LargeStoreChildElementNoShadow';
@@ -12,7 +12,7 @@ function PopularList({ data }) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Nearest</Text>
+        <Text style={styles.title}>Near me</Text>
         <Button
           title="More"
           type="clear"
@@ -21,6 +21,9 @@ function PopularList({ data }) {
           onPress={() =>
             navigate('RestaurantByDistance', { data, type: 'distance' })
           }
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
         />
       </View>
       <FlatList

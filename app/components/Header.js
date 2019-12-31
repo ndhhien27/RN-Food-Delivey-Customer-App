@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Animated, StyleSheet, Platform } from 'react-native';
+import {
+  View,
+  Animated,
+  StyleSheet,
+  Platform,
+  TouchableHighlight,
+} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
@@ -39,17 +45,25 @@ function Header(props) {
               size={28}
             />
           }
+          // containerStyle={{ flex: 1 }}
           onPress={() => props.navigation.goBack(null)}
           buttonStyle={{
             backgroundColor: null,
           }}
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="transparent"
         />
-        <Animated.Text
-          style={[styles.storeName, { opacity: style.borderStyle }]}
-        >
-          {storeName}
-        </Animated.Text>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Animated.Text
+            style={[styles.storeName, { opacity: style.borderStyle }]}
+            numberOfLines={1}
+          >
+            {storeName}
+          </Animated.Text>
+        </View>
         <Button
+          // containerStyle={{ flex: 1 }}
           icon={
             <AnimatedIcon
               type="material-community"
@@ -61,6 +75,9 @@ function Header(props) {
           buttonStyle={{
             backgroundColor: null,
           }}
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="transparent"
         />
       </View>
     </Animated.View>

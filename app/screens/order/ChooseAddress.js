@@ -1,5 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  TouchableHighlight,
+} from 'react-native';
 import { Button, Icon, Overlay } from 'react-native-elements';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 // import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
@@ -77,6 +83,9 @@ export default function ChooseAddress(props) {
           icon={<Icon type="material-community" name="close" />}
           buttonStyle={{ padding: 0 }}
           onPress={hideModal}
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
         />
         <Text style={styles.title}>Choose other address</Text>
         <Button
@@ -84,6 +93,9 @@ export default function ChooseAddress(props) {
           icon={<Icon type="material-community" name="map-search-outline" />}
           buttonStyle={{ padding: 0 }}
           onPress={() => setIsVisible(true)}
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
         />
       </View>
       <Overlay

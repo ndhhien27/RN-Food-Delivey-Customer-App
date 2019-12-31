@@ -47,7 +47,7 @@ export default class SliderEntry extends Component {
 
 		return (
 			<TouchableOpacity
-				activeOpacity={1}
+				activeOpacity={0.7}
 				style={styles.slideInnerContainer}
 				onPress={onPress}
 			>

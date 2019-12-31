@@ -2,7 +2,7 @@
 import * as types from '../constants';
 import * as notificationTypes from '../constants/notificationTypes';
 
-export const fetchAllRestaurant = userLocation => {
+export const fetchAllRestaurant = (userLocation = null) => {
   return {
     type: types.FETCHING_RESTAURANT,
     payload: {

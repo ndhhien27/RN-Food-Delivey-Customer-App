@@ -18,6 +18,7 @@ import {
   Image,
   Text,
   View,
+  TouchableHighlight,
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
@@ -325,11 +326,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1000,
     backgroundColor: '#fff',
-    bottom: 40,
+    bottom: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
     marginLeft: 16,
+    width: '75%',
   },
   directionInfoText: {
     fontFamily: theme.text.fonts['sfpt-medium'],
@@ -348,7 +350,7 @@ const styles = StyleSheet.create({
 const LocationPickerScreen = props => {
   const currentLocation = useSelector(state => state.auth.currentLocation);
   const { navigation } = props;
-  const { storeLat, storeLong, storeName } = navigation.state.params;
+  const { storeLat, storeLong, storeName, address } = navigation.state.params;
   const [error, setError] = useState('');
   const mapRef = useRef();
   const [directionData, setDirectionData] = useState({
@@ -425,12 +427,6 @@ const LocationPickerScreen = props => {
       </View>
     );
   };
-  const [data, setData] = useState([
-    { name: 'phuc', title: 'sss' },
-    { name: 'phuc', title: 'sss' },
-    { name: 'phuc', title: 'sss' },
-    { name: 'phuc', title: 'sss' },
-  ]);
   const [showCarousel, setShowCarousel] = useState(false);
 
   return (
@@ -478,6 +474,9 @@ const LocationPickerScreen = props => {
         )}
       </MapView>
       <Button
+        activeOpacity={0.9}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="transparent"
         buttonStyle={{
           backgroundColor: '#fff',
           width: 50,
@@ -504,6 +503,9 @@ const LocationPickerScreen = props => {
         }
       />
       <Button
+        activeOpacity={0.9}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="transparent"
         buttonStyle={{
           width: 50,
           height: 50,
@@ -543,17 +545,43 @@ const LocationPickerScreen = props => {
           borderRadius: 25,
         }}
         containerStyle={styles.myLocation}
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="transparent"
         // containerStyle={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}
       />
       {/* </View> */}
       {directionData.isDirection && (
         <View style={styles.directionInfoContainer}>
-          <Text style={styles.directionInfoText}>
-            Distance: {directionData.distance}
-          </Text>
-          <Text style={styles.directionInfoText}>
-            Time: {directionData.time}
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon
+              type="material-community"
+              name="map-marker"
+              containerStyle={{ paddingRight: 4 }}
+            />
+            <Text style={{ ...styles.directionInfoText }}>Your location</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Icon
+              type="material-community"
+              name="flag-checkered"
+              containerStyle={{ paddingRight: 4 }}
+            />
+            <Text style={{ ...styles.directionInfoText }}>{address}</Text>
+          </View>
+          <View style={{ paddingLeft: 4 }}>
+            <Text style={styles.directionInfoText}>
+              Distance: {directionData.distance}
+            </Text>
+            <Text style={styles.directionInfoText}>
+              Time: {directionData.time}
+            </Text>
+          </View>
         </View>
       )}
     </>

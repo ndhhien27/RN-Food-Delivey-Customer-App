@@ -6,6 +6,7 @@ import { Button, Icon } from 'react-native-elements';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createSwitchNavigator } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
+import { TouchableHighlight } from 'react-native';
 import {
   getActiveRoute,
   getTabBarIcon,
@@ -29,7 +30,7 @@ import OrderTrack from './app/screens/my_order/OrderTrack';
 import OrderDetail from './app/screens/my_order/OrderDetail';
 import store from './app/store';
 import { fetchingMyOrder } from './app/actions/orderActions';
-import { updateUser } from './app/actions';
+import { updateUser, getNotification } from './app/actions';
 import RestaurantListByDistance from './app/screens/RestaurantListByDistance';
 import MapNearest from './app/screens/MapNearest';
 import ReviewScreen from './app/screens/ReviewScreen';
@@ -70,6 +71,9 @@ const RestaurantStack = createStackNavigator(
         return {
           headerBackImage: (
             <Button
+              activeOpacity={0.5}
+              TouchableComponent={TouchableHighlight}
+              underlayColor="#fff"
               icon={<Icon type="material-community" name="arrow-left" />}
               type="clear"
               // onPress={() => navigation.goBack(null)}
@@ -112,6 +116,9 @@ const AccountStack = createStackNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       headerBackImage: (
         <Button
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
           icon={
             <Icon
               type="material-community"
@@ -159,6 +166,9 @@ const OrderStack = createStackNavigator(
       return {
         headerBackImage: (
           <Button
+            activeOpacity={0.5}
+            TouchableComponent={TouchableHighlight}
+            underlayColor="#fff"
             icon={
               <Icon
                 type="material-community"
@@ -199,6 +209,9 @@ const CartStack = createStackNavigator(
         return {
           headerLeft: (
             <Button
+              activeOpacity={0.5}
+              TouchableComponent={TouchableHighlight}
+              underlayColor="#fff"
               onPress={() => navigation.goBack(null)}
               icon={
                 <Icon
@@ -241,9 +254,12 @@ const RestaurantNearestStack = createStackNavigator(
       screen: RestaurantListByDistance,
       navigationOptions: ({ navigation }) => {
         return {
-          title: 'Nearest',
+          title: 'Near me',
           headerLeft: (
             <Button
+              activeOpacity={0.5}
+              TouchableComponent={TouchableHighlight}
+              underlayColor="#fff"
               icon={
                 <Icon
                   type="material-community"
@@ -258,6 +274,9 @@ const RestaurantNearestStack = createStackNavigator(
           ),
           headerRight: (
             <Button
+              activeOpacity={0.5}
+              TouchableComponent={TouchableHighlight}
+              underlayColor="#fff"
               icon={
                 <Icon
                   type="material-community"
@@ -280,6 +299,9 @@ const RestaurantNearestStack = createStackNavigator(
           title: 'Map',
           headerBackImage: (
             <Button
+              activeOpacity={0.5}
+              TouchableComponent={TouchableHighlight}
+              underlayColor="#fff"
               buttonStyle={{ padding: 0 }}
               icon={
                 <Icon
@@ -445,15 +467,16 @@ const TabNavigator = createBottomTabNavigator(
         getTabBarIcon(navigation, focused, tintColor),
       tabBarOnPress: ({ defaultHandler }) => {
         const { state } = navigation;
+        defaultHandler();
         if (state.routeName === 'OrderTab') {
           const { auth } = store.getState();
           store.dispatch(fetchingMyOrder(auth.userId));
         }
         if (state.routeName === 'Notification') {
           const { auth } = store.getState();
+          store.dispatch(getNotification());
           store.dispatch(updateUser(auth.userId, { numNotification: 0 }));
         }
-        defaultHandler();
       },
     }),
     tabBarOptions: {

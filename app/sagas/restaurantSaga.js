@@ -2,16 +2,18 @@ import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
 import * as types from '../constants';
 import API from '../services/RestaurantService';
 
-const userInfo = state => state.auth.userInfo;
+const currentLocation = state => state.auth.currentLocation;
 
 function* restaurantTask(action) {
-  const { payload } = action;
-  const userInfoValue = yield select(userInfo);
-  console.log(userInfoValue);
   yield put({
     type: types.SHOW_LOADING,
   });
-  const res = yield call(API.getRestaurantsWithSaga, payload.userLocation);
+  const currentLocationValue = yield select(currentLocation);
+  const { payload } = action;
+  const res = yield call(
+    API.getRestaurantsWithSaga,
+    payload.userLocation || currentLocationValue
+  );
   if (res.data.restaurants) {
     // const data = res.data.restaurants;
     // const newRest = checkBookmark(userInfoValue.bookmarks, data);

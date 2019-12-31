@@ -1,7 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableHighlight,
+} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Button } from 'react-native-elements';
 import { useSelector } from 'react-redux';
@@ -58,6 +64,9 @@ function StoreList(props) {
           title="More"
           type="clear"
           titleStyle={styles.btnTitle}
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
           buttonStyle={styles.btn}
           onPress={() =>
             navigation.navigate('ListStoreByRatingStack', {

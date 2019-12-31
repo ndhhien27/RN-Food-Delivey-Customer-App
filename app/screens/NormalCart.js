@@ -1,6 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Alert,
+  TouchableHighlight,
+} from 'react-native';
 import { Icon, Button, Divider } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { useSelector, useDispatch } from 'react-redux';
@@ -50,6 +57,9 @@ function NormalCart(props) {
           </View>
         </View>
         <Button
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="transparent"
           icon={
             <Icon
               type="material-community"
@@ -91,6 +101,9 @@ function NormalCart(props) {
           }}
         />
         <Button
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
           title="Continue"
           titleStyle={{ fontFamily: theme.text.fonts.sfpt, fontSize: 22 }}
           buttonStyle={{
@@ -98,7 +111,6 @@ function NormalCart(props) {
             borderRadius: 8,
             // marginTop: 16,
           }}
-          activeOpacity={0.5}
           onPress={() => navigation.navigate('Checkout', { localCartIndex })}
         />
       </View>

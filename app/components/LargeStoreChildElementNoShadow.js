@@ -1,6 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableHighlight,
+} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
@@ -21,43 +28,39 @@ function LargeStoreChildElementNoShadow(props) {
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.subtitle}>{item.position.address}</Text>
         <View style={styles.otherDetailContainer}>
-          {type === 'distance' && (
-            <View style={{ flexDirection: 'row' }}>
+          <Button
+            type="clear"
+            icon={
               <Icon
                 type="material-community"
-                name="map-marker-radius"
-                size={17}
-                iconStyle={{ color: theme.color.darkGray }}
+                name="star"
+                color={theme.color.primary}
+                size={15}
               />
-              <Text style={styles.distance}>
-                {`${Decimal.round10(item.distance, -1)} km`}
-              </Text>
-            </View>
-          )}
-          {type === 'star' && (
-            <Button
-              type="clear"
-              icon={
-                <Icon
-                  type="material-community"
-                  name="star"
-                  color={theme.color.primary}
-                  size={15}
-                />
-              }
-              title={`${item.rating.avg}`}
-              disabledTitleStyle={{
-                color: theme.color.primary,
-                fontFamily: theme.text.fonts.sfpt,
-                fontSize: 17,
-              }}
-              disabled
-              disabledStyle={{
-                borderRadius: 8,
-                padding: 0,
-              }}
+            }
+            title={`${Decimal.round10(item.rating.avg, -1)}`}
+            disabledTitleStyle={{
+              color: theme.color.primary,
+              fontFamily: theme.text.fonts.sfpt,
+              fontSize: 17,
+            }}
+            disabled
+            disabledStyle={{
+              borderRadius: 8,
+              padding: 0,
+            }}
+          />
+          <View style={{ flexDirection: 'row' }}>
+            <Icon
+              type="material-community"
+              name="map-marker-radius"
+              size={17}
+              iconStyle={{ color: theme.color.darkGray }}
             />
-          )}
+            <Text style={styles.distance}>
+              {`${Decimal.round10(item.distance, -1)} km`}
+            </Text>
+          </View>
           <Button
             title="Free ship"
             titleStyle={{ fontFamily: theme.text.fonts.sfpt, fontSize: 13 }}
@@ -68,6 +71,9 @@ function LargeStoreChildElementNoShadow(props) {
               height: 18,
               borderRadius: 9,
             }}
+            activeOpacity={1}
+            TouchableComponent={TouchableHighlight}
+            underlayColor="#fff"
           />
         </View>
       </View>

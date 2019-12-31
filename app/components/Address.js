@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableHighlight } from 'react-native';
 import { ListItem, Button, Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { theme } from '../constants/theme';
@@ -83,6 +83,9 @@ function Address(props) {
             padding: 0,
           }}
           onPress={() => navigation.navigate('AddAddress')}
+          activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
         />
       </View>
     </View>

@@ -17,10 +17,10 @@ function CategoryWithIcon(props) {
   const [category, setCategory] = useState([
     { id: 1, name: 'Cơm', uri: image.categoryImg.riceW },
     { id: 2, name: 'Trà sữa', uri: image.categoryImg.milk_tea },
-    { id: 3, name: 'Ga', uri: image.categoryImg.chicken },
+    { id: 3, name: 'Gà', uri: image.categoryImg.chicken },
     { id: 4, name: 'Pizza', uri: image.categoryImg.pizza },
-    { id: 5, name: 'Bun', uri: image.categoryImg.noodle },
-    { id: 6, name: 'Banh ngot', uri: image.categoryImg.cake },
+    { id: 5, name: 'Bún', uri: image.categoryImg.noodle },
+    { id: 6, name: 'Bánh ngọt', uri: image.categoryImg.cake },
   ]);
   return (
     <View>

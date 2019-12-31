@@ -9,6 +9,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  TouchableHighlight,
 } from 'react-native';
 import { AirbnbRating, ListItem, Button, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -195,6 +196,9 @@ export default function OrderDetail({ navigation }) {
               alignItems: 'flex-start',
             }}
             buttonStyle={{ padding: 0 }}
+            activeOpacity={0.5}
+            TouchableComponent={TouchableHighlight}
+            underlayColor="#fff"
           />
           <View style={{ paddingTop: 30 }}>
             <View style={styles.shadow}>
@@ -219,7 +223,11 @@ export default function OrderDetail({ navigation }) {
                     style={{ width: 30, height: 30 }}
                   />
                   <View style={styles.rightElement}>
-                    <Text style={styles.title}>Don&#39;t forget to rate</Text>
+                    <Text style={styles.title}>
+                      {orderDetail.review.star
+                        ? `Your review`
+                        : `Don't forget to rate`}
+                    </Text>
                     <View style={{ alignItems: 'flex-start', paddingTop: 8 }}>
                       <AirbnbRating
                         isDisabled={!!orderDetail.review.star}
@@ -252,6 +260,9 @@ export default function OrderDetail({ navigation }) {
                       />
                     </View>
                     <Button
+                      activeOpacity={0.5}
+                      TouchableComponent={TouchableHighlight}
+                      underlayColor="#fff"
                       title="Confirm"
                       type="clear"
                       disabled={!review.star || !review.desc}

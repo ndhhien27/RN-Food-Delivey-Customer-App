@@ -1,7 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { View, Text, ImageBackground, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  Dimensions,
+  TouchableHighlight,
+} from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-native-modal';
@@ -69,6 +75,9 @@ StoreByCategory.navigationOptions = ({ navigation }) => {
   return {
     headerRight: (
       <Button
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="#fff"
         icon={
           <Icon
             type="material-community"
@@ -83,5 +92,6 @@ StoreByCategory.navigationOptions = ({ navigation }) => {
         }}
       />
     ),
+    title: navigation.state.params.query,
   };
 };

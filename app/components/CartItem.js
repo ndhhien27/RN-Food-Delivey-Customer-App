@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { theme } from '../constants/theme';
 import { currencyFormat } from '../helpers/string';
@@ -30,6 +30,8 @@ export default function CartItem(props) {
           onPress={decrease}
           buttonStyle={{ padding: 0, backgroundColor: null }}
           activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
         />
         <Text
           style={{
@@ -49,6 +51,8 @@ export default function CartItem(props) {
           onPress={increase}
           buttonStyle={{ padding: 0, backgroundColor: null }}
           activeOpacity={0.5}
+          TouchableComponent={TouchableHighlight}
+          underlayColor="#fff"
         />
       </View>
     </View>

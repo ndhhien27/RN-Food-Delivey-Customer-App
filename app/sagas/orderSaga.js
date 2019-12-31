@@ -1,20 +1,23 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-undef */
 import { call, put, takeLatest, delay, select } from 'redux-saga/effects';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
 import * as types from '../constants';
 import API from '../services/OrderService';
 import { clearCart } from '../actions/cartActions';
 import { fetchAllRestaurant } from '../actions';
 
-const userInfo = state => state.auth.userInfo;
-const userId = state => state.auth.userId;
+// const userId = state => state.auth.userId;
 
 function* taskGetOrder({ payload }) {
-  const userIdValue = yield select(userId);
   yield put({
     type: types.SHOW_LOADING,
   });
+  const auth = yield call(AsyncStorage.getItem, 'persist:auth');
+  const authParse = JSON.parse(auth);
+  const userIdValue = JSON.parse(authParse.userId);
+  // const userIdValue = yield select(userId);
   const res = yield call(API.getOrderByUser, payload.userId || userIdValue);
   if (res.errors) {
     const { message } = res.errors[0];
@@ -135,8 +138,7 @@ function* taskReviewOrder({ payload }) {
         newOrder: reviewOrder,
       },
     });
-    const userData = yield select(userInfo);
-    yield put(fetchAllRestaurant(userData.position[0]));
+    yield put(fetchAllRestaurant());
     Alert.alert('Thanks for your review');
   }
 }

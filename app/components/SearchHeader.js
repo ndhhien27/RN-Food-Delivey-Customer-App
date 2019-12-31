@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, TouchableHighlight } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { theme } from '../constants/theme';
@@ -9,14 +9,7 @@ function SearchHeader(props) {
   return (
     <View>
       <Button
-        icon={
-          <Icon
-            type="material-community"
-            name="close"
-            size={theme.icon.size.md}
-            color={theme.color.primary}
-          />
-        }
+        icon={<Icon type="material-community" name="close" size={30} />}
         type="clear"
         containerStyle={{
           height: Platform.OS === 'ios' ? 88 : 56,
@@ -24,6 +17,9 @@ function SearchHeader(props) {
           alignItems: 'flex-start',
         }}
         onPress={() => navigation.goBack(null)}
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="#fff"
       />
     </View>
   );

@@ -12,7 +12,9 @@ function ProfileItem(props) {
   return (
     <View style={[styles.container, { borderBottomWidth: divider ? 1 : 0 }]}>
       <Text style={styles.label}>{label}</Text>
-      <Text style={styles.info}>{info}</Text>
+      <Text style={styles.info} numberOfLines={1}>
+        {info}
+      </Text>
     </View>
   );
 }
@@ -78,6 +80,7 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 20,
     fontFamily: theme.text.fonts.sfpt,
+    width: 200,
   },
   contentContainer: {
     backgroundColor: '#fff',
@@ -90,5 +93,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     top: '-25%',
+    zIndex: 11,
   },
 });

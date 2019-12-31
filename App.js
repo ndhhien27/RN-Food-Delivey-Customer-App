@@ -124,6 +124,17 @@ export default function App() {
     if (notificationOpen) {
       const { title, body, data } = notificationOpen.notification;
       // if(data.screen === 'order'){
+      const newNoti = {
+        title: data.title,
+        order: {
+          _id: data.orderId,
+        },
+        _id: data._id,
+        createdAt: data.createdAt,
+        hasRead: false,
+      };
+      store.dispatch(updateWithFCM(newNoti));
+      store.dispatch(fetchingMyOrder());
       navigate('OrderDetailScreen', { orderId: data.orderId });
       // }
     }

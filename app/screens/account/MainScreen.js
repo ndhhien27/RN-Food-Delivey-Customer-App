@@ -1,5 +1,5 @@
 import React, { useState, userContext, useContext } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableHighlight } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Icon } from 'react-native-elements';
 import Profile from '../../components/Profile';
@@ -54,6 +54,9 @@ export default function MainScreen(props) {
                 containerStyle={{ marginRight: 8 }}
               />
             }
+            activeOpacity={0.5}
+            TouchableComponent={TouchableHighlight}
+            underlayColor="#fff"
             title="Setting"
             type="clear"
             titleStyle={{
@@ -89,6 +92,9 @@ export default function MainScreen(props) {
             buttonStyle={{
               paddingHorizontal: 0,
             }}
+            activeOpacity={0.5}
+            TouchableComponent={TouchableHighlight}
+            underlayColor="#fff"
           />
         </View>
       </ScrollView>

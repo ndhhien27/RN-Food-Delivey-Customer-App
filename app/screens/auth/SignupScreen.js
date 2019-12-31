@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 import { Button, Icon, Overlay } from 'react-native-elements';
 import { Formik } from 'formik';
@@ -42,8 +43,7 @@ const validationSchema = yup.object().shape({
     .string()
     .matches(/^[0-9]*$/, 'Must be a Number')
     .label('Phone')
-    .min(4)
-    .max(10)
+    .min(10)
     .required(),
   password: yup
     .string()
@@ -186,6 +186,9 @@ export default function SignupScreen({ navigation }) {
                       backgroundColor: theme.color.primary,
                     }}
                     onPress={formikProps.handleSubmit}
+                    activeOpacity={0.5}
+                    TouchableComponent={TouchableHighlight}
+                    underlayColor="#fff"
                   />
                   <Button
                     title="Go back Login"
@@ -201,6 +204,9 @@ export default function SignupScreen({ navigation }) {
                       borderRadius: 22,
                     }}
                     onPress={() => navigation.goBack()}
+                    activeOpacity={0.5}
+                    TouchableComponent={TouchableHighlight}
+                    underlayColor="#fff"
                   />
                 </View>
               )}

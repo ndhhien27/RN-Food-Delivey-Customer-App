@@ -2,12 +2,17 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-undef */
 import React, { useContext } from 'react';
-import { Text, StyleSheet, View, ActivityIndicator } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  TouchableHighlight,
+} from 'react-native';
 import { Button } from 'react-native-elements';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import * as yup from 'yup';
-import AsyncStorage from '@react-native-community/async-storage';
 import { theme } from '../../constants/theme';
 import StyledInput from '../../components/StyledInput';
 import { login } from '../../actions/index';
@@ -101,6 +106,9 @@ export default function LoginScreen(props) {
                   titleStyle={styles.signUp}
                   type="clear"
                   onPress={() => navigation.navigate('Signup')}
+                  activeOpacity={0.5}
+                  TouchableComponent={TouchableHighlight}
+                  underlayColor="#fff"
                 />
               </View>
             )}

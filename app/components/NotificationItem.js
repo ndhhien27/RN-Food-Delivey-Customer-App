@@ -2,8 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { Button, Icon } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Icon } from 'react-native-elements';
 import formatDate from '../helpers/date';
 import { theme } from '../constants/theme';
 
@@ -13,7 +12,8 @@ function NotificationItem(props) {
     <TouchableHighlight
       style={styles.container}
       onPress={onPress}
-      activeOpacity={1}
+      activeOpacity={0.5}
+      underlayColor="#fff"
     >
       <View
         style={

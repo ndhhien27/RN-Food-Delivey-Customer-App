@@ -9,6 +9,7 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 import { ListItem, Button, Overlay, Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
@@ -267,6 +268,9 @@ export default function CheckoutScreen({ navigation }) {
                 showsVerticalScrollIndicator={false}
               />
               <Button
+                activeOpacity={0.5}
+                TouchableComponent={TouchableHighlight}
+                underlayColor="#fff"
                 title="Choose other address"
                 type="clear"
                 onPress={() => setIsPositionModal(true)}
@@ -286,6 +290,9 @@ export default function CheckoutScreen({ navigation }) {
             </View>
           </View>
           <Button
+            activeOpacity={0.5}
+            TouchableComponent={TouchableHighlight}
+            underlayColor="#fff"
             title="Payment"
             titleStyle={{ fontFamily: theme.text.fonts.sfpt, fontSize: 22 }}
             buttonStyle={{
@@ -337,6 +344,9 @@ CheckoutScreen.navigationOptions = ({ navigation }) => {
   return {
     headerLeft: (
       <Button
+        activeOpacity={0.5}
+        TouchableComponent={TouchableHighlight}
+        underlayColor="#fff"
         icon={
           <Icon
             type="material-community"

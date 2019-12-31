@@ -60,6 +60,5 @@ const styles = StyleSheet.create({
     fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 34,
     paddingLeft: 16,
-    color: theme.color.primary,
   },
 });
